@@ -1,0 +1,179 @@
+{
+  "users":
+  {
+    "userId":
+    {
+      "name": "Evan Caldwell",
+      "team": "3j41g12jh3b1bjhg55",
+      "org": "orgId",
+      "startDate": "1/1/2013",
+      "endDate": "",
+      "gradDate": "12/14/2015",
+      "roadMapPos": "complete",
+      "roles": ["admin","employee"]
+    },
+    "qweoiuasdjkf123908492jjwu":
+    {
+      "name": "Clint Goodman",
+      "team": "3j41g12jh3b1bjhg55",
+      "org": "orgId",
+      "startDate": "1/1/2014",
+      "endDate": "",
+      "gradDate": "6/14/2015",
+      "roadMapPos": "complete",
+      "roles": ["admin","employee"]
+    },
+    "2l3kj4l2k3j41l2k3j412lj4oausf":
+    {
+      "name": "Brendan Hytrek",
+      "team": "RExt - dev",
+      "org": "orgId",
+      "startDate": "3/1/2015",
+      "endDate": "",
+      "gradDate": "12/14/2017",
+      "roadMapPos": "positionId",
+      "roles": ["employee"]
+    }
+  },
+
+
+  "roles": ["admin","employee","team lead","org contact"],
+
+
+  "teams":
+  {
+    "teamId":
+    {
+      "name": "RExt - dev",
+      "members": ["userId","user2","user3","user4","2l3kj4l2k3j41l2k3j412lj4oausf"]
+    },
+    "3j41g12jh3b1bjhg55":
+    {
+      "name": "admin",
+      "members": ["userId","qweoiuasdjkf123908492jjwu"]
+    }
+  },
+
+
+  "orgs":
+  {
+    "orgId":
+    {
+      "name": "RBDC",
+      "contacts": ["userId","user4"],
+      "teams": ["teamId","team2","team3"]
+    }
+  },
+
+
+  "trainingModules":
+  {
+    "moduleId":
+    {
+      "name": "module1",
+      "url": "rbdcenter.org",
+      "desc": "This is the first module"
+    },
+    "123lkjfa90os8fasjflkj" : {
+      "name" : "module2",
+      "url" : "google.com",
+      "desc": "This is the second module"
+    },
+    "alsdkjfalsdf0823049823fa" : {
+      "name" : "module3",
+      "url" : "csstricks.com",
+      "desc": "This is the third module"
+    },
+    "jqlkejasd9808234kal;kjdf" : {
+      "name" : "module4",
+      "url" : "codrops.com",
+      "desc": "This is the fourth module"
+    }
+  },
+
+
+  "roadMap":
+  {
+    "positionId":
+    {
+      "title": "Getting your paperwork done",
+      "desc": "You need to fill everything out."
+    },
+    "zxkaaf9843kasdg74htq":
+    {
+      "title": "Initial Evaluation",
+      "desc": "Helps provide a baseline for growth."
+    }
+  },
+
+
+  "evaluation":
+  {
+    "proffessionalism":
+    {
+      "item1": "desc1",
+      "item2": "desc2"
+    },
+    "skills":
+    {
+      "item1": "desc1",
+      "item2": "desc2"
+    },
+    "productivity":
+    {
+      "item1": "desc1",
+      "item2": "desc2"
+    }
+  },
+
+
+  "evalResults":
+  {
+    "resultId":
+    {
+      "userId": "userId",
+      "date": "10/15/2015",
+      "data":
+      {
+        "proffessionalism":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        },
+        "skills":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        },
+        "productivity":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        }
+      }
+    },
+    "8a43qgpa8doaj3jf8e":
+    {
+      "userId": "2l3kj4l2k3j41l2k3j412lj4oausf",
+      "date": "11/2/2015",
+      "data":
+      {
+        "proffessionalism":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        },
+        "skills":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        },
+        "productivity":
+        {
+          "item1": "result1",
+          "item2": "result2"
+        }
+      }
+    }
+  }
+}
