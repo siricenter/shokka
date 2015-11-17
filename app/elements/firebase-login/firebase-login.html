@@ -19,20 +19,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #btnLogin {
         cursor: pointer;
       }
-      #btnLogout {
+      #btnLogout, #btnAccount {
         display: none;
       }
       #btnLogin:hover {
         color: var(--accent-color);
       }
-      #loginModal {
+      .modal-dialog {
         background-color: white;
         width: 500px;
       }
       .buttons {
         margin-top: 15px;
       }
-      #pass-signin {
+      .btn-confirm {
         margin-top: 15px;
         background-color: var(--dark-primary-color);
         color: var(--text-primary-color);
@@ -44,7 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <firebase-auth id="firebaseLogin"  location="{{location}}"
+    <firebase-auth id="firebaseLogin"  location="{{baseRef}}"
                                                             user="{{user}}"
                                                             provider="{{provider}}"
                                                             status-known="{{statusKnown}}"
@@ -56,9 +56,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             on-password-reset="userSuccessHandler"
                                                             on-user-removed="userSuccessHandler"></firebase-auth>
 
-    <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin"><iron-icon icon="account-box"></iron-icon>Login</paper-button>
-    <paper-button id="btnLogout" on-tap="logout"><iron-icon icon="account-box"></iron-icon>Logout</paper-button>
-    <paper-dialog id="loginModal" with-backdrop
+    <firebase-document id="userDocument" location="{{userRef}}" data="{{userInfo}}"></firebase-document>
+
+    <div id="accountNave" class="layout horizontal">
+      <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin"><iron-icon icon="account-box"></iron-icon>Login</paper-button>
+      <paper-button id="btnAccount" data-dialog="account-modal" on-tap="toggleAccount">Hello &nbsp; <span>{{userInfo.fName}}</span><iron-icon icon="arrow-drop-down"></iron-icon></paper-button>
+      <paper-button id="btnLogout" on-tap="logout"><iron-icon icon="account-box"></iron-icon>Logout</paper-button>
+    </div>
+
+    <paper-dialog id="loginModal" class="modal-dialog" with-backdrop
                             entry-animation="scale-up-animation"
                             exit-animation="fade-out-animation">
       <h2>Login</h2>
@@ -66,7 +72,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-input label="password" type="password" id="pass"></paper-input>
       <div class="buttons">
         <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
-        <paper-button raised id="pass-signin" on-tap="login"><iron-icon icon="forward"></iron-icon>Lets Go!</paper-button>
+        <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login"><iron-icon icon="forward"></iron-icon>Lets Go!</paper-button>
+      </div>
+    </paper-dialog>
+    <paper-dialog id="accountModal" class="modal-dialog" with-backdrop
+                            entry-animation="scale-up-animation"
+                            exit-animation="fade-out-animation">
+      <h2>Account Info</h2>
+      <paper-input label="name" id="accountName"></paper-input>
+      <paper-input label="email" type="email" id="accountEmail"></paper-input>
+      <div class="buttons">
+        <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
+        <paper-button raised id="accountClose" class="btn-confirm" on-tap="toggleAccount"><iron-icon icon="close"></iron-icon>Close</paper-button>
       </div>
     </paper-dialog>
   </template>
@@ -83,9 +100,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: null,
           notify: true
         },
-        location: {
+        userInfo: {
+          type: Object,
+          notify: true
+        },
+        baseRef: {
           type: String,
           value: 'https://shokka.firebaseio.com',
+          notify: true
+        },
+        userRef: {
+          type: String,
+          value: '',
           notify: true
         },
         provider: {
@@ -104,6 +130,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+
+      toggleAccount: function() {
+        this.$.accountModal.toggle();
+      },
       toggleLogin: function() {
           this.$.loginModal.toggle();
       },
@@ -118,10 +148,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.firebaseLogin.logout()
       },
       onFirebaseLogin: function(e) {
-        this.message = 'User info: ' + JSON.stringify(this.user)
+        this.message = 'User id: ' + JSON.stringify(this.user.uid)
         this.log(this.message)
+        this.userRef = this.baseRef + '/users/' + this.user.uid
+        this.message = "userInfo: " +  this.userInfo
+        this.log(this.message)
+
         this.$.btnLogin.style.display = 'none'
         this.$.btnLogout.style.display = 'block'
+        this.$.btnAccount.style.display = 'block'
         this.$.loginModal.close()
       },
       onFirebaseLogout: function(e) {

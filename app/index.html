@@ -103,7 +103,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Toolbar icons -->
           <firebase-login providers="password google" type="link"></firebase-login>
-          <paper-icon-button icon="refresh"></paper-icon-button>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -186,7 +185,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <paper-material elevation="1">
                     <!-- placeholder for a chart-tile component -->
                     <google-chart type="stepped-area" options='{"title": "Family Stats"}'
-                                            data='scripts/tstTXT.txt'>
+                                            data='[ ["Country", "Popularity"],
+                                                         ["Germany", 200],
+                                                         ["United States", 300],
+                                                         ["Brazil", 400],
+                                                         ["Canada", 500],
+                                                         ["France", 600],
+                                                         ["RU", 700] ]'>
                     </google-chart>
                     <!-- <img src="images/radar_chart.jpg" style="width:100%"> -->
                   </paper-material>
