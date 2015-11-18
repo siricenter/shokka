@@ -122,7 +122,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="home" class="flex">
               <paper-material elevation="1">
-                <p>Placeholder for Employee Roadmap</p>
+                <road-map horizontal layout>
+                  <road-map-marker flex completion='.5'>Hiring</road-map-marker>
+                  <road-map-marker flex completion='.1'>Training</road-map-marker>
+                  <road-map-marker flex completion='1'>Observing</road-map-marker>
+                  <road-map-marker flex completion='0'>Contributing</road-map-marker>
+                </road-map>
               </paper-material>
 
               <paper-material elevation="1">
