@@ -102,7 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="refresh"></paper-icon-button>
+          <firebase-login providers="password google" type="link"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -110,8 +110,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <!-- Application sub title -->
-          <div class="bottom bottom-container center horizontal layout">
-            <div class="bottom-title paper-font-subhead">Onboarding, training and evaluation simplified</div>
+          <div class="bottom bottom-container center horizontal layout flex">
+            <div class="bottom-title paper-font-subhead flex">Onboarding, training and evaluation simplified</div>
           </div>
 
         </paper-toolbar>
@@ -191,7 +191,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <paper-material elevation="1">
                     <!-- placeholder for a chart-tile component -->
                     <google-chart type="stepped-area" options='{"title": "Family Stats"}'
-                                            data='scripts/tstTXT.txt'>
+                                            data='[ ["Country", "Popularity"],
+                                                         ["Germany", 200],
+                                                         ["United States", 300],
+                                                         ["Brazil", 400],
+                                                         ["Canada", 500],
+                                                         ["France", 600],
+                                                         ["RU", 700] ]'>
                     </google-chart>
                     <!-- <img src="images/radar_chart.jpg" style="width:100%"> -->
                   </paper-material>
