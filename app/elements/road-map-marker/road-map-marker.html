@@ -8,22 +8,31 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="road-map-marker">
   <template>
-      <content></content>
+      <div class='graph'></div>
+      <div class='caption'><content></content></div>
   </template>
   <style>
     :host {
+      display: inline-block;
+      font-weight: bold;
+      color: #655;
+    }
+    :host .caption{
+      text-align: center;
+      margin-top: 1rem;
+    }
+    :host .graph {
     display: inline-block;
     position: relative;
     width: 100px;
     height: 100px;
     line-height: 100px;
     border-radius: 50%;
-    background: yellowgreen;
-    background-image: linear-gradient(to right, transparent 50%, #655 0);
+    background: #655;
+    background-image: linear-gradient(to right, transparent 50%, yellowgreen 0);
     color: transparent;
     text-align: center;
   }
@@ -31,9 +40,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     to { transform: rotate(.5turn); }
   }
   @keyframes bg {
-    50% { background: #655; }
+    50% { background: yellowgreen; }
   }
-  :host:before {
+  :host .graph:before {
     content: '';
     position: absolute;
     top: 0; left: 50%;
@@ -64,7 +73,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.updateCompletion(this.completion);
         },
         updateCompletion: function(newValue) {
-          this.style.animationDelay = '-' + newValue*100 + 's';
+          var graph = this.childNodes[1];
+          if (newValue === '1'){
+            graph.style['background-color'] = 'yellowgreen';
+          } else {
+            graph.style['background-color'] = '#655';
+          }
+          graph.style.animationDelay = '-' + newValue*100 + 's';
         }
       });
     })();
