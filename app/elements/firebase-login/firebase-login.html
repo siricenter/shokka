@@ -37,6 +37,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: var(--dark-primary-color);
         color: var(--text-primary-color);
       }
+      #profile-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+      .profile-row {
+        display: flex;
+        flex-direction: row;
+      }
+      .profile-row paper-input {
+        flex: 1;
+        margin-right: 20px;
+      }
+      .check-icon {
+        display: none;
+        align-self: flex-end;
+        color: green;
+      }
       #google-signin {
         margin-top: 15px;
         background-color: darkred;
@@ -56,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                                             on-password-reset="userSuccessHandler"
                                                             on-user-removed="userSuccessHandler"></firebase-auth>
 
-    <firebase-document id="userDocument" location="{{userRef}}" data="{{userInfo}}"></firebase-document>
+    <firebase-document id="userDocument" location="{{userRef}}" data="{{userInfo}}" on-firebase-value="onFirebaseValue"></firebase-document>
 
     <div id="accountNave" class="layout horizontal">
       <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin"><iron-icon icon="account-box"></iron-icon>Login</paper-button>
@@ -79,8 +96,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             entry-animation="scale-up-animation"
                             exit-animation="fade-out-animation">
       <h2>Account Info</h2>
-      <paper-input label="name" id="accountName"></paper-input>
-      <paper-input label="email" type="email" id="accountEmail"></paper-input>
+      <div id="profile-wrapper">
+        <div class="profile-row">
+          <paper-input label="first name" id="accountFname" value="{{userInfo.fName}}" on-change="inputChange"></paper-input>
+          <iron-icon class="check-icon" icon="check"></iron-icon>
+        </div>
+        <div class="profile-row">
+          <paper-input label="last name" id="accountLname" value="{{userInfo.lName}}" on-change="inputChange"></paper-input>
+          <iron-icon class="check-icon" icon="check"></iron-icon>
+        </div>
+        <div class="profile-row">
+          <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange"></paper-input>
+          <iron-icon class="check-icon" icon="check"></iron-icon>
+        </div>
+        <div class="profile-row">
+          <paper-input label="graduation date" id="accountGradDate" type="date" value="{{userInfo.gradDate}}" on-change="inputChange"></paper-input>
+          <iron-icon class="check-icon" icon="check"></iron-icon>
+        </div>
+      </div>
       <div class="buttons">
         <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
         <paper-button raised id="accountClose" class="btn-confirm" on-tap="toggleAccount"><iron-icon icon="close"></iron-icon>Close</paper-button>
@@ -130,6 +163,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      listeners: {
+
+      },
+
 
       toggleAccount: function() {
         this.$.accountModal.toggle();
@@ -151,8 +188,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.message = 'User id: ' + JSON.stringify(this.user.uid)
         this.log(this.message)
         this.userRef = this.baseRef + '/users/' + this.user.uid
-        this.message = "userInfo: " +  this.userInfo
-        this.log(this.message)
 
         this.$.btnLogin.style.display = 'none'
         this.$.btnLogout.style.display = 'block'
@@ -163,6 +198,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.btnLogin.style.display = 'block'
         this.$.btnLogout.style.display = 'none'
         // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
+      },
+      onFirebaseValue: function(e, detail) {
+        console.log(e)
+        console.log(detail)
+      },
+      inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
+        console.log(e)
+        e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block'
       },
       errorHandler: function(e) {
         this.log('Login Status')
