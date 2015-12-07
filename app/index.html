@@ -120,9 +120,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-            <section data-route="home" class="flex">
+            <section data-route="home">
               <paper-material elevation="1">
-                <p>Placeholder for Employee Roadmap</p>
+                <road-map >
+                  <road-map-marker completion='.5'>Hiring</road-map-marker>
+                  <road-map-marker completion='.1'>Training</road-map-marker>
+                  <road-map-marker completion='.75'>Observing</road-map-marker>
+                  <road-map-marker completion='.99'>Test</road-map-marker>
+                  <road-map-marker completion='0'>Contributing</road-map-marker>
+                </road-map>
               </paper-material>
 
               <paper-material elevation="1">
