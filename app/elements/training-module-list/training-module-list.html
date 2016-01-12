@@ -33,8 +33,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <template is="dom-repeat" items="{{modules}}" as="module">
         <paper-item>
           <paper-item-body two-line>
-            <div>{{module.name}}</div>
-            <div class="module-desc" secondary>{{module.desc}}</div>
+            <a data-route="modules" href="/modules/{{module.name}}" on-click="onDataRouteClick">
+              <span>{{module.name}}</span>
+              <div class="module-desc" secondary>{{module.desc}}</div>
+            </a>
           </paper-item-body>
         </paper-item>
       </template>
