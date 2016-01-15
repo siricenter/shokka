@@ -19,12 +19,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
       </style>
       <firebase-collection
-        order-by-child="meta order"
+        order-by-child="order"
         location="{{dataPath}}"
         data="{{steps}}"></firebase-collection>
+        <road-map-marker completion='{{completed}}'>
+          Overall Progress
+        </road-map-marker>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <!-- TODO: get real completion based on user -->
-          <road-map-marker completion='.3'>{{step.__firebaseKey__}}</road-map-marker>
+          <road-map-marker completion='.3'>{{step.name}}</road-map-marker>
         </template>
   </template>
 
@@ -38,9 +41,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         properties: {
           dataPath: {
             type: String,
-            value: 'https://shokka.firebaseio.com/roadMap',
+            value: '',
             notify: true
+          },
+          completed: {
+            type: Number,
+            notify: true,
+            computed: 'setCompleted(userRoadMap, steps)'
           }
+        },
+
+        setCompleted: function(userRoadMap, steps) {
+          var ret = 0;
+          for (var userStep in userRoadMap) {
+            // skip loop if the property is from prototype
+            if (!userRoadMap.hasOwnProperty(userStep)) {
+              continue;
+            }
+
+            var obj = userRoadMap[userStep]; // In setup for example
+            var obj2 = steps.filter(function(elem) {
+              return elem.__firebaseKey__ === userStep;
+            }).pop();
+
+            for (var prop in obj) {
+              // skip loop if the property is from prototype
+              if(!obj.hasOwnProperty(prop)) {
+                continue;
+              }
+
+              if (obj[prop] === true) {
+                ret += obj2[prop].weight;
+              }
+            }
+          }
+          return Math.round(ret/3)/100.0000001;
         }
       });
     })();

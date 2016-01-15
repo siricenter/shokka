@@ -102,7 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <firebase-login providers="password google" type="link"></firebase-login>
+          <firebase-login providers="password google" type="link" user-info="{{userInfo}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -122,8 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="home">
               <paper-material elevation="1">
-                <road-map dataPath="https://shokka.firebaseio.com/roadMap">
-                </road-map>
+                <road-map data-path="https://shokka.firebaseio.com/roadMap" user-road-map="{{userInfo.roadMap}}"></road-map>
               </paper-material>
 
               <paper-material elevation="1">
