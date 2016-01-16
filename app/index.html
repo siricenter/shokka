@@ -132,9 +132,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
 
               <paper-material elevation="1">
-                <google-chart id="LastEvalChart" 
+                <google-chart id="EvalCompareChart" 
                               type="column" 
-                              options='{ "title": "Last Evaluation" }'
+                              options='{ "title": "Evaluation Comparison" }'
+                              data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
+                                       ["Jan 16", 0, -5, -3 ],
+                                       ["Feb 16", -1, -5, -6 ],
+                                       ["Mar 16", -2, -4, -1 ],
+                                       ["Apr 16", 2, -2, 0 ],
+                                       ["May 16", 2, -3, 1 ],
+                                       ["Jun 16", 3, -2, 0 ],
+                                       ["Jul 16", 4, 0, 1 ],
+                                       ["Aug 16", 5, 3, 2 ],
+                                       ["Sep 16", 6, 6, 1 ],
+                                       ["Oct 16", 5, 4, 2] ]'>
+                </google-chart>
+              </paper-material>
+
+              <paper-material elevation="1">
+                <google-chart id="LastEvalChart" 
+                              type="column"
+                              options='{ "title": "Last Evaluation", "vAxis": { "minValue": 0, "maxValue": 100 } }'
                               data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
                                        ["Oct 16", 45, 44, 42 ] ]'>
                 </google-chart>
