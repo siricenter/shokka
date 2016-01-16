@@ -132,7 +132,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
 
               <paper-material elevation="1">
-                <!-- placeholder for a chart-tile component featuring the motion chart -->
+                <google-chart id="LastEvalChart" 
+                              type="column" 
+                              options='{ "title": "Last Evaluation" }'
+                              data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
+                                       ["Oct 16", 45, 44, 42 ] ]'>
+                </google-chart>
+              </paper-material>
+
+              <paper-material elevation="1">
                 <google-chart id="metricsChart" 
                               type="line" 
                               options='{ "title": "Performance Over Time", "curveType": "function" }'
