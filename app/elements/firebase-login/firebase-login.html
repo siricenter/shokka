@@ -175,51 +175,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.loginModal.toggle();
       },
       login: function(e) {
-        var email = this.$.email.value
-        var pass = this.$.pass.value
-        this.$.firebaseLogin.login({email:email, password:pass})
-        this.message = 'Login result: ' + e.detail.user
-        this.log(this.message)
+        console.log(e);
+        var email = this.$.email.value;
+        var pass = this.$.pass.value;
+        this.$.firebaseLogin.login({email:email, password:pass});
+        this.message = 'Login result: ' + e.detail.user;
+        this.log(this.message);
       },
       logout: function(e){
-        this.$.firebaseLogin.logout()
+        console.log(e);
+        this.$.firebaseLogin.logout();
       },
       onFirebaseLogin: function(e) {
-        this.message = 'User id: ' + JSON.stringify(this.user.uid)
-        this.log(this.message)
-        this.userRef = this.baseRef + '/users/' + this.user.uid
+        console.log(e);
+        this.message = 'User id: ' + JSON.stringify(this.user.uid);
+        this.log(this.message);
+        this.userRef = this.baseRef + '/users/' + this.user.uid;
 
-        this.$.btnLogin.style.display = 'none'
-        this.$.btnLogout.style.display = 'block'
-        this.$.btnAccount.style.display = 'block'
-        this.$.loginModal.close()
+        this.$.btnLogin.style.display = 'none';
+        this.$.btnLogout.style.display = 'block';
+        this.$.btnAccount.style.display = 'block';
+        this.$.loginModal.close();
       },
       onFirebaseLogout: function(e) {
-        this.$.btnLogin.style.display = 'block'
-        this.$.btnLogout.style.display = 'none'
+        console.log(e);
+        this.$.btnLogin.style.display = 'block';
+        this.$.btnLogout.style.display = 'none';
         // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
       },
       onFirebaseValue: function(e, detail) {
-        console.log(e)
-        console.log(detail)
+        console.log(e);
+        console.log(detail);
       },
       inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
-        console.log(e)
-        e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block'
+        console.log(e);
+        console.log(detail);
+        e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
       },
       errorHandler: function(e) {
-        this.log('Login Status')
-        this.message = 'Error: ' + e.detail.message
-        this.log(this.message)
+        this.log('Login Status');
+        this.message = 'Error: ' + e.detail.message;
+        this.log(this.message);
       },
       userSuccessHandler: function(e) {
-        this.message = e.type + ' success!'
+        this.message = e.type + ' success!';
       },
       log: function(log) {
-        var d = new Date()
-        var n = d.getTime()
+        var d = new Date();
+        var n = d.getTime();
         //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
-        console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user)
+        console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
       }
     });
   })();

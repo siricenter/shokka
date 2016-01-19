@@ -230,6 +230,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
+            <section data-route="modules">
+              <paper-material elevation="1">
+                <h2 class="page-title">Modules</h2>
+                <a href="/modules/1">1</a>
+                <a href="/modules/2">2</a>
+                <a href="/modules/3">3</a>
+                <a href="/modules/4">4</a>
+              </paper-material>
+            </section>  
+
+            <section data-route="module-info">
+              <paper-material elevation="1">
+                <h2 class="page-title">
+                Module:<span>{{params.number}}</span>
+                </h2>
+                <div>This is <span>{{params.number}}</span>'s section</div>
+              </paper-material>
+            </section>
+
           </iron-pages>
         </div>
       </paper-scroll-header-panel>
