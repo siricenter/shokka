@@ -126,78 +126,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
 
               <paper-material elevation="1">
-                <!-- placeholder for a chart-tile component featuring the motion chart -->
-                <google-chart id="motionChartPlaceholder" type="bubble" options="{}"
-                                        data='[ ["ID", "Life Expectancy", "Fertility Rate", "Region", "Population"],
-                                                   ["CAN", 80.66, 1.67, "North America", 33739900],
-                                                   ["DEU", 79.84, 1.36, "Europe",        81902307],
-                                                   ["DNK", 78.6,  1.84, "Europe",        5523095],
-                                                   ["EGY", 72.73, 2.78, "Middle East",   79716203],
-                                                   ["GBR", 80.05, 2,    "Europe",        61801570],
-                                                   ["IRN", 72.49, 1.7,  "Middle East",   73137148],
-                                                   ["IRQ", 68.09, 4.77, "Middle East",   31090763],
-                                                   ["ISR", 81.55, 2.96, "Middle East",   7485600],
-                                                   ["RUS", 68.6,  1.54, "Europe",        141850000],
-                                                   ["USA", 78.09, 2.05, "North America", 307007000] ]'>
+                <google-chart id="EvalCompareChart" 
+                              type="column" 
+                              options='{ "title": "Evaluation Comparison" }'
+                              data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
+                                       ["Jan 16", 0, -5, -3 ],
+                                       ["Feb 16", -1, -5, -6 ],
+                                       ["Mar 16", -2, -4, -1 ],
+                                       ["Apr 16", 2, -2, 0 ],
+                                       ["May 16", 2, -3, 1 ],
+                                       ["Jun 16", 3, -2, 0 ],
+                                       ["Jul 16", 4, 0, 1 ],
+                                       ["Aug 16", 5, 3, 2 ],
+                                       ["Sep 16", 6, 6, 1 ],
+                                       ["Oct 16", 5, 4, 2] ]'>
                 </google-chart>
               </paper-material>
 
-              <lavu-grid>
-                <lavu-cell span-lg="8" span-md="6" span-sm="8" span-xs="4" class="test-card">
-                  <paper-material elevation="1">
-                    <!-- placeholder for a chart-tile component -->
-                    <google-chart
-                      type='pie'
-                      id='selection-chart'
-                      options='{"title": "Distribution of days in 2001Q1"}'
-                      cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
-                      rows='[ ["Jan", 31],["Feb", 28],["Mar", 31],["Apr", 30],["May", 31],["Jun", 30] ]'>
-                    </google-chart>
-                  </paper-material>
-                </lavu-cell>
-                <lavu-cell span-lg="8" span-md="6" span-sm="8" span-xs="4" class="test-card">
-                  <paper-material elevation="1">
-                    <!-- placeholder for a chart-tile component -->
-                    <google-chart type="combo" options='{"seriesType": "bars", "series":{"2": {"type": "line"}}}'
-                                            data='[ ["Day", "A", "B", "C"],
-                                                       ["Mon", 20, 45, 28],
-                                                       ["Tue", 31, 66, 38],
-                                                       ["Wed", 50, 80, 55],
-                                                       ["Thu", 77, 50, 77],
-                                                       ["Fri", 68, 15, 66] ]'>
-                    </google-chart>
-                  </paper-material>
-                </lavu-cell>
-                <lavu-cell span-lg="8" span-md="6" span-sm="8" span-xs="4" class="test-card">
-                  <paper-material elevation="1">
-                    <!-- placeholder for a chart-tile component -->
-                    <google-chart type="geo" data='[ ["Country", "Popularity"],
-                                                                         ["Germany", 200],
-                                                                         ["United States", 300],
-                                                                         ["Brazil", 400],
-                                                                         ["Canada", 500],
-                                                                         ["France", 600],
-                                                                         ["RU", 700] ]'>
-                    </google-chart>
-                  </paper-material>
-                </lavu-cell>
-                <lavu-cell span-lg="8" span-md="6" span-sm="8" span-xs="4" class="test-card">
-                  <paper-material elevation="1">
-                    <!-- placeholder for a chart-tile component -->
-                    <google-chart type="stepped-area" options='{"title": "Family Stats"}'
-                                            data='[ ["Country", "Popularity"],
-                                                         ["Germany", 200],
-                                                         ["United States", 300],
-                                                         ["Brazil", 400],
-                                                         ["Canada", 500],
-                                                         ["France", 600],
-                                                         ["RU", 700] ]'>
-                    </google-chart>
-                    <!-- <img src="images/radar_chart.jpg" style="width:100%"> -->
-                  </paper-material>
-                </lavu-cell>
-              </lavu-grid>
+              <paper-material elevation="1">
+                <google-chart id="LastEvalChart" 
+                              type="column"
+                              options='{ "title": "Last Evaluation", "vAxis": { "minValue": 0, "maxValue": 100 } }'
+                              data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
+                                       ["Oct 16", 45, 44, 42 ] ]'>
+                </google-chart>
+              </paper-material>
 
+              <paper-material elevation="1">
+                <google-chart id="metricsChart" 
+                              type="line" 
+                              options='{ "title": "Performance Over Time", "curveType": "function", "vAxis": { "minValue": 0, "maxValue": 100 } }'
+                              data='[ ["Date", "Professionalism", "Technical Skills", "Work Completion" ],
+                                       ["Jan 16", 40, 35, 37 ],
+                                       ["Feb 16", 39, 35, 34 ],
+                                       ["Mar 16", 38, 36, 39 ],
+                                       ["Apr 16", 42, 38, 40 ],
+                                       ["May 16", 42, 37, 41 ],
+                                       ["Jun 16", 43, 38, 40 ],
+                                       ["Jul 16", 44, 40, 41 ],
+                                       ["Aug 16", 45, 43, 42 ],
+                                       ["Sep 16", 46, 46, 41 ],
+                                       ["Oct 16", 45, 44, 42 ] ]'>
+                </google-chart>
+              </paper-material>
             </section>
 
             <section data-route="users">
