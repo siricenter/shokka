@@ -205,6 +205,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log(e);
         this.$.btnLogin.style.display = 'block';
         this.$.btnLogout.style.display = 'none';
+        this.$.btnAccount.style.display = 'none';
+        this.userInfo = {};
         // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
       },
       onFirebaseValue: function(e, detail) {
