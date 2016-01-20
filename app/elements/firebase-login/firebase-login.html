@@ -7,232 +7,238 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <dom-module id="firebase-login">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-      #btnLogin {
-        cursor: pointer;
-      }
-      #btnLogout, #btnAccount {
-        display: none;
-      }
-      #btnLogin:hover {
-        color: var(--accent-color);
-      }
-      .modal-dialog {
-        background-color: white;
-        width: 500px;
-      }
-      .buttons {
-        margin-top: 15px;
-      }
-      .btn-confirm {
-        margin-top: 15px;
-        background-color: var(--dark-primary-color);
-        color: var(--text-primary-color);
-      }
-      #profile-wrapper {
-        display: flex;
-        flex-direction: column;
-      }
-      .profile-row {
-        display: flex;
-        flex-direction: row;
-      }
-      .profile-row paper-input {
-        flex: 1;
-        margin-right: 20px;
-      }
-      .check-icon {
-        display: none;
-        align-self: flex-end;
-        color: green;
-      }
-      #google-signin {
-        margin-top: 15px;
-        background-color: darkred;
-        color: var(--text-primary-color);
-      }
-    </style>
-
-    <firebase-auth id="firebaseLogin"  
-                    location="{{baseRef}}"
-                    user="{{user}}"
-                    provider="{{provider}}"
-                    status-known="{{statusKnown}}"
-                    on-login="onFirebaseLogin"
-                    on-logout="onFirebaseLogout"
-                    on-error="errorHandler"
-                    on-user-created="userSuccessHandler"
-                    on-password-changed="userSuccessHandler"
-                    on-password-reset="userSuccessHandler"
-                    on-user-removed="userSuccessHandler"></firebase-auth>
-
-    <firebase-document id="userDocument" 
-                        location="{{userRef}}" 
-                        data="{{userInfo}}" 
-                        on-firebase-value="onFirebaseValue"></firebase-document>
-
-    <div id="accountNave" class="layout horizontal">
-      <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin"><iron-icon icon="account-box"></iron-icon>Login</paper-button>
-      <paper-button id="btnAccount" data-dialog="account-modal" on-tap="toggleAccount">Hello &nbsp; <span>{{userInfo.fName}}</span><iron-icon icon="arrow-drop-down"></iron-icon></paper-button>
-      <paper-button id="btnLogout" on-tap="logout"><iron-icon icon="account-box"></iron-icon>Logout</paper-button>
-    </div>
-
-    <paper-dialog id="loginModal" class="modal-dialog" with-backdrop
-                            entry-animation="scale-up-animation"
-                            exit-animation="fade-out-animation">
-      <h2>Login</h2>
-      <paper-input label="email" id="email"></paper-input>
-      <paper-input label="password" type="password" id="pass"></paper-input>
-      <div class="buttons">
-        <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
-        <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login"><iron-icon icon="forward"></iron-icon>Lets Go!</paper-button>
-      </div>
-    </paper-dialog>
-    <paper-dialog id="accountModal" class="modal-dialog" with-backdrop
-                            entry-animation="scale-up-animation"
-                            exit-animation="fade-out-animation">
-      <h2>Account Info</h2>
-      <div id="profile-wrapper">
-        <div class="profile-row">
-          <paper-input label="first name" id="accountFname" value="{{userInfo.fName}}" on-change="inputChange"></paper-input>
-          <iron-icon class="check-icon" icon="check"></iron-icon>
-        </div>
-        <div class="profile-row">
-          <paper-input label="last name" id="accountLname" value="{{userInfo.lName}}" on-change="inputChange"></paper-input>
-          <iron-icon class="check-icon" icon="check"></iron-icon>
-        </div>
-        <div class="profile-row">
-          <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange"></paper-input>
-          <iron-icon class="check-icon" icon="check"></iron-icon>
-        </div>
-        <div class="profile-row">
-          <paper-input label="graduation date" id="accountGradDate" type="date" value="{{userInfo.gradDate}}" on-change="inputChange"></paper-input>
-          <iron-icon class="check-icon" icon="check"></iron-icon>
-        </div>
-      </div>
-      <div class="buttons">
-        <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
-        <paper-button raised id="accountClose" class="btn-confirm" on-tap="toggleAccount"><iron-icon icon="close"></iron-icon>Close</paper-button>
-      </div>
-    </paper-dialog>
-  </template>
-  <script>
-  (function() {
-    'use strict';
-
-    Polymer({
-      is: 'firebase-login',
-
-      properties: {
-        user: {
-          type: Object,
-          value: null,
-          notify: true
-        },
-        userInfo: {
-          type: Object,
-          notify: true
-        },
-        baseRef: {
-          type: String,
-          value: 'https://shokka.firebaseio.com',
-          notify: true
-        },
-        userRef: {
-          type: String,
-          value: '',
-          notify: true
-        },
-        provider: {
-          type: String,
-          value: 'password'
-        },
-        statusKnown: {
-          type: Boolean
-        },
-        params: {
-          type: Object,
-          value: {scope: 'email'}
-        },
-        message: {
-          type: String,
+    <template>
+        <style>
+        :host {
+            display: block;
         }
-      },
+        
+        #btnLogin {
+            cursor: pointer;
+        }
+        
+        #btnLogout,
+        #btnAccount {
+            display: none;
+        }
+        
+        #btnLogin:hover {
+            color: var(--accent-color);
+        }
+        
+        .modal-dialog {
+            background-color: white;
+            width: 500px;
+        }
+        
+        .buttons {
+            margin-top: 15px;
+        }
+        
+        .btn-confirm {
+            margin-top: 15px;
+            background-color: var(--dark-primary-color);
+            color: var(--text-primary-color);
+        }
+        
+        #profile-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-row {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .profile-row paper-input {
+            flex: 1;
+            margin-right: 20px;
+        }
+        
+        .check-icon {
+            display: none;
+            align-self: flex-end;
+            color: green;
+        }
+        
+        #google-signin {
+            margin-top: 15px;
+            background-color: darkred;
+            color: var(--text-primary-color);
+        }
+        </style>
+        <firebase-auth id="firebaseLogin" location="{{baseRef}}" user="{{user}}" provider="{{provider}}" status-known="{{statusKnown}}" on-login="onFirebaseLogin" on-logout="onFirebaseLogout" on-error="errorHandler" on-user-created="userSuccessHandler" on-password-changed="userSuccessHandler" on-password-reset="userSuccessHandler" on-user-removed="userSuccessHandler"></firebase-auth>
+        <firebase-document id="userDocument" location="{{userRef}}" data="{{userInfo}}" on-firebase-value="onFirebaseValue"></firebase-document>
+        <div id="accountNave" class="layout horizontal">
+            <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin">
+                <iron-icon icon="account-box"></iron-icon>
+                Login
+            </paper-button>
+            <paper-button id="btnAccount" data-dialog="account-modal" on-tap="toggleAccount">
+                Hello &nbsp;
+                <span>{{userInfo.fName}}</span>
+                <iron-icon icon="arrow-drop-down"></iron-icon>
+            </paper-button>
+            <paper-button id="btnLogout" on-tap="logout">
+                <iron-icon icon="account-box"></iron-icon>Logout</paper-button>
+        </div>
+        <paper-dialog id="loginModal" class="modal-dialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <h2>Login</h2>
+            <paper-input label="email" id="email"></paper-input>
+            <paper-input label="password" type="password" id="pass"></paper-input>
+            <div class="buttons">
+                <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
+                <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login">
+                    <iron-icon icon="forward"></iron-icon>
+                    Lets Go!
+                </paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="accountModal" class="modal-dialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+            <h2>Account Info</h2>
+            <div id="profile-wrapper">
+                <div class="profile-row">
+                    <paper-input label="first name" id="accountFname" value="{{userInfo.fName}}" on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                    <paper-input label="last name" id="accountLname" value="{{userInfo.lName}}" on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                    <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                    <paper-input label="graduation date" id="accountGradDate" type="date" value="{{userInfo.gradDate}}" on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+            </div>
+            <div class="buttons">
+                <!-- <paper-button raised id="google-signin"><iron-icon icon="account-circle"></iron-icon>Google Signin</paper-button> -->
+                <paper-button raised id="accountClose" class="btn-confirm" on-tap="toggleAccount">
+                    <iron-icon icon="close"></iron-icon>Close
+                </paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+    (function() {
+        'use strict';
 
-      listeners: {
+        Polymer({
+            is: 'firebase-login',
 
-      },
+            properties: {
+                user: {
+                    type: Object,
+                    value: null,
+                    notify: true
+                },
+                userInfo: {
+                    type: Object,
+                    notify: true
+                },
+                baseRef: {
+                    type: String,
+                    value: 'https://shokka.firebaseio.com',
+                    notify: true
+                },
+                userRef: {
+                    type: String,
+                    value: '',
+                    notify: true
+                },
+                provider: {
+                    type: String,
+                    value: 'password'
+                },
+                statusKnown: {
+                    type: Boolean
+                },
+                params: {
+                    type: Object,
+                    value: {
+                        scope: 'email'
+                    }
+                },
+                message: {
+                    type: String,
+                }
+            },
+
+            listeners: {
+
+            },
 
 
-      toggleAccount: function() {
-        this.$.accountModal.toggle();
-      },
-      toggleLogin: function() {
-          this.$.loginModal.toggle();
-      },
-      login: function(e) {
-        console.log(e);
-        var email = this.$.email.value;
-        var pass = this.$.pass.value;
-        this.$.firebaseLogin.login({email:email, password:pass});
-        this.message = 'Login result: ' + e.detail.user;
-        this.log(this.message);
-      },
-      logout: function(e){
-        console.log(e);
-        this.$.firebaseLogin.logout();
-      },
-      onFirebaseLogin: function(e) {
-        console.log(e);
-        this.message = 'User id: ' + JSON.stringify(this.user.uid);
-        this.log(this.message);
-        this.userRef = this.baseRef + '/users/' + this.user.uid;
+            toggleAccount: function() {
+                this.$.accountModal.toggle();
+            },
+            toggleLogin: function() {
+                this.$.loginModal.toggle();
+            },
+            login: function(e) {
+                console.log(e);
+                var email = this.$.email.value;
+                var pass = this.$.pass.value;
+                this.$.firebaseLogin.login({
+                    email: email,
+                    password: pass
+                });
+                this.message = 'Login result: ' + e.detail.user;
+                this.log(this.message);
+            },
+            logout: function(e) {
+                console.log(e);
+                this.$.firebaseLogin.logout();
+            },
+            onFirebaseLogin: function(e) {
+                console.log(e);
+                this.message = 'User id: ' + JSON.stringify(this.user.uid);
+                this.log(this.message);
+                this.userRef = this.baseRef + '/users/' + this.user.uid;
 
-        this.$.btnLogin.style.display = 'none';
-        this.$.btnLogout.style.display = 'block';
-        this.$.btnAccount.style.display = 'block';
-        this.$.loginModal.close();
-      },
-      onFirebaseLogout: function(e) {
-        console.log(e);
-        this.$.btnLogin.style.display = 'block';
-        this.$.btnLogout.style.display = 'none';
-        this.$.btnAccount.style.display = 'none';
-        this.userInfo = {};
-        // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
-      },
-      onFirebaseValue: function(e, detail) {
-        console.log(e);
-        console.log(detail);
-      },
-      inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
-        console.log(e);
-        console.log(detail);
-        e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
-      },
-      errorHandler: function(e) {
-        this.log('Login Status');
-        this.message = 'Error: ' + e.detail.message;
-        this.log(this.message);
-      },
-      userSuccessHandler: function(e) {
-        this.message = e.type + ' success!';
-      },
-      log: function(log) {
-        var d = new Date();
-        var n = d.getTime();
-        //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
-        console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
-      }
-    });
-  })();
-  </script>
+                this.$.btnLogin.style.display = 'none';
+                this.$.btnLogout.style.display = 'block';
+                this.$.btnAccount.style.display = 'block';
+                this.$.loginModal.close();
+            },
+            onFirebaseLogout: function(e) {
+                console.log(e);
+                this.$.btnLogin.style.display = 'block';
+                this.$.btnLogout.style.display = 'none';
+                this.$.btnAccount.style.display = 'none';
+                this.userInfo = {};
+                // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
+            },
+            onFirebaseValue: function(e, detail) {
+                console.log(e);
+                console.log(detail);
+            },
+            inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
+                console.log(e);
+                console.log(detail);
+                e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
+            },
+            errorHandler: function(e) {
+                this.log('Login Status');
+                this.message = 'Error: ' + e.detail.message;
+                this.log(this.message);
+            },
+            userSuccessHandler: function(e) {
+                this.message = e.type + ' success!';
+            },
+            log: function(log) {
+                var d = new Date();
+                var n = d.getTime();
+                //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
+                console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
+            }
+        });
+    })();
+    </script>
 </dom-module>
