@@ -72,26 +72,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="paper-font-title">Menu</span>
         </paper-toolbar>
 
-        <!-- Firebase for Drawer Content -->
-        <firebase-collection
-                            order-by-child="name"
-                            location="https://shokka.firebaseio.com/trainings"
-                            data="{{trainings}}"></firebase-collection>
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <template template is="dom-if" if="{{userInfo.roles.employee}}">
-            <template template is="dom-repeat" items="{{trainings}}" as="training">
-              <a href="/trainings/{{training.name}}" on-click="onDataRouteClick">
-                <iron-icon icon="label"></iron-icon>
-                <span>{{training.name}}</span>
-              </a>
-            </template>
-            <hr>
+          <template template is="dom-if" if="{{userInfo.roles.admin}}">
+            <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
+          </template>
 
-            <a href="/contact" on-click="onDataRouteClick">
-              <iron-icon icon="mail"></iron-icon>
-              <span>Contact</span>
-            </a>
+          <template template is="dom-if" if="{{userInfo.roles.employee}}">
+            <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
           </template>
         </paper-menu>
       </paper-scroll-header-panel>
