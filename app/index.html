@@ -74,23 +74,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="home" href="/" on-click="onDataRouteClick">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
-          </a>
+          <template template is="dom-if" if="{{userInfo.roles.admin}}">
+            <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
+          </template>
 
-          <a data-route="users" href="/users" on-click="onDataRouteClick">
-            <iron-icon icon="info"></iron-icon>
-            <span>Users</span>
-          </a>
-
-          <a data-route="contact" href="/contact" on-click="onDataRouteClick">
-            <iron-icon icon="mail"></iron-icon>
-            <span>Contact</span>
-          </a>
+          <template template is="dom-if" if="{{userInfo.roles.employee}}">
+            <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
+          </template>
         </paper-menu>
-        <hr>
-        <training-module-list dataPath="https://shokka.firebaseio.com/trainingModules"></training-module-list>
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
@@ -211,6 +202,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 Module:<span>{{params.number}}</span>
                 </h2>
                 <div>This is <span>{{params.number}}</span>'s section</div>
+              </paper-material>
+            </section>
+
+            <section data-route="training-info">
+              <paper-material elevation="1">
+                <h2 class="page-title">
+                Training: <span>{{params.name}}</span>
+                </h2>
+                <div>This is the <span>{{params.name}}</span> section</div>
               </paper-material>
             </section>
 
