@@ -126,21 +126,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
 
               <paper-material elevation="1">
-                <google-chart id="EvalCompareChart" 
-                              type="column" 
-                              options='{ "title": "Evaluation Comparison" }'
-                              data='[ ["Date", "Professionalism", "Skills", "Work Completion" ],
-                                       ["Jan 16", 0, -5, -3 ],
-                                       ["Feb 16", -1, -5, -6 ],
-                                       ["Mar 16", -2, -4, -1 ],
-                                       ["Apr 16", 2, -2, 0 ],
-                                       ["May 16", 2, -3, 1 ],
-                                       ["Jun 16", 3, -2, 0 ],
-                                       ["Jul 16", 4, 0, 1 ],
-                                       ["Aug 16", 5, 3, 2 ],
-                                       ["Sep 16", 6, 6, 1 ],
-                                       ["Oct 16", 5, 4, 2] ]'>
-                </google-chart>
+                <shokka-eval-chart id="comparison" 
+                                    user-evaluations="[[userInfo.evaluations]]" 
+                                    avg-ref="{{baseRef}}/evalAverage"
+                                    eval-ref="{{baseRef}}/evalResults">
+                </shokka-eval-chart>
+              </paper-material>
+              <paper-material elevation="1">
+                <shokka-eval-chart id="comparison2" 
+                                    user-evaluations="[[userInfo.evaluations]]" 
+                                    avg-ref="{{baseRef}}/evalAverage"
+                                    eval-ref="{{baseRef}}/evalResults">
+                </shokka-eval-chart>
+              </paper-material>
+              <paper-material elevation="1">
+                <shokka-eval-chart id="comparison3" 
+                                    user-evaluations="[[userInfo.evaluations]]" 
+                                    avg-ref="{{baseRef}}/evalAverage"
+                                    eval-ref="{{baseRef}}/evalResults">
+                </shokka-eval-chart>
               </paper-material>
 
               <paper-material elevation="1">

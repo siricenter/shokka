@@ -1,0 +1,109 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-eval-chart">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <google-chart id="{{id}}" 
+                  type="{{type}}" 
+                  options='{{options}}'
+                  data='[[data]]'>
+    </google-chart>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-eval-chart',
+
+      properties: {
+        id: {
+          type: String
+        },
+        userEvaluations: {
+          type: String
+        },
+        evalRef: {
+          type: String
+        },
+        userData: {
+          type: Array,
+          value: [ ["Date", "Professionalism", "Skills", "Work Completion" ],
+                   ["Jan 16", 40, 35, 37 ],
+                   ["Feb 16", 39, 35, 34 ],
+                   ["Mar 16", 38, 36, 39 ],
+                   ["Apr 16", 42, 38, 40 ],
+                   ["May 16", 42, 37, 41 ],
+                   ["Jun 16", 43, 38, 40 ],
+                   ["Jul 16", 44, 40, 41 ],
+                   ["Aug 16", 45, 43, 42 ],
+                   ["Sep 16", 46, 46, 41 ],
+                   ["Oct 16", 45, 44, 42 ] ],
+          notify: false
+        },
+        data: {
+          type: Array,
+          computed: 'computeData(avgData, userData)',
+          notify: false
+        },
+        options: {
+          type: Object,
+          value: { "title": "Evaluation Comparison" }
+        },
+        type: {
+          type: String,
+          value: "column"
+        },
+        avgData: {
+          type: Array,
+          value: [ ["Date", "Professionalism", "Skills", "Work Completion" ],
+                             ["Jan 16", 40, 40, 40 ],
+                             ["Feb 16", 40, 40, 40 ],
+                             ["Mar 16", 40, 40, 40 ],
+                             ["Apr 16", 40, 40, 40 ],
+                             ["May 16", 40, 40, 40 ],
+                             ["Jun 16", 40, 40, 40 ],
+                             ["Jul 16", 40, 40, 40 ],
+                             ["Aug 16", 40, 40, 40 ],
+                             ["Sep 16", 40, 40, 40 ],
+                             ["Oct 16", 40, 40, 40 ] ],
+          notify: false
+        }
+      },
+
+      computeData: function(avgData, userData){
+        // console.log(userData[1][0]);
+        var data = [];
+        for (var i = 0, len = userData.length; i < len; i++) {
+          data[i] = userData[i].slice();
+        }
+        for (var i = userData.length - 1; i > 0; i--) {
+          for (var j = data[i].length - 1; j > 0; j--) {
+            data[i][j] = userData[i][j] - avgData[i][j];
+          };
+        };
+        // console.log("Data: ", data);
+        // console.log(userData[1][1]);
+        // console.log(avgData[1][1]);
+        // console.log(userData[1][1]-avgData[1][1]);
+        // console.log("UserData after math: ", userData[1][1]);
+        return data;
+      }
+  });
+  })();
+  </script>
+</dom-module>
