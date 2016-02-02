@@ -12,23 +12,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="road-map">
   <template>
       <style>
-      :host{
-        display: flex;
-        justify-content: space-between;
-        padding: 0 2rem;
-      };
+      :host {
+        display: inline;
+      }
+      paper-progress {
+        display: inline;
+        width: 100%;
+        --paper-progress-active-color: var(--dark-primary-color);
+      }
       </style>
       <firebase-collection
         order-by-child="order"
         location="{{dataPath}}"
         data="{{steps}}"></firebase-collection>
-        <road-map-marker completion='{{completed}}'>
-          Overall Progress
-        </road-map-marker>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <!-- TODO: get real completion based on user -->
-          <road-map-marker completion='.3'>{{step.name}}</road-map-marker>
+          <road-map-header>{{step.name}}</road-map-header>
         </template>
+        <paper-progress value='75' valuemin='0' valuemax='100' ></paper-progress>
   </template>
 
   <script>
