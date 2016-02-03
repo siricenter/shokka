@@ -117,56 +117,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
 
               <paper-material elevation="1">
-                <shokka-eval-chart id="comparison" 
-                                    user-evaluations="[[userInfo.evaluations]]" 
-                                    avg-ref="{{baseRef}}/evalAverage"
-                                    eval-ref="{{baseRef}}/evalResults">
-                </shokka-eval-chart>
+                <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
               </paper-material>
               <paper-material elevation="1">
-                <shokka-eval-chart id="comparison2" 
-                                    user-evaluations="[[userInfo.evaluations]]" 
-                                    avg-ref="{{baseRef}}/evalAverage"
-                                    eval-ref="{{baseRef}}/evalResults">
-                </shokka-eval-chart>
+                <shokka-eval-chart id="comparison" user-avg-evals="[[userInfo.evalYearAvg]]" 
+                                    avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
               </paper-material>
               <paper-material elevation="1">
-                <shokka-eval-chart id="comparison3" 
-                                    user-evaluations="[[userInfo.evaluations]]" 
-                                    avg-ref="{{baseRef}}/evalAverage"
-                                    eval-ref="{{baseRef}}/evalResults">
-                </shokka-eval-chart>
-              </paper-material>
-
-              <paper-material elevation="1">
-                <google-chart id="LastEvalChart" 
-                              type="column"
-                              options='{ "title": "Last Evaluation", 
-                                          "vAxis": { "minValue": 0, "maxValue": 100 }, 
-                                          "legend": { "position": "bottom"},
-                                          "hAxis": { "textPosition": "none" },
-                                          "chartArea": { "width": "90%", "height": "70%" } }'
-                              data='[ ["Date", "Professionalism", "Skills", "Work Completion" ],
-                                       ["Oct 16", 45, 44, 42 ] ]'>
-                </google-chart>
-              </paper-material>
-
-              <paper-material elevation="1">
-                <google-chart id="metricsChart" 
-                              type="line" 
-                              options='{ "title": "Performance Over Time", "curveType": "function" }'
-                              data='[ ["Date", "Professionalism", "Skills", "Work Completion" ],
-                                       ["Jan 16", 40, 35, 37 ],
-                                       ["Feb 16", 39, 35, 34 ],
-                                       ["Mar 16", 38, 36, 39 ],
-                                       ["Apr 16", 42, 38, 40 ],
-                                       ["May 16", 42, 37, 41 ],
-                                       ["Jun 16", 43, 38, 40 ],
-                                       ["Jul 16", 44, 40, 41 ],
-                                       ["Aug 16", 45, 43, 42 ],
-                                       ["Sep 16", 46, 46, 41 ],
-                                       ["Oct 16", 45, 44, 42 ] ]'>
-                </google-chart>
+                <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
               </paper-material>
             </section>
 
