@@ -49,11 +49,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         trainingsRef: {
           type: String,
-          computed: "_computeTrainingsRef(baseRef)"
+          computed: '_computeTrainingsRef(baseRef)'
         },
         module: {
           type: String,
-          value: "",
+          value: '',
           notify: true
         }
       },
@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // Functions
       _computeTrainingsRef: function(baseRef) {
-        return baseRef + "/trainings";
+        return baseRef + '/trainings';
       }
     });
   })();

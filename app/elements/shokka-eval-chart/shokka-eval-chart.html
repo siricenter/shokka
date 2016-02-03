@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         id: {
           type: String,
-          value: ""
+          value: ''
         },
         avgData: {
           type: Array,
@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         header: {
           type: Array,
-          value: ["Date", "Professionalism", "Skills", "Work Completion" ]
+          value: ['Date', 'Professionalism', 'Skills', 'Work Completion' ]
         }
       },
 
@@ -80,24 +80,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computeOptions: function(id){
         if (id === 'comparison') {
-          return { "title": "Evaluation Comparison" };
+          return { 'title': 'Evaluation Comparison' };
         }
         else if (id === 'last') {
-          return { "title": "Last Evaluation", 
-                  "vAxis": { "minValue": 0, "maxValue": 100 }, 
-                  "legend": { "position": "bottom"},
-                  "hAxis": { "textPosition": "none" },
-                  "chartArea": { "width": "90%", "height": "70%" } };
+          return { 'title': 'Last Evaluation', 
+                  'vAxis': { 'minValue': 0, 'maxValue': 100 }, 
+                  'legend': { 'position': 'bottom'},
+                  'hAxis': { 'textPosition': 'none' },
+                  'chartArea': { 'width': '90%', 'height': '70%' } };
         }
         else if (id === 'overTime') {
-          return { "title": "Performance Over Time", "curveType": "function" };
+          return { 'title': 'Performance Over Time', 'curveType': 'function' };
         }
         return {};
       },
 
       _computeData: function(id, userData, avgData){
         if (!userData) { 
-          console.log("No user Data");
+          console.log('No user Data');
           return;
         }
         var data = [];
@@ -106,11 +106,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           for (var i = 0, len = userData.length; i < len; i++) {
             data[i] = userData[i].slice();
           }
-          for (var i = userData.length - 1; i > 0; i--) {
-            for (var j = userData[i].length - 1; j > 0; j--) {
-              data[i][j] = userData[i][j] - avgData[i][j];
-            };
-          };
+          for (var k = userData.length - 1; k > 0; k--) {
+            for (var j = userData[k].length - 1; j > 0; j--) {
+              data[k][j] = userData[k][j] - avgData[k][j];
+            }
+          }
         }
         else {
           data = userData;
@@ -119,16 +119,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _onComparisonFirebaseValue: function() {
-        this.avgData = [ this.header ]
+        this.avgData = [ this.header ];
         for (var i = 0; i < this.avgDates.length; i++) {
           this.avgData.push([this.avgDates[i].date, this.avgDates[i].categories.professionalism, 
-                            this.avgDates[i].categories.skills, this.avgDates[i].categories.productivity])
-        };
+                            this.avgDates[i].categories.skills, this.avgDates[i].categories.productivity]);
+        }
       },
 
       _setUserData: function(userAvgEvals) {
         var userData = [ this.header ];
-        if (this.id === "last") {
+        if (this.id === 'last') {
           var arr = Object.keys( userAvgEvals ).map(function ( key ) { 
             return userAvgEvals[key]; 
           });
@@ -139,21 +139,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         else {
           for (var key in userAvgEvals) {
             // skip loop if the property is from prototype
-            if (!userAvgEvals.hasOwnProperty(key)) continue;
-            var tmp = ["", 0, 0, 0]
+            if (!userAvgEvals.hasOwnProperty(key)) {
+              continue;
+            }
+            var tmp = ['', 0, 0, 0];
             var obj = userAvgEvals[key];
             for (var prop in obj) {
               // skip loop if the property is from prototype
-              if(!obj.hasOwnProperty(prop)) continue;
+              if(!obj.hasOwnProperty(prop)) {
+                continue;
+              }
               
-              if(prop === "date")
+              if(prop === 'date'){
                 tmp[0] = obj[prop];
-              else if(prop === "professionalism")
+              }
+              else if(prop === 'professionalism'){
                 tmp[1] = obj[prop];
-              else if(prop === "skills")
+              }
+              else if(prop === 'skills'){
                 tmp[2] = obj[prop];
-              else if(prop === "productivity")
+              }
+              else if(prop === 'productivity'){
                 tmp[3] = obj[prop];
+              }
             }
             userData.push(tmp);
           }
