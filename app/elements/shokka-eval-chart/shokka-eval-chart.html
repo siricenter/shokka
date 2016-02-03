@@ -100,69 +100,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           console.log("No user Data");
           return;
         }
-
-        // console.log("ID: ", id)
         var data = [];
         if (id === 'comparison')
         {
-          // console.log(userData[1][0]);
           for (var i = 0, len = userData.length; i < len; i++) {
             data[i] = userData[i].slice();
           }
-          // console.log("user: ", userData);
-          // console.log("average: ", avgData);
           for (var i = userData.length - 1; i > 0; i--) {
             for (var j = userData[i].length - 1; j > 0; j--) {
-              // console.log("User: ", userData[i][j]);
-              // console.log("Average: ", avgData[i][j]);
               data[i][j] = userData[i][j] - avgData[i][j];
-              // console.log("comparison: ", data[i][j]);
             };
           };
-          // console.log("Data: ", data);
-          // console.log(userData[1][1]);
-          // console.log(avgData[1][1]);
-          // console.log(userData[1][1]-avgData[1][1]);
-          // console.log("UserData after math: ", userData[1][1]);
         }
         else {
           data = userData;
         }
-        // console.log("Data: ", data)
         return data;
       },
 
       _onComparisonFirebaseValue: function() {
-        // console.log("Average Dates: ", this.avgDates)
         this.avgData = [ this.header ]
         for (var i = 0; i < this.avgDates.length; i++) {
-          // console.log(this.avgDates[i])
           this.avgData.push([this.avgDates[i].date, this.avgDates[i].categories.professionalism, 
                             this.avgDates[i].categories.skills, this.avgDates[i].categories.productivity])
         };
-        // console.log(this.avgData)
       },
 
       _setUserData: function(userAvgEvals) {
-        // console.log(userAvgEvals)
-        // console.log("There are evals", userAvgEvals)
         var userData = [ this.header ];
         if (this.id === "last") {
-          // console.log("id is: ", this.id)
           var arr = Object.keys( userAvgEvals ).map(function ( key ) { 
-            // console.log(userAvgEvals);
-            // console.log(key);
             return userAvgEvals[key]; 
           });
-          // console.table(arr);
           arr.sort(function(a, b){ return a.date.localeCompare(b.date); });
-          // console.table(arr);
-          // console.table(arr.sort(function(a, b){return a.date>b.date}));
           var toAdd = arr[arr.length - 1];
           userData.push([toAdd.date, toAdd.professionalism, toAdd.skills, toAdd.productivity]);
         }
         else {
-          // console.log("id is ", this.id)
           for (var key in userAvgEvals) {
             // skip loop if the property is from prototype
             if (!userAvgEvals.hasOwnProperty(key)) continue;
@@ -184,7 +158,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             userData.push(tmp);
           }
         }
-        // console.log(userData);
         return userData;
       }
   });
