@@ -20,16 +20,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         --paper-progress-active-color: var(--dark-primary-color);
       }
+
+      paper-button{
+        border: 1px solid var(--light-primary-color);
+        color: var(--primary-text-color);
+        margin:0 0 1.5rem;
+        padding: .5rem 0 .5rem;
+        width: 32.87%;
+      }
+
+      iron-collapse {
+        
+        position: absolute;
+        border: 1px solid var(--light-primary-color);
+        width: 30%;
+        margin-top: -1rem;
+        margin-bottom: 1.5rem;
+        background: white;
+        z-index: 100;
+      }
+      .content li{
+        list-style: none;
+
+      }
       </style>
       <firebase-collection
         order-by-child="order"
         location="{{dataPath}}"
         data="{{steps}}"></firebase-collection>
+        <div>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <!-- TODO: get real completion based on user -->
-          <road-map-header>{{step.name}}</road-map-header>
+          <paper-button on-click="toggle">{{step.name}}</paper-button>
+          <iron-collapse>
+            <div class="content">
+              <ul>
+                <li>LOREM</li>
+                <li>LOREM</li>
+                <li>LOREM</li>
+                <li>LOREM</li>
+                <li>LOREM</li>
+              </ul>
+            </div>
+          </iron-collapse>
         </template>
-        <paper-progress value='75' valuemin='0' valuemax='100' ></paper-progress>
+        
+        </div>
+        <paper-progress value="{{completed}}" valuemin='0' valuemax='100' ></paper-progress>
   </template>
 
   <script>
@@ -48,8 +85,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           completed: {
             type: Number,
             notify: true,
-            computed: 'setCompleted(userRoadMap, steps)'
+            //computed: 'setCompleted(userRoadMap, steps.items)'
+            value: 75
           }
+        },
+
+        toggle: function(e) {
+          e.target.nextElementSibling.toggle();
         },
 
         setCompleted: function(userRoadMap, steps) {
@@ -76,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }
           }
-          return Math.round(ret/3)/100.0000001;
+          return Math.round(ret/3);
         }
       });
     })();
