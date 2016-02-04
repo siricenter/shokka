@@ -44,6 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .content li{
         list-style: none;
         font-size: 1rem;
+        color: var(--secondary-text-color);
 
       }
       .steps {
@@ -53,17 +54,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       paper-tooltip {
-        --paper-tooltip-background:var(--accent-color);  
-        --paper-tooltip-opacity: 1.5; 
+        --paper-tooltip-background:var(--default-primary-color);  
+        --paper-tooltip-opacity: .87; 
         --paper-tooltip-text-color: var(--text-primary-color);
-        font-size: 1rem;
       }
+
       .item-title {
         width: 100%;
+        margin: .3rem .1rem;
+        font-size: 1rem;
       }
 
       .item-description{
         width: 100%;
+        margin: .5rem .1rem .3rem;
+        font-size: .8rem;
       }
 
       </style>
@@ -71,13 +76,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         order-by-child="order"
         location="{{dataPath}}"
         data="{{steps}}"></firebase-collection>
-        <div>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <div class="steps">
             <!-- TODO: get real completion based on user -->
             <paper-button raised on-click="toggle">{{step.name}}</paper-button>
             <iron-collapse>
               <div class="content">
+              <!-- consider using a paper-checkbox that will have all items that are completed checked off -->
                 <ul>
                   <li>Paperwork</li>
                   <li>LOREM</li>
@@ -89,15 +94,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </iron-collapse>
           </div>
         </template>
-        
-        </div>
-          <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
-          </paper-progress>
-          <paper-tooltip for="progress" position="bottom">
-            <span class="item-title">Paperwork</span>
-            <span class="item-description">Finish all required Paperwork</span>
-          </paper-tooltip>
-            
+
+        <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
+        </paper-progress>
+        <paper-tooltip for="progress" position="bottom" offset="10">
+          <div class="item-title"><span>Paperwork</span></div>
+          <div class="item-description"><span>Finish all required Paperwork</span></div>
+        </paper-tooltip>
+          
   </template>
 
   <script>
