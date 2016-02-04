@@ -19,30 +19,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline;
         width: 100%;
         --paper-progress-active-color: var(--dark-primary-color);
+        --paper-progress-height: .5rem;
       }
 
       paper-button{
         border: 1px solid var(--light-primary-color);
-        color: var(--primary-text-color);
+        color: var(--secondary-text-color);
         margin:0 0 1.5rem;
         padding: .5rem 0 .5rem;
-        width: 32.87%;
+        width: 100%;
+        font-weight: bold;
+        font-size: 1.3rem;
       }
 
       iron-collapse {
-        
         position: absolute;
         border: 1px solid var(--light-primary-color);
-        width: 30%;
-        margin-top: -1rem;
-        margin-bottom: 1.5rem;
+        margin: -1rem 0 1.5rem;
         background: white;
-        z-index: 100;
+        width: 99%;
+        max-width: 100%;
+        z-index: 1;
       }
       .content li{
         list-style: none;
+        font-size: 1rem;
 
       }
+      .steps {
+        display: inline-block;
+        width: 33%;
+        position: relative;
+      }
+
+      paper-tooltip {
+        --paper-tooltip-background:var(--accent-color);  
+        --paper-tooltip-opacity: 1.5; 
+        --paper-tooltip-text-color: var(--text-primary-color);
+        font-size: 1rem;
+      }
+      .item-title {
+        width: 100%;
+      }
+
+      .item-description{
+        width: 100%;
+      }
+
       </style>
       <firebase-collection
         order-by-child="order"
@@ -50,23 +73,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{steps}}"></firebase-collection>
         <div>
         <template is="dom-repeat" items="{{steps}}" as="step">
-          <!-- TODO: get real completion based on user -->
-          <paper-button on-click="toggle">{{step.name}}</paper-button>
-          <iron-collapse>
-            <div class="content">
-              <ul>
-                <li>LOREM</li>
-                <li>LOREM</li>
-                <li>LOREM</li>
-                <li>LOREM</li>
-                <li>LOREM</li>
-              </ul>
-            </div>
-          </iron-collapse>
+          <div class="steps">
+            <!-- TODO: get real completion based on user -->
+            <paper-button raised on-click="toggle">{{step.name}}</paper-button>
+            <iron-collapse>
+              <div class="content">
+                <ul>
+                  <li>Paperwork</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                </ul>
+              </div>
+            </iron-collapse>
+          </div>
         </template>
         
         </div>
-        <paper-progress value="{{completed}}" valuemin='0' valuemax='100' ></paper-progress>
+          <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
+          </paper-progress>
+          <paper-tooltip for="progress" position="bottom">
+            <span class="item-title">Paperwork</span>
+            <span class="item-description">Finish all required Paperwork</span>
+          </paper-tooltip>
+            
   </template>
 
   <script>
@@ -86,12 +117,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Number,
             notify: true,
             //computed: 'setCompleted(userRoadMap, steps.items)'
-            value: 75
+            value: 33
           }
+        },
+        open: function(e) {
+          e.currentTarget.children[1].open();
+          console.log(12)
         },
 
         toggle: function(e) {
           e.target.nextElementSibling.toggle();
+          var itemLists = [].slice.call(document.querySelectorAll('.steps'));
+          
+          document.body.addEventListener('click', function closeOnFocusLoss(e) {
+            if (!itemLists.reduce(function(previousValue, currentValue) {
+              return previousValue + (currentValue.contains(event.target));
+            }, false)) {
+              for (var i = 0, length = itemLists.length;i < length; i++) {
+                itemLists[i].getElementsByTagName('iron-collapse')[0].hide();
+              }
+
+              document.body.removeEventListener('click', closeOnFocusLoss);
+            }
+          })
         },
 
         setCompleted: function(userRoadMap, steps) {
