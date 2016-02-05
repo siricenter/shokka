@@ -186,6 +186,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
+            <section data-route="evaluate">
+              <paper-material elevation="1">
+                <h2 class="page-title">Evaluation</h2>
+                <!-- <firebase-collection order-by-child="name"
+                                    location="{{baseRef}}/evaluationCategories"
+                                    data="{{evaluationCategories}}"></firebase-collection> -->
+                <form is="iron-form" id="formGet" method="get" action="/">
+                  <paper-input name="employee" label="Employee Name" required></paper-input>
+                  <paper-input name="manager" label="Manager Name" required></paper-input>
+                  <hr>
+                  <template template is="dom-repeat" items={{evaluationCategories}} as={{evaluationCategory}}>
+                  <div>HTML: {{html}}</div>
+                  <paper-slider pin snaps max="5" step="1" value="{{html}}"></paper-slider><br>
+                  <hr>
+                  <paper-button raised onclick="submitHandler(event)">Submit</paper-button>
+                  <paper-button raised onclick="resetHandler(event)">Reset</paper-button>
+                </form>
+              </paper-material>
+            </section>
+
             <section data-route="modules">
               <paper-material elevation="1">
                 <h2 class="page-title">Modules</h2>
