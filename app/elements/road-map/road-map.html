@@ -17,13 +17,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       paper-progress {
         display: inline;
-        width: 100%;
         --paper-progress-active-color: var(--dark-primary-color);
         --paper-progress-height: .5rem;
       }
 
       paper-button{
-        border: 1px solid var(--light-primary-color);
         color: var(--secondary-text-color);
         margin:0 0 1.5rem;
         padding: .5rem 0 .5rem;
@@ -34,12 +32,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       iron-collapse {
         position: absolute;
-        border: 1px solid var(--light-primary-color);
         margin: -1rem 0 1.5rem;
-        background: white;
         width: 99%;
         max-width: 100%;
         z-index: 1;
+        background: var(--paper-menu-background-color);
       }
       .content li{
         list-style: none;
@@ -49,7 +46,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .steps {
         display: inline-block;
-        width: 33%;
+        width: 32%;
         position: relative;
       }
 
@@ -69,6 +66,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         margin: .5rem .1rem .3rem;
         font-size: .8rem;
+      }
+
+      @media all and (min-width: 0px) and (max-width: 960px) {
+        paper-button {
+          font-size: 1rem;
+        }
+
+        .content li {
+          font-size: .9rem;
+        }
+
+        .content ul {
+          padding-left: 1rem;
+        }
+
+        .item-title {
+          font-size: .8rem;
+        }
+
+        .item-description{
+          font-size: .6rem;
+        }
       }
 
       </style>
@@ -120,13 +139,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           completed: {
             type: Number,
             notify: true,
-            //computed: 'setCompleted(userRoadMap, steps.items)'
-            value: 33
+            computed: 'setCompleted(userRoadMap, steps.items)'
           }
         },
         open: function(e) {
           e.currentTarget.children[1].open();
-          console.log(12)
         },
 
         toggle: function(e) {
