@@ -62,6 +62,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
+    <shokka-globals base-ref="{{baseRef}}"
+                    evaluation-categories="{{evaluationCategories}}"
+                    evaluation-criteria="{{evaluationCriteria}}"
+                    user-info="{{userInfo}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -93,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <firebase-login providers="password google" type="link" user-info="{{userInfo}}"></firebase-login>
+          <firebase-login providers="password google" type="link" base-ref="{{baseRef}}" user-info="{{userInfo}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -113,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="home">
               <paper-material elevation="1">
-                <road-map data-path="https://shokka.firebaseio.com/roadMap" user-road-map="{{userInfo.roadMap}}"></road-map>
+                <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
               </paper-material>
 
               <paper-material elevation="1">
@@ -186,23 +190,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </section>
 
-            <section data-route="evaluate">
+            <section data-route="evaluation">
               <paper-material elevation="1">
-                <h2 class="page-title">Evaluation</h2>
-                <!-- <firebase-collection order-by-child="name"
-                                    location="{{baseRef}}/evaluationCategories"
-                                    data="{{evaluationCategories}}"></firebase-collection> -->
-                <form is="iron-form" id="formGet" method="get" action="/">
-                  <paper-input name="employee" label="Employee Name" required></paper-input>
-                  <paper-input name="manager" label="Manager Name" required></paper-input>
-                  <hr>
-                  <template template is="dom-repeat" items={{evaluationCategories}} as={{evaluationCategory}}>
-                  <div>HTML: {{html}}</div>
-                  <paper-slider pin snaps max="5" step="1" value="{{html}}"></paper-slider><br>
-                  <hr>
-                  <paper-button raised onclick="submitHandler(event)">Submit</paper-button>
-                  <paper-button raised onclick="resetHandler(event)">Reset</paper-button>
-                </form>
+                <shokka-evaluation  base-ref="{{baseRef}}" 
+                                    evaluation-categories="{{evaluationCategories}}"
+                                    evaluation-criteria="{{evaluationCriteria}}"></shokka-evaluation>
               </paper-material>
             </section>
 

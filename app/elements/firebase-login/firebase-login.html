@@ -142,11 +142,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Object,
                     notify: true
                 },
-                baseRef: {
-                    type: String,
-                    value: 'https://shokka.firebaseio.com',
-                    notify: true
-                },
                 userRef: {
                     type: String,
                     value: '',
@@ -182,7 +177,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.loginModal.toggle();
             },
             login: function(e) {
-                console.log(e);
                 var email = this.$.email.value;
                 var pass = this.$.pass.value;
                 this.$.firebaseLogin.login({
@@ -193,11 +187,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.log(this.message);
             },
             logout: function(e) {
-                console.log(e);
                 this.$.firebaseLogin.logout();
             },
             onFirebaseLogin: function(e) {
-                console.log(e);
                 this.message = 'User id: ' + JSON.stringify(this.user.uid);
                 this.log(this.message);
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
@@ -208,7 +200,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.loginModal.close();
             },
             onFirebaseLogout: function(e) {
-                console.log(e);
                 this.$.btnLogin.style.display = 'block';
                 this.$.btnLogout.style.display = 'none';
                 this.$.btnAccount.style.display = 'none';
@@ -216,12 +207,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
             },
             onFirebaseValue: function(e, detail) {
-                console.log(e);
-                console.log(detail);
             },
             inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
-                console.log(e);
-                console.log(detail);
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
             },
             errorHandler: function(e) {
@@ -236,7 +223,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 var d = new Date();
                 var n = d.getTime();
                 //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
-                console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
+                // console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
             }
         });
     })();

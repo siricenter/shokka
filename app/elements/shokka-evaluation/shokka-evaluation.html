@@ -1,0 +1,172 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-evaluation">
+  <template>
+    <h2 id="title" class="page-title">Evaluation</h2>
+    <paper-input name="date" label="Date (YYYY-MM)" value="{{evaluationDate}}" required></paper-input>
+    <paper-input name="employee" label="Employee Name" value="{{employeeName}}" required></paper-input>
+    <firebase-collection  id="firebaseEvalResults"
+                          location="{{firebaseEvalResultsLocation}}"
+                          order-by-child="date"
+                          equal-to="{{evaluationDate}}"
+                          data="{{evalResults}}"></firebase-document>
+    <firebase-collection  location="{{firebaseUsersLocation}}"
+                          order-by-child="fullName"
+                          equal-to="{{employeeName}}")
+                          data="{{userId}}"></firebase-document>
+    <template template is="dom-repeat" items="{{evaluationCategories}}" as="category">
+      <hr>
+      <h1>{{category.title}}</h1 on-click="{{_logEvaluation()}}">
+      <hr>
+      <template template is="dom-repeat" items="{{_toKeyArray(category.criteria)}}" as="criterion">
+        <shokka-slider  title="{{_computeCriterionTitle(criterion, evaluationCriteria)}}"
+                        data="{{evaluation.data}}"
+                        key="{{criterion}}"></shokka-slider>
+      </template>
+    </template>
+    <paper-input value="{{evalResults[evaluationId].notes}}"></paper-input>
+    <hr>
+    <paper-button id="submit" raised on-click="_submit">raised</paper-button>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-evaluation',
+
+      properties: {
+        evaluationDate: {
+          type: String, 
+          value: '2016-01'
+        },
+        employeeName: {
+          type: String,
+          value: 'Daniel Miller'
+        },
+        evaluationCriteria: {
+          type: Object,
+          notify: false
+        },
+        evaluationCategories: {
+          type: Object,
+          notify: false
+        },
+        firebaseEvalResultsLocation: {
+          type: String,
+          computed: '_computeFirebaseEvalResultsLocation(baseRef)'
+        },
+        firebaseUsersLocation: {
+          type: String,
+          computed: '_computeFirebaseUsersLocation(baseRef)'
+        },
+        evaluation: {
+          type: Object,
+          computed: '_computeEvaluation(evalResults, userId, userId.splices, evaluationDate, employeeName)',
+          notify: true
+        },
+        evalResults: {
+          type: Object,
+          notify: true
+        },
+        userId: {
+          type: Object,
+          notify: true
+        },
+        evaluationId: {
+          type: String
+        }
+      },
+
+      _submit: function() {
+        this.notifyPath('evalResults.' + this.evaluationId, this.evaluation);
+      },
+
+      _toKeyArray: function(obj) {
+        return Object.keys(obj);
+      },
+
+      // Functions
+      _toArray: function(obj) {
+        return Object.keys(obj).map(function(key) {
+          // console.log("Key: ", key);
+          // console.log("Value: ", obj[key]);
+          return {
+            name: key,
+            value: obj[key]
+          };
+        });
+      },
+
+      _computeCriterionTitle: function(criterion, evaluationCriteria){
+        return ((evaluationCriteria || {})[criterion] || {}).title || "Title";
+        // console.log(this.evaluationCategories);
+        // console.log(this.evaluationCriteria);
+      },
+
+      _computeFirebaseEvalResultsLocation: function(baseRef){
+        return baseRef + '/evalResults'
+        // console.log(this.evaluationCategories);
+        // console.log(this.evaluationCriteria);
+      },
+
+      _computeFirebaseUsersLocation: function(baseRef){
+        return baseRef + '/users'
+        // console.log(this.evaluationCategories);
+        // console.log(this.evaluationCriteria);
+      },
+
+      _computeEvaluation: function(evalResults, userId, userIdSplices, evaluationDate, employeeName) {
+        ////////////DOCUMENT////////////
+        // if(/^(20\d{2}-[01]\d)$/.test(evaluationDate) && /^\w+ *\w* \w+$/.test(employeeName)) {
+        //   for (var evaluationId in evalResults) {
+        //     console.log(evaluationId);
+        //     if(evalResults[evaluationId].userId === (userId[0] || {}).__firebaseKey__)
+        //     {
+        //       console.log('evalResults.' + evaluationId)
+        //       console.log(this.evaluation);
+        //       this.evaluationId = evaluationId;
+        //       return evalResults[evaluationId];
+        //     }
+        //   }
+        // } 
+        ///////////COLLECTION///////////       
+        if(/^(20\d{2}-[01]\d)$/.test(evaluationDate) && /^\w+ *\w* \w+$/.test(employeeName)) {
+          for (var i = evalResults.length - 1; i >= 0; i--) {
+            if(evalResults[i].userId === (userId[0] || {}).__firebaseKey__)
+            {
+              this.evaluationId = i;
+              return evalResults[i];
+            }
+          }
+        }
+        // for (var i=0; i < myArray.length; i++) {
+        //   if (myArray[i].name === nameKey) {
+        //     return myArray[i];
+        //   }
+        // }
+        // if(/^(20\d{2}-[01]\d)$/.test(evaluationDate) && /^\w+ *\w* \w+$/.test(employeeName)) {
+        //   console.log(evalResults);
+        //   console.log(userId);
+        //   console.log(evaluationDate);
+        //   console.log(employeeName);
+        //   return this.evalResults.filter(function( obj ) {
+        //     return obj.userId === (userId[0] || {}).__firebaseKey__;
+        //   }).pop();
+        // }
+      }
+    });
+  })();
+  </script>
+</dom-module>

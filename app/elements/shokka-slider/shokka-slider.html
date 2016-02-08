@@ -10,28 +10,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-admin-content">
+<dom-module id="shokka-slider">
   <template>
-    <a href="/evaluation">
-      <p>
-        <iron-icon icon="mail"></iron-icon>
-        <span>Evaluation</span>
-      </p>
-    </a>
+    <p>{{title}}: {{value}}</p>
+    <paper-slider pin snaps max="5" step="1" value="{{value}}"></paper-slider><br>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-admin-content',
+      is: 'shokka-slider',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'shokka-drawer-admin-content',
-          notify: true
+        value: {
+          type: Number,
+          notify: true,
+          observer: '_valueChanged'
+        },
+        data: {
+          type: Object,
+          notify: true,
+          observer: '_dataChanged'
         }
+      },
+
+      _dataChanged: function(newValue, oldValue) {
+        this.value = (newValue || {})[this.key];
+      },
+
+      _valueChanged: function(newValue, oldValue) {
+        (this.data || {})[this.key] = newValue;
       }
     });
   })();
