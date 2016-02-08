@@ -35,11 +35,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      _dataChanged: function(newValue, oldValue) {
+      _dataChanged: function(newValue) {
         this.value = (newValue || {})[this.key];
       },
 
-      _valueChanged: function(newValue, oldValue) {
+      _valueChanged: function(newValue) {
         (this.data || {})[this.key] = newValue;
       }
     });
