@@ -17,7 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <firebase-collection
                         order-by-child="name"
                         location="{{trainingsRef}}"
-                        log="true"
                         data="{{trainings}}"></firebase-collection>
     <template template is="dom-repeat" items="{{trainings}}" as="training">
       <a href="/trainings/{{training.name}}">
@@ -50,11 +49,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         trainingsRef: {
           type: String,
-          computed: "_computeTrainingsRef(baseRef)"
+          computed: '_computeTrainingsRef(baseRef)'
         },
         module: {
           type: String,
-          value: "",
+          value: '',
           notify: true
         }
       },
@@ -64,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // Functions
       _computeTrainingsRef: function(baseRef) {
-        return baseRef + "/trainings";
+        return baseRef + '/trainings';
       }
     });
   })();

@@ -10,28 +10,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-sidebar-module">
+<dom-module id="shokka-globals">
   <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <firebase-document id="{{fbDocID}}"
-                      location="{{moduleRef}}"
-                      data="{{moduleData}}"></firebase-document>
-    <a href="/modules/{{moduleData.title}}">
-      <iron-icon icon="main"></iron-icon>
-      <span>{{moduleData.title}}</span>
-    </a>
-    <div>Hello from <span>{{moduleId}}</span></div>
+    <firebase-document   location="{{evaluationCriteriaLocation}}" 
+                         data="{{evaluationCriteria}}"></firebase-collection>
+    <firebase-collection location="{{evaluationCategoriesLocation}}" 
+                         data="{{evaluationCategories}}"></firebase-collection>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-sidebar-module',
+      is: 'shokka-globals',
 
       properties: {
         baseRef: {
@@ -39,18 +30,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: 'https://shokka.firebaseio.com',
           notify: true
         },
-        moduleId: {
-          type: String,
-          value: '',
+        evaluationCategories: {
+          type: Object,
           notify: true
         },
-        moduleRef: {
+        evaluationCategoriesLocation: {
           type: String,
-          computed: '_computeModuleRef(baseRef, moduleId)'
+          computed: '_computeEvaluationCategoriesLocation(baseRef)'
+        },
+        evaluationCriteria: {
+          type: Object,
+          notify: true
+        },
+        evaluationCriteriaLocation: {
+          type: String,
+          computed: '_computeEvaluationCriteriaLocation(baseRef)'
         }
       },
-      _computeModuleRef: function(baseRef, moduleId) {
-        return baseRef + '/trainingModules/' + moduleId;
+
+      _computeEvaluationCategoriesLocation: function(baseRef) {
+        return baseRef + '/evaluationCategories';
+      },
+
+      _computeEvaluationCriteriaLocation: function(baseRef) {
+        return baseRef + '/evaluationCriteria';
       }
     });
   })();

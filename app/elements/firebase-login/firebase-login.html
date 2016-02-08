@@ -14,56 +14,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host {
             display: block;
         }
-        
+
         #btnLogin {
             cursor: pointer;
         }
-        
+
         #btnLogout,
         #btnAccount {
             display: none;
         }
-        
+
         #btnLogin:hover {
             color: var(--accent-color);
         }
-        
+
         .modal-dialog {
             background-color: white;
             width: 500px;
         }
-        
+
         .buttons {
             margin-top: 15px;
         }
-        
+
         .btn-confirm {
             margin-top: 15px;
             background-color: var(--dark-primary-color);
             color: var(--text-primary-color);
         }
-        
+
         #profile-wrapper {
             display: flex;
             flex-direction: column;
         }
-        
+
         .profile-row {
             display: flex;
             flex-direction: row;
         }
-        
+
         .profile-row paper-input {
             flex: 1;
             margin-right: 20px;
         }
-        
+
         .check-icon {
             display: none;
             align-self: flex-end;
             color: green;
         }
-        
+
         #google-signin {
             margin-top: 15px;
             background-color: darkred;
@@ -142,11 +142,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Object,
                     notify: true
                 },
-                baseRef: {
-                    type: String,
-                    value: 'https://shokka.firebaseio.com',
-                    notify: true
-                },
                 userRef: {
                     type: String,
                     value: '',
@@ -173,8 +168,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             listeners: {
 
             },
-
-
             toggleAccount: function() {
                 this.$.accountModal.toggle();
             },
@@ -182,46 +175,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.loginModal.toggle();
             },
             login: function(e) {
-                console.log(e);
+                if (false) {
+                    console.log(e);
+                }
                 var email = this.$.email.value;
                 var pass = this.$.pass.value;
-                this.$.firebaseLogin.login({
-                    email: email,
-                    password: pass
-                });
+                this.$.firebaseLogin.login({email:email, password:pass});
                 this.message = 'Login result: ' + e.detail.user;
-                this.log(this.message);
+                //this.log(this.message);
             },
-            logout: function(e) {
-                console.log(e);
+            logout: function(e){
+                if (false) {
+                    console.log(e);
+                }
                 this.$.firebaseLogin.logout();
             },
             onFirebaseLogin: function(e) {
-                console.log(e);
+                if (false) {
+                    console.log(e);
+                }
                 this.message = 'User id: ' + JSON.stringify(this.user.uid);
                 this.log(this.message);
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
-
                 this.$.btnLogin.style.display = 'none';
                 this.$.btnLogout.style.display = 'block';
                 this.$.btnAccount.style.display = 'block';
                 this.$.loginModal.close();
             },
             onFirebaseLogout: function(e) {
-                console.log(e);
+                if (false) {
+                    console.log(e);
+                }
                 this.$.btnLogin.style.display = 'block';
                 this.$.btnLogout.style.display = 'none';
-                this.$.btnAccount.style.display = 'none';
-                this.userInfo = {};
                 // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
             },
             onFirebaseValue: function(e, detail) {
-                console.log(e);
-                console.log(detail);
+                if (false) {
+                    console.log(e);
+                }
+                if (false) {
+                    console.log(detail);
+                }
             },
             inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
-                console.log(e);
-                console.log(detail);
+                if (false) {
+                    console.log(e);
+                }
+                if (false) {
+                    console.log(detail);
+                }
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
             },
             errorHandler: function(e) {
@@ -233,12 +236,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.message = e.type + ' success!';
             },
             log: function(log) {
-                var d = new Date();
-                var n = d.getTime();
+                if (false) {
+                    console.log(log);
+                }
+                // var d = new Date();
+                // var n = d.getTime();
                 //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
-                console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
+                //console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
             }
         });
     })();
-    </script>
+  </script>
 </dom-module>
