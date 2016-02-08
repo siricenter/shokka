@@ -54,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return baseRef + '/roadMap';
         },
 
-        setCompleted: function(userRoadMap, steps) {
+        setCompleted: function(userRoadMap) {
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -63,9 +63,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            var obj2 = steps.filter(function(elem) {
-              return elem.__firebaseKey__ === userStep;
-            }).pop();
+            // var obj2 = steps.filter(function(elem) {
+            //   return elem.__firebaseKey__ === userStep;
+            // }).pop();
 
             for (var prop in obj) {
               // skip loop if the property is from prototype

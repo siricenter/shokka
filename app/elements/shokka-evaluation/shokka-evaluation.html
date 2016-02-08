@@ -110,19 +110,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _computeCriterionTitle: function(criterion, evaluationCriteria){
-        return ((evaluationCriteria || {})[criterion] || {}).title || "Title";
+        return ((evaluationCriteria || {})[criterion] || {}).title || 'Title';
         // console.log(this.evaluationCategories);
         // console.log(this.evaluationCriteria);
       },
 
       _computeFirebaseEvalResultsLocation: function(baseRef){
-        return baseRef + '/evalResults'
+        return baseRef + '/evalResults';
         // console.log(this.evaluationCategories);
         // console.log(this.evaluationCriteria);
       },
 
       _computeFirebaseUsersLocation: function(baseRef){
-        return baseRef + '/users'
+        return baseRef + '/users';
         // console.log(this.evaluationCategories);
         // console.log(this.evaluationCriteria);
       },
