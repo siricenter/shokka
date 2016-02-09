@@ -144,19 +144,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _computeToDo: function(userRoadMap, steps) {
           for (var step in steps) {
-            console.log('steps[step]: ', steps[step]);
-            console.log('steps[step].__firebaseKey__: ', steps[step].__firebaseKey__);
-            console.log('steps[step].items: \n', steps[step].items);
             // Convert to a sortable items list
             var sortable = [];
             for (var item in steps[step].items)
                   sortable.push([item, steps[step].items[item]])
             sortable.sort(function(a, b) {return a[1].order - b[1].order})
-            console.log('sortable: ', sortable);
             for (var item in sortable) {
-              console.log('sortable[item][0]: ', sortable[item][0]);
               if(!userRoadMap[steps[step].__firebaseKey__][sortable[item][0]]) {
-                console.log('returning: ', {name: sortable[item][1]['name'], desc: sortable[item][1]['desc']})
                 return {name: sortable[item][1]['name'], desc: sortable[item][1]['desc']};
               }
             }
