@@ -146,17 +146,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           for (var step in steps) {
             // Convert to a sortable items list
             var sortable = [];
-            for (var item in steps[step].items)
-                  sortable.push([item, steps[step].items[item]])
-            sortable.sort(function(a, b) {return a[1].order - b[1].order})
-            for (var item in sortable) {
-              if(!userRoadMap[steps[step].__firebaseKey__][sortable[item][0]]) {
-                return {name: sortable[item][1]['name'], desc: sortable[item][1]['desc']};
+            for (var item in steps[step].items) {
+              sortable.push([item, steps[step].items[item]]);
+            }
+            sortable.sort(function(a, b) {
+              return a[1].order - b[1].order;
+            });
+            for (var sortableItem in sortable) {
+              if(!userRoadMap[steps[step].__firebaseKey__][sortable[sortableItem][0]]) {
+                return {name: sortable[sortableItem][1].name, desc: sortable[sortableItem][1].desc};
               }
             }
           }
 
-          return {name: 'HELLO', desc: 'WORLD'}
+          return {name: 'Complete', desc: 'You have nothing left to do!'};
         },
 
         _toValueArray: function(obj) {
