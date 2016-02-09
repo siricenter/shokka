@@ -73,7 +73,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         evaluation: {
           type: Object,
-          computed: '_computeEvaluation(evalResults, userId, userId.splices, evaluationDate, employeeName)',
+          computed: '_computeEvaluation(evalResults, evalResults.splices, \
+                                        userId, userId.splices, \
+                                        evaluationDate, employeeName)',
           notify: true
         },
         evalResults: {
@@ -127,7 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // console.log(this.evaluationCriteria);
       },
 
-      _computeEvaluation: function(evalResults, userId, userIdSplices, evaluationDate, employeeName) {
+      _computeEvaluation: function(evalResults, evalResultsSplices, userId, userIdSplices, evaluationDate, employeeName) {
         ////////////DOCUMENT////////////
         // if(/^(20\d{2}-[01]\d)$/.test(evaluationDate) && /^\w+ *\w* \w+$/.test(employeeName)) {
         //   for (var evaluationId in evalResults) {
@@ -151,6 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           }
         }
+        return {data: {}};
         // for (var i=0; i < myArray.length; i++) {
         //   if (myArray[i].name === nameKey) {
         //     return myArray[i];
