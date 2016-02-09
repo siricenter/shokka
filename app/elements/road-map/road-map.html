@@ -103,11 +103,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <div class="content">
               <!-- consider using a paper-checkbox that will have all items that are completed checked off -->
                 <ul>
-                  <li>Paperwork</li>
-                  <li>LOREM</li>
-                  <li>LOREM</li>
-                  <li>LOREM</li>
-                  <li>LOREM</li>
+                  <template is="dom-repeat" items="{{_toValueArray(step.items)}}" as="item">
+                    <li>{{item.name}}</li>
+                  </template>
                 </ul>
               </div>
             </iron-collapse>
@@ -134,12 +132,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           completed: {
             type: Number,
             notify: true,
-            computed: 'setCompleted(userRoadMap, steps.items)'
+            computed: '_setCompleted(userRoadMap, steps.items)'
           },
           roadMapRef: {
             type: String,
             computed: '_computeRoadMapRef(baseRef)'
           }
+        },
+
+        _toValueArray: function(obj) {
+          var dataArray = new Array;
+          for(var o in obj) {
+              dataArray.push(obj[o]);
+          }
+          dataArray.sort(function (a, b) {
+            if (a.order > b.order) {
+              return 1;
+            }
+            if (a.order < b.order) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+          return dataArray;
         },
         open: function(e) {
           e.currentTarget.children[1].open();
@@ -166,7 +182,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return baseRef + '/roadMap';
         },
 
-        setCompleted: function(userRoadMap) {
+        _setCompleted: function(userRoadMap, items) {
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -175,9 +191,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            // var obj2 = steps.filter(function(elem) {
-            //   return elem.__firebaseKey__ === userStep;
-            // }).pop();
+            var obj2 = steps.filter(function(elem) {
+              return elem.__firebaseKey__ === userStep;
+            }).pop();
 
             for (var prop in obj) {
               // skip loop if the property is from prototype
@@ -186,7 +202,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                //ret += obj2[prop].weight;
+                ret += obj2[prop].weight;
               }
             }
           }
