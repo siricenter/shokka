@@ -15,13 +15,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: inline;
       }
+
       paper-progress {
         display: inline;
         --paper-progress-active-color: var(--dark-primary-color);
         --paper-progress-height: .5rem;
       }
 
-      paper-button{
+      .steps-button {
         color: var(--secondary-text-color);
         margin:0 0 1.5rem;
         padding: .5rem 0 .5rem;
@@ -37,34 +38,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         max-width: 100%;
         z-index: 1;
         background: var(--paper-menu-background-color);
+        border-radius: 5px;
+        border: 1px solid var(--divider-color);
       }
+
       .content li{
         list-style: none;
         font-size: 1rem;
         color: var(--secondary-text-color);
+        padding: .4rem 0;
 
       }
+
       .steps {
         display: inline-block;
         width: 32%;
         position: relative;
       }
 
-      paper-tooltip {
-        --paper-tooltip-background:var(--default-primary-color);
-        --paper-tooltip-opacity: .87;
-        --paper-tooltip-text-color: var(--text-primary-color);
+      .list-item {
+        max-width: 95%;
       }
 
+      .toDo {
+        background: var(--default-primary-color);
+        opacity: .87;
+        border-radius: 5px;
+        color: var(--text-primary-color);
+        max-width: 40%;
+        margin: 1rem 0 0 25%;
+      }
+        
       .item-title {
         width: 100%;
         margin: .3rem .1rem;
+        padding: .5rem .1rem 0 .3rem;
         font-size: 1rem;
       }
 
       .item-description{
         width: 100%;
         margin: .5rem .1rem .3rem;
+        padding: 0 .1rem .5rem .3rem;
         font-size: .8rem;
       }
 
@@ -73,12 +88,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           font-size: 1rem;
         }
 
-        .content li {
+        .item-list li {
           font-size: .9rem;
         }
 
-        .content ul {
-          padding-left: 1rem;
+        .item-list {
+          padding-right: .2rem;
+          padding-left: .5rem;
         }
 
         .item-title {
@@ -97,13 +113,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{steps}}"></firebase-collection>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <div class="steps">
-            <paper-button raised on-click="toggle">{{step.name}}</paper-button>
+            <paper-button class="steps-button"raised on-click="toggle">{{step.name}}</paper-button>
             <iron-collapse>
               <div class="content">
-              <!-- consider using a paper-checkbox that will have all items that are completed checked off -->
-                <ul>
+                <ul class="item-list">
                   <template is="dom-repeat" items="{{_toValueArray(step.items)}}" as="item">
-                    <li>{{item.name}}</li>
+                    <li >{{item.name}}</li>
                   </template>
                 </ul>
               </div>
@@ -113,10 +128,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
         </paper-progress>
-        <paper-tooltip for="progress" position="bottom" offset="10">
+        <paper-material class="toDo">
           <div class="item-title"><span>{{toDo.name}}</span></div>
           <div class="item-description"><span>{{toDo.desc}}</span></div>
-        </paper-tooltip>
+        </paper-material>
   </template>
 
   <script>
