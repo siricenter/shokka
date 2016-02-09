@@ -65,7 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <shokka-globals base-ref="{{baseRef}}"
                     evaluation-categories="{{evaluationCategories}}"
                     evaluation-criteria="{{evaluationCriteria}}"
-                    user-info="{{userInfo}}"></shokka-globals>
+                    user-info="{{userInfo}}"
+                    user="{{user}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -97,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <firebase-login providers="password google" type="link" user-info="{{userInfo}}" base-ref="{{baseRef}}"></firebase-login>
+          <firebase-login providers="password google" type="link" user-info="{{userInfo}}" user="{{user}}" base-ref="{{baseRef}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -158,9 +159,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="evaluation">
               <paper-material elevation="1">
-                <shokka-evaluation  base-ref="{{baseRef}}"
-                                    evaluation-categories="{{evaluationCategories}}"
-                                    evaluation-criteria="{{evaluationCriteria}}"></shokka-evaluation>
+                <shokka-evaluation  base-ref="[[baseRef]]"
+                                    evaluation-categories="[[evaluationCategories]]"
+                                    evaluation-criteria="[[evaluationCriteria]]"
+                                    evaluator-id="[[user.uid]]"></shokka-evaluation>
               </paper-material>
             </section>
 
