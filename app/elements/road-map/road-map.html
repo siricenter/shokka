@@ -97,7 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{steps}}"></firebase-collection>
         <template is="dom-repeat" items="{{steps}}" as="step">
           <div class="steps">
-            <!-- TODO: get real completion based on user -->
             <paper-button raised on-click="toggle">{{step.name}}</paper-button>
             <iron-collapse>
               <div class="content">
@@ -132,7 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           completed: {
             type: Number,
             notify: true,
-            computed: '_setCompleted(userRoadMap, steps.items)'
+            computed: '_setCompleted(userRoadMap, steps)'
           },
           roadMapRef: {
             type: String,
@@ -141,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _toValueArray: function(obj) {
-          var dataArray = new Array;
+          var dataArray = [];
           for(var o in obj) {
               dataArray.push(obj[o]);
           }
@@ -165,7 +164,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           e.target.nextElementSibling.toggle();
           var itemLists = [].slice.call(document.querySelectorAll('.steps'));
 
-          document.body.addEventListener('click', function closeOnFocusLoss(e) {
+          document.body.addEventListener('click', function closeOnFocusLoss() {
             if (!itemLists.reduce(function(previousValue, currentValue) {
               return previousValue + (currentValue.contains(event.target));
             }, false)) {
@@ -175,14 +174,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               document.body.removeEventListener('click', closeOnFocusLoss);
             }
-          })
+          });
         },
 
         _computeRoadMapRef: function(baseRef) {
           return baseRef + '/roadMap';
         },
 
-        _setCompleted: function(userRoadMap, items) {
+        _setCompleted: function(userRoadMap, steps) {
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -202,7 +201,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                ret += obj2[prop].weight;
+                ret += obj2.items[prop].weight;
               }
             }
           }
