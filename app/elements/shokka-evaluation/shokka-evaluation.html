@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         key="{{criterion}}"></shokka-slider>
       </template>
     </template>
-    <paper-input value="{{evalResults[evaluationId].notes}}"></paper-input>
+    <paper-input value="{{notes}}"></paper-input>
     <hr>
     <paper-button id="submit" raised on-click="_submit">raised</paper-button>
 
@@ -75,7 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           computed: '_computeEvaluation(evalResults, evalResults.splices, \
                                         userId, userId.splices, \
-                                        evaluationDate, employeeName)',
+                                        evaluationDate, employeeName, \
+                                        evaluatorId)',
           notify: true
         },
         evalResults: {
@@ -92,7 +93,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _submit: function() {
-        this.notifyPath('evalResults.' + this.evaluationId, this.evaluation);
+        if (this.evaluationId) {
+          this.notifyPath('evalResults.' + this.evaluationId, this.evaluation);
+        }
+        else
+        {
+          this.evaluation.date = this.evaluationDate;
+          this.evaluation.userId = this.userId[0].__firebaseKey__;
+          this.evaluation.notes = this.notes;
+          this.$.firebaseEvalResults.add(this.evaluation);
+        }
       },
 
       _toKeyArray: function(obj) {
@@ -129,7 +139,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // console.log(this.evaluationCriteria);
       },
 
-      _computeEvaluation: function(evalResults, evalResultsSplices, userId, userIdSplices, evaluationDate, employeeName) {
+      _computeEvaluation: function( evalResults, evalResultsSplices, 
+                                    userId, userIdSplices, 
+                                    evaluationDate, employeeName,
+                                    evaluatorId) {
         ////////////DOCUMENT////////////
         // if(/^(20\d{2}-[01]\d)$/.test(evaluationDate) && /^\w+ *\w* \w+$/.test(employeeName)) {
         //   for (var evaluationId in evalResults) {
@@ -149,11 +162,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if(evalResults[i].userId === (userId[0] || {}).__firebaseKey__)
             {
               this.evaluationId = i;
+              this.notes = evalResults[i].notes;
               return evalResults[i];
             }
           }
         }
-        return {data: {}};
+        this.notes = '';
+        return {data: {}, evaluatorId: evaluatorId};
         // for (var i=0; i < myArray.length; i++) {
         //   if (myArray[i].name === nameKey) {
         //     return myArray[i];
