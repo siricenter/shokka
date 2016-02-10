@@ -149,7 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           e.target.nextElementSibling.toggle();
           var itemLists = [].slice.call(document.querySelectorAll('.steps'));
 
-          document.body.addEventListener('click', function closeOnFocusLoss(e) {
+          document.body.addEventListener('click', function closeOnFocusLoss() {
             if (!itemLists.reduce(function(previousValue, currentValue) {
               return previousValue + (currentValue.contains(event.target));
             }, false)) {
@@ -159,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               document.body.removeEventListener('click', closeOnFocusLoss);
             }
-          })
+          });
         },
 
         _computeRoadMapRef: function(baseRef) {
