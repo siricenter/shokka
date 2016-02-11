@@ -16,16 +16,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline;
       }
 
-      paper-progress {
-        display: inline;
-        --paper-progress-active-color: var(--dark-primary-color);
-        --paper-progress-height: .5rem;
+      .steps {
+        display: flex;
+        position: relative;
+      }
+
+      .step {
+        width: 100%;
       }
 
       .steps-button {
         color: var(--secondary-text-color);
         margin:0 0 1.5rem;
-        padding: .5rem 0 .5rem;
+        padding: .5rem 0;
         width: 100%;
         font-weight: bold;
         font-size: 1.3rem;
@@ -34,8 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       iron-collapse {
         position: absolute;
         margin: -1rem 0 1.5rem;
-        width: 99%;
-        max-width: 100%;
+        width: 32.5%;
         z-index: 1;
         background: var(--paper-menu-background-color);
         border-radius: 5px;
@@ -50,11 +52,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       }
 
-      .steps {
-        display: inline-block;
-        width: 32%;
-        position: relative;
-      }
+      paper-progress {
+        display: inline;
+        --paper-progress-active-color: var(--dark-primary-color);
+        --paper-progress-height: .5rem;
+      } 
 
       .list-item {
         max-width: 95%;
@@ -66,8 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border-radius: 5px;
         color: var(--text-primary-color);
         max-width: 25%;
-        margin-top: 1.2rem;
-        transform: translate(-20%);
+        margin-top: .9rem;
       }
 
       .toDo:before {
@@ -78,9 +79,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: absolute;
         transform: translate(-50%);
         width: 0;
-        height: 0;
         top: -17px;
         left: 20%;
+      }
+
+      .arrow-left {
+        transform: translate(0%);
+      }
+
+      .arrow-left:before {
+        border-left: none;
+        left: 0;
+        transform: translate(5%);
+        top: -15px;
+      }
+
+      .arrow-right {
+        transform: translate(-100%);
+      }
+
+      .arrow-right:before {
+        border-right: none;
+        left: 100%;
+        transform: translate(-100%);
+        top: -15px;
+      }
+
+      .arrow-middle {
+        transform: translate(-20%);
       }
         
       .item-title {
@@ -125,24 +151,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         order-by-child="order"
         location="{{roadMapRef}}"
         data="{{steps}}"></firebase-collection>
-        <template is="dom-repeat" items="{{steps}}" as="step">
-          <div class="steps">
-            <paper-button class="steps-button"raised on-click="toggle">{{step.name}}</paper-button>
-            <iron-collapse>
-              <div class="content">
-                <ul class="item-list">
-                  <template is="dom-repeat" items="{{_toValueArray(step.items)}}" as="item">
-                    <li >{{item.name}}</li>
-                  </template>
-                </ul>
-              </div>
-            </iron-collapse>
-          </div>
-        </template>
+        <div class="steps">
+          <template is="dom-repeat" items="{{steps}}" as="step">
+            <div class="step">
+              <paper-button class="steps-button"raised on-click="toggle">{{step.name}}</paper-button>
+              <iron-collapse>
+                <div class="content">
+                  <ul class="item-list">
+                    <template is="dom-repeat" items="{{_toValueArray(step.items)}}" as="item">
+                      <li >{{item.name}}</li>
+                    </template>
+                  </ul>
+                </div>
+              </iron-collapse>
+            </div>
+          </template>
+        </div>
 
         <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
         </paper-progress>
-        <paper-material class="toDo" style="left: {{completed}}%;">
+        <paper-material class$="toDo {{arrowClass}}" style="left: {{completed}}%;">
           <div class="item-title"><span>{{toDo.name}}</span></div>
           <div class="item-description"><span>{{toDo.desc}}</span></div>
         </paper-material>
@@ -165,10 +193,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: String,
             computed: '_computeRoadMapRef(baseRef)'
           },
+          arrowClass: {
+            type: String,
+            computed: '_setArrow(completed)'
+          },
           toDo: {
             type: Object,
             computed: '_computeToDo(userRoadMap, steps)'
           }
+          
         },
 
         _computeToDo: function(userRoadMap, steps) {
@@ -189,6 +222,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
 
           return {name: 'Complete', desc: 'You have nothing left to do!'};
+        },
+
+        _setArrow: function() {
+          if (this.completed <= 5) {
+            return "arrow-left";
+          }
+
+          else if (this.completed >= 80) {
+            return "arrow-right";
+          } 
+
+          else {
+            return "arrow-middle";
+          }
         },
 
         _toValueArray: function(obj) {
@@ -214,7 +261,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         toggle: function(e) {
           e.target.nextElementSibling.toggle();
-          var itemLists = [].slice.call(document.querySelectorAll('.steps'));
+          var itemLists = [].slice.call(document.querySelectorAll('.step'));
 
           document.body.addEventListener('click', function closeOnFocusLoss() {
             if (!itemLists.reduce(function(previousValue, currentValue) {
