@@ -16,3 +16,11 @@ body {
 #headerContainer {
   z-index: 103;
 }
+
+#drawer {
+	z-index: 104;
+}
+
+#scrim {
+	z-index: 104;
+}

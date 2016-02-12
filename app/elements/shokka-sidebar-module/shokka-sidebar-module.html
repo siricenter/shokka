@@ -16,15 +16,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+
+      :host:focus {
+        outline: none;
+      }
+
+      a {
+        text-decoration: none; 
+      }
+
+      span {
+        color: var(--primary-text-color);
+        opacity: .64;
+      }
+
     </style>
     <firebase-document id="{{fbDocID}}"
                       location="{{moduleRef}}"
-                      data="{{moduleData}}"></firebase-document>
-    <a href="/modules/{{moduleData.title}}">
-      <iron-icon icon="main"></iron-icon>
-      <span>{{moduleData.title}}</span>
-    </a>
-    <div>Hello from <span>{{moduleId}}</span></div>
+                      data="{{moduleData}}"></firebase-document>                    
+        <a href="/modules/{{moduleData.title}}">
+          <span>{{moduleData.title}}</span>
+        </a>
   </template>
   <script>
   (function() {

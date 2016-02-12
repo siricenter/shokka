@@ -12,21 +12,77 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-drawer-employee-content">
   <template>
     <style>
+    :host {
+      --sidebar-focus-color: green;
+    }
+
+    paper-listbox.outer {
+      --paper-listbox-background-color: var(--drawer-menu-color);
+    }
+
+    .outer paper-item {
+      display: flex-box;
+      justify-content: space-between;
+      font-size: .875rem;
+      font-weight: 700; 
+      --paper-item-selected: {
+          /*color: green;*/
+        }
+    }
+    paper-listbox.inner {
+        --paper-listbox-background-color: var(--drawer-menu-color);
+        padding: 0 0 0 1rem;
+      }  
+
+    .inner paper-item {
+      line-height: 1;
+      font-size: .875rem;
+      --paper-item-selected-weight: 400;
+      --paper-item-min-height: 1rem;
+      --paper-item-focused-before: {
+        background: none;
+      }
+    }
+    .inner paper-item:not(:first-of-type) {
+      padding-top: .8rem;
+    }
+
+    .inner paper-item.iron-selected {
+      color: var(--sidebar-focus-color);
+    }
+
+    a {
+      text-decoration: none; 
+    }
+
+    span {
+      color: var(--primary-text-color);
+      opacity: .87;
+    }
+
     </style>
     <!-- Firebase for Drawer Content -->
     <firebase-collection
                         order-by-child="name"
                         location="{{trainingsRef}}"
                         data="{{trainings}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{trainings}}" as="training">
-      <a href="/trainings/{{training.name}}">
-        <iron-icon icon="label"></iron-icon>
-        <span>{{training.name}}</span>
-      </a>
-      <template template is="dom-repeat" items="{{training.modules}}" as="module">
-        <shokka-sidebar-module module-id="[[module]]"></shokka-sidebar-module>
+    <paper-listbox class="outer">
+      <template template is="dom-repeat" items="{{trainings}}" as="training">
+        <paper-item>
+          <a href="/trainings/{{training.name}}">
+            <span>{{training.name}}</span>
+          </a>
+          <iron-icon icon="expand-more"></iron-icon>
+        </paper-item>
+        <paper-listbox class="inner">
+          <template template is="dom-repeat" items="{{training.modules}}" as="module">
+            <paper-item >
+              <shokka-sidebar-module module-id="[[module]]"></shokka-sidebar-module>
+            </paper-item>
+          </template>
+        </paper-listbox>
       </template>
-    </template>
+    </paper-listbox>
     <hr>
 
     <a href="/contact">
