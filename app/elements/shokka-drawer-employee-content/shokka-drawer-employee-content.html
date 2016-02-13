@@ -13,42 +13,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
     :host {
-      --sidebar-focus-color: green;
+      --sidebar-focus-color: var(--accent-color);
     }
 
-    paper-listbox.outer {
-      --paper-listbox-background-color: var(--drawer-menu-color);
-    }
-
-    .outer paper-item {
+    paper-item {
       display: flex-box;
       justify-content: space-between;
       font-size: .875rem;
       font-weight: 700; 
-      --paper-item-selected: {
-          /*color: green;*/
-        }
     }
-    paper-listbox.inner {
-        --paper-listbox-background-color: var(--drawer-menu-color);
-        padding: 0 0 0 1rem;
-      }  
+
+    /*paper-item.iron-selected span {
+      color: var(--sidebar-focus-color);
+    }*/
+
+    .inner {
+      padding: 0;
+    }
 
     .inner paper-item {
-      line-height: 1;
-      font-size: .875rem;
-      --paper-item-selected-weight: 400;
-      --paper-item-min-height: 1rem;
-      --paper-item-focused-before: {
-        background: none;
-      }
-    }
-    .inner paper-item:not(:first-of-type) {
-      padding-top: .8rem;
+      --paper-item-min-height: 2rem;
     }
 
-    .inner paper-item.iron-selected {
-      color: var(--sidebar-focus-color);
+    paper-item + paper-item {
+      margin-top: .4rem;
     }
 
     a {
@@ -66,23 +54,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         order-by-child="name"
                         location="{{trainingsRef}}"
                         data="{{trainings}}"></firebase-collection>
-    <paper-listbox class="outer">
+
+    <paper-menu id="employeeContentNav" class="outer">
       <template template is="dom-repeat" items="{{trainings}}" as="training">
-        <paper-item>
-          <a href="/trainings/{{training.name}}">
-            <span>{{training.name}}</span>
-          </a>
-          <iron-icon icon="expand-more"></iron-icon>
-        </paper-item>
-        <paper-listbox class="inner">
-          <template template is="dom-repeat" items="{{training.modules}}" as="module">
-            <paper-item >
-              <shokka-sidebar-module module-id="[[module]]"></shokka-sidebar-module>
-            </paper-item>
-          </template>
-        </paper-listbox>
+        <paper-submenu data-class$="[[training.__firebaseKey__]]">
+          <paper-item on-Click="_toggle"  toggles>
+            <a href="/trainings/{{training.name}}">
+              <span>{{training.name}}</span>
+            </a>
+            <iron-icon icon="expand-more"></iron-icon>
+          </paper-item>
+          <paper-menu class="inner">
+              <template template is="dom-repeat" items="{{training.modules}}" as="module">
+                <paper-item>            
+                  <shokka-sidebar-module class$="[[training.__firebaseKey__]] inner-item" module-id="[[module]]"></shokka-sidebar-module>
+                </paper-item>
+              </template>
+                      </paper-menu>
+        </paper-submenu>    
       </template>
-    </paper-listbox>
+    </paper-menu>
+
     <hr>
 
     <a href="/contact">
@@ -120,6 +112,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Functions
       _computeTrainingsRef: function(baseRef) {
         return baseRef + '/trainings';
+      }, 
+      _toggle: function(e) {
+        var targetClass = e.target.dataset.class;
+        targetClass.toggle();
+        // var children = document.getElementById("employeeContentNav").getElementsByClassName(targetClass);
+        // for (var i = children.length - 1; i >= 0; i--) {
+        //   children[i].classList.toggle("hide");
+        // }
+
+        // e.target.getElementsByTagName
+
       }
     });
   })();
