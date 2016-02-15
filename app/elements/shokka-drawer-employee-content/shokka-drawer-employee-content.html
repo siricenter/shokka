@@ -15,12 +15,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <!-- Firebase for Drawer Content -->
     <firebase-collection
-                        order-by-child="name"
-                        location="{{trainingsRef}}"
-                        log="true"
-                        data="{{trainings}}"></firebase-collection>
+      order-by-child="name"
+      location="{{trainingsRef}}"
+      data="{{trainings}}"></firebase-collection>
     <template template is="dom-repeat" items="{{trainings}}" as="training">
-      <a href="/trainings/{{training.name}}">
+      <a href="/trainings/{{training.__firebaseKey__}}">
         <iron-icon icon="label"></iron-icon>
         <span>{{training.name}}</span>
       </a>

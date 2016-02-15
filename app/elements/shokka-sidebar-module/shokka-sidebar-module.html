@@ -18,14 +18,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <firebase-document id="{{fbDocID}}"
-                      location="{{moduleRef}}"
-                      log="true"
-                      data="{{moduleData}}"></firebase-document>
-    <a href="/modules/{{moduleData.title}}">
+      location="{{moduleRef}}"
+      data="{{moduleData}}"></firebase-document>
+    <a href="/modules/{{moduleId}}">
       <iron-icon icon="main"></iron-icon>
       <span>{{moduleData.title}}</span>
     </a>
-    <div>Hello from <span>{{moduleId}}</span></div>
   </template>
   <script>
   (function() {

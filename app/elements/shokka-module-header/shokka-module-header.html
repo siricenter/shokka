@@ -1,0 +1,71 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-module-header">
+  <template>
+    <style>
+        paper-material {
+          background: var(--light-primary-color);
+          position: relative;
+          width: 100%;
+        }
+
+        p {
+          font-size: 1.1rem;
+        }
+
+        /* Breakpoints */
+
+        /* Small */
+        @media (max-width: 600px) {
+          paper-material {
+            padding: 1em calc((100% - (97.33% - 32px)) / 2) 3rem;
+            margin: 0 0 -4rem;
+            width: calc(97.33% - 32px);
+          }
+        }
+
+        /* Tablet+ */
+        @media (min-width: 601px) {
+          paper-material {
+            left: -var(--iron-pages-horizontal-padding);
+            padding: 0.2em var(--iron-pages-horizontal-padding) 4rem;
+            margin: -var(--iron-pages-vertical-padding) 0 -4rem;
+          }
+
+          p {
+            max-width: calc(900px * .618);
+          }
+        }
+    </style>
+    <paper-material elevation="1">
+      <h2>[[title]]</h2>
+      <p>[[desc]]</p>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-module-header',
+
+      properties: {
+        title: String,
+        desc: String
+      }
+
+      // Functions
+      
+    });
+  })();
+  </script>
+</dom-module>
