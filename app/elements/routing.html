@@ -50,6 +50,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = data.params;
     });
 
+    page('/evaluation', scrollToTop, function() {
+      app.route = 'evaluation';
+    });
+
     // add #! before urls
     page({
       hashbang: true

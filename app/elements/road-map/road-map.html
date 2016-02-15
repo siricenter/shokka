@@ -12,23 +12,115 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="road-map">
   <template>
       <style>
-      :host{
-        display: flex;
-        justify-content: space-between;
-        padding: 0 2rem;
-      };
+      :host {
+        display: inline;
+      }
+      paper-progress {
+        display: inline;
+        --paper-progress-active-color: var(--dark-primary-color);
+        --paper-progress-height: .5rem;
+      }
+
+      paper-button{
+        color: var(--secondary-text-color);
+        margin:0 0 1.5rem;
+        padding: .5rem 0 .5rem;
+        width: 100%;
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+
+      iron-collapse {
+        position: absolute;
+        margin: -1rem 0 1.5rem;
+        width: 99%;
+        max-width: 100%;
+        z-index: 1;
+        background: var(--paper-menu-background-color);
+      }
+      .content li{
+        list-style: none;
+        font-size: 1rem;
+        color: var(--secondary-text-color);
+
+      }
+      .steps {
+        display: inline-block;
+        width: 32%;
+        position: relative;
+      }
+
+      paper-tooltip {
+        --paper-tooltip-background:var(--default-primary-color);
+        --paper-tooltip-opacity: .87;
+        --paper-tooltip-text-color: var(--text-primary-color);
+      }
+
+      .item-title {
+        width: 100%;
+        margin: .3rem .1rem;
+        font-size: 1rem;
+      }
+
+      .item-description{
+        width: 100%;
+        margin: .5rem .1rem .3rem;
+        font-size: .8rem;
+      }
+
+      @media all and (min-width: 0px) and (max-width: 960px) {
+        paper-button {
+          font-size: 1rem;
+        }
+
+        .content li {
+          font-size: .9rem;
+        }
+
+        .content ul {
+          padding-left: 1rem;
+        }
+
+        .item-title {
+          font-size: .8rem;
+        }
+
+        .item-description{
+          font-size: .6rem;
+        }
+      }
+
       </style>
       <firebase-collection
         order-by-child="order"
-        location="{{dataPath}}"
+        location="{{roadMapRef}}"
         data="{{steps}}"></firebase-collection>
-        <road-map-marker completion='{{completed}}'>
-          Overall Progress
-        </road-map-marker>
         <template is="dom-repeat" items="{{steps}}" as="step">
-          <!-- TODO: get real completion based on user -->
-          <road-map-marker completion='.3'>{{step.name}}</road-map-marker>
+          <div class="steps">
+            <!-- TODO: get real completion based on user -->
+            <paper-button raised on-click="toggle">{{step.name}}</paper-button>
+            <iron-collapse>
+              <div class="content">
+              <!-- consider using a paper-checkbox that will have all items that are completed checked off -->
+                <ul>
+                  <li>Paperwork</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                  <li>LOREM</li>
+                </ul>
+              </div>
+            </iron-collapse>
+          </div>
         </template>
+
+        <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
+        </paper-progress>
+        <paper-tooltip for="progress" position="bottom" offset="10">
+          <div class="item-title"><span>Paperwork</span></div>
+          <div class="item-description"><span>Finish all required Paperwork</span></div>
+        </paper-tooltip>
+
   </template>
 
   <script>
@@ -39,19 +131,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'road-map',
 
         properties: {
-          dataPath: {
-            type: String,
-            value: '',
-            notify: true
-          },
           completed: {
             type: Number,
             notify: true,
-            computed: 'setCompleted(userRoadMap, steps)'
+            computed: 'setCompleted(userRoadMap, steps.items)'
+          },
+          roadMapRef: {
+            type: String,
+            computed: '_computeRoadMapRef(baseRef)'
           }
         },
+        open: function(e) {
+          e.currentTarget.children[1].open();
+        },
 
-        setCompleted: function(userRoadMap, steps) {
+        toggle: function(e) {
+          e.target.nextElementSibling.toggle();
+          var itemLists = [].slice.call(document.querySelectorAll('.steps'));
+
+          document.body.addEventListener('click', function closeOnFocusLoss(e) {
+            if (!itemLists.reduce(function(previousValue, currentValue) {
+              return previousValue + (currentValue.contains(event.target));
+            }, false)) {
+              for (var i = 0, length = itemLists.length;i < length; i++) {
+                itemLists[i].getElementsByTagName('iron-collapse')[0].hide();
+              }
+
+              document.body.removeEventListener('click', closeOnFocusLoss);
+            }
+          })
+        },
+
+        _computeRoadMapRef: function(baseRef) {
+          return baseRef + '/roadMap';
+        },
+
+        setCompleted: function(userRoadMap) {
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -60,9 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            var obj2 = steps.filter(function(elem) {
-              return elem.__firebaseKey__ === userStep;
-            }).pop();
+            // var obj2 = steps.filter(function(elem) {
+            //   return elem.__firebaseKey__ === userStep;
+            // }).pop();
 
             for (var prop in obj) {
               // skip loop if the property is from prototype
@@ -71,11 +186,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                ret += obj2[prop].weight;
+                //ret += obj2[prop].weight;
               }
             }
           }
-          return Math.round(ret/3)/100.0000001;
+          return Math.round(ret/3);
         }
       });
     })();
