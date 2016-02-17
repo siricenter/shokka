@@ -18,14 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 0 0 0 1.5rem;
         line-height: 1;
         font-size: .875rem;
-      }
-
-      :host:focus {
-        outline: none;
-      }
-
-      a {
-        text-decoration: none; 
+        width: 100%;
       }
 
       span {
@@ -36,10 +29,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <firebase-document id="{{fbDocID}}"
                       location="{{moduleRef}}"
-                      data="{{moduleData}}"></firebase-document>                    
-        <a href="/modules/{{moduleData.title}}">
-          <span>{{moduleData.title}}</span>
-        </a>
+                      data="{{moduleData}}"></firebase-document>
+                      
+    <span>{{moduleData.title}}</span>        
   </template>
   <script>
   (function() {

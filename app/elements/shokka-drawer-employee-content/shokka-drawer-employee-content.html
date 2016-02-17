@@ -23,24 +23,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-weight: 700; 
     }
 
-    /*paper-item.iron-selected span {
-      color: var(--sidebar-focus-color);
-    }*/
-
     .inner {
       padding: 0;
     }
 
-    .inner paper-item {
-      --paper-item-min-height: 2rem;
+    .module-link {
+      display: flex;
+      min-height: 2rem;
+      align-items: center;
     }
 
-    paper-item + paper-item {
-      margin-top: .4rem;
+    a.iron-selected:after {
+      background: var(--sidebar-focus-color);
+      opacity: .12;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+
     }
 
-    a {
+    a:focused{
+      background: none;
+    }
+
+    a, a:visited {
       text-decoration: none; 
+      color: var(--sidebar-focus-color);
+      position: relative;
     }
 
     span {
@@ -55,22 +68,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         location="{{trainingsRef}}"
                         data="{{trainings}}"></firebase-collection>
 
-    <paper-menu id="employeeContentNav" class="outer">
+    <paper-menu id="employeeContentNav" class="outer" multi>
       <template template is="dom-repeat" items="{{trainings}}" as="training">
-        <paper-submenu data-class$="[[training.__firebaseKey__]]">
-          <paper-item on-Click="_toggle"  toggles>
-            <a href="/trainings/{{training.name}}">
+        <paper-submenu>
+          <paper-item class="menu-trigger" toggles>
+            <a href="/trainings/{{training.__firebaseKey__}}">
               <span>{{training.name}}</span>
             </a>
-            <iron-icon icon="expand-more"></iron-icon>
           </paper-item>
-          <paper-menu class="inner">
+          <paper-menu class="inner menu-content">
               <template template is="dom-repeat" items="{{training.modules}}" as="module">
-                <paper-item>            
+                <a href="/modules/{{module}}" class="module-link" on-click="clearSelected">
                   <shokka-sidebar-module class$="[[training.__firebaseKey__]] inner-item" module-id="[[module]]"></shokka-sidebar-module>
-                </paper-item>
+                </a>
               </template>
-                      </paper-menu>
+          </paper-menu>
         </paper-submenu>    
       </template>
     </paper-menu>
@@ -113,9 +125,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _computeTrainingsRef: function(baseRef) {
         return baseRef + '/trainings';
       }, 
-      _toggle: function(e) {
-        var targetClass = e.target.dataset.class;
-        targetClass.toggle();
+      _computeMenuIcon: function(e) {
+        // var targetClass = e.target.dataset.class;
+        // targetClass.toggle();
+        return "expand-more"
         // var children = document.getElementById("employeeContentNav").getElementsByClassName(targetClass);
         // for (var i = children.length - 1; i >= 0; i--) {
         //   children[i].classList.toggle("hide");
@@ -123,6 +136,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         // e.target.getElementsByTagName
 
+      }, 
+
+      clearSelected: function (e){
+        var targetClass = document.querySelectorAll(".outer a.iron-selected");
+        for (var i = targetClass.length - 1; i >= 0; i--) {
+          if (targetClass[i] !== e.currentTarget) {
+            targetClass[i].classList.remove("iron-selected");
+          }
+        }
       }
     });
   })();
