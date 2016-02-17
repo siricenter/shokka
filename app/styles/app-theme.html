@@ -43,6 +43,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* paper-menu */
     --paper-menu-background-color: #fff;
     --menu-link-color: #111111;
+
+    /* iron-pages*/
+    --iron-pages-horizontal-padding: 62px;
+    --iron-pages-vertical-padding: 48px;
+    --iron-pages-padding: var(--iron-pages-vertical-padding) var(--iron-pages-horizontal-padding);
   }
 
   /* General styles */
@@ -177,7 +182,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     iron-pages {
-      padding: 48px 62px;
+      padding: var(--iron-pages-padding);
     }
 
   }
