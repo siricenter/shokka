@@ -10,43 +10,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-manager-content">
+<dom-module id="shokka-user-item">
   <template>
-    <a href="/evaluation">
-      <p>
-        <iron-icon icon="mail"></iron-icon>
-        <span>Evaluation</span>
-      </p>
-    </a>
-    <template template is="dom-repeat" items="{{teamIdArray}}" as="teamId">
-      <shokka-team-menu team-id="[[teamId]]"
-                        base-ref="[[baseRef]]"></shokka-team-menu>
-    </template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <firebase-document  location="{{userNameLocation}}"
+                        data="{{userName}}"
+                        log></firebase-document>
+    <p>{{userName}}</p>
+
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-manager-content',
+      is: 'shokka-user-item',
 
       properties: {
-        teamIdArray: {
-          type: Array,
-          computed: '_objKeys(teams)'
-        },
-        teamLocation: {
+        userNameLocation: {
           type: String,
-          computed: '_computeTeamLocation(baseRef, teamId)'
+          computed: '_computeUserNameLocation(baseRef, uid)'
         }
       },
 
-      _computeTeamLocation: function(baseRef, teamId) {
-        return baseRef + '/teams/' + teamId;
-      },
-
-      _objKeys: function(obj){
-        return Object.keys(obj);
+      _computeUserNameLocation: function(baseRef, uid) {
+        return baseRef + '/users/' + uid + '/fullName';
       }
     });
   })();

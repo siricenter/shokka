@@ -17,7 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <div>Hello from <span>{{foo}}</span></div>
+    <p>{{team.name}}</p>
+    <firebase-document  location="{{teamLocation}}"
+                        data="{{team}}"></firebase-document>
+      <template is="dom-repeat" items="{{_toKeyArray(team.users)}}" as="uid">
+        <shokka-user-item uid={{uid}}
+                          base-ref={{baseRef}}></shokka-user-item>
+
+      </template>
   </template>
   <script>
   (function() {
@@ -27,11 +34,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-team-menu',
 
       properties: {
-        foo: {
+        teamLocation: {
           type: String,
-          value: 'shokka-team-menu',
-          notify: true
+          computed: '_computeTeamLocation(baseRef, teamId)'
         }
+      },
+
+      _computeTeamLocation: function(baseRef, teamId) {
+        return baseRef + '/teams/' + teamId;
+      },
+
+      _toKeyArray: function(obj) {
+        return Object.keys(obj);
+      },
+
+      _computeUserNameLocation: function() {
+        return this.baseRef + '/users/' + this.fullName;
       }
     });
   })();

@@ -82,17 +82,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
           </template>
 
+          <template template is="dom-if" if="{{userInfo.roles.manager}}">
+            <shokka-drawer-manager-content  base-ref='[[baseRef]]' 
+                                            teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
+          </template>
+
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
             <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
           </template>
         </paper-menu>
-
-        <template template is="dom-if" if="{{userInfo.roles.manager}}">
-          <shokka-drawer-manager-content  base-ref='[[baseRef]]' 
-                                          teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
-        </template>
-
-
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
