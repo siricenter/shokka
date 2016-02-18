@@ -56,7 +56,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="shared-styles"></style>
-
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -65,7 +64,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <shokka-globals base-ref="{{baseRef}}"
                     evaluation-categories="{{evaluationCategories}}"
                     evaluation-criteria="{{evaluationCriteria}}"
-                    user-info="{{userInfo}}"></shokka-globals>
+                    user-info="{{userInfo}}"
+                    user="{{user}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -97,11 +97,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <firebase-login providers="password google" type="link" user-info="{{userInfo}}" base-ref="{{baseRef}}"></firebase-login>
+          <firebase-login providers="password google" type="link" user-info="{{userInfo}}" user="{{user}}" base-ref="{{baseRef}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name">Shokka</div>
+            <div class="app-name">Shokka <span>[[module.title]]</span></div>
           </div>
 
           <!-- Application sub title -->
@@ -158,9 +158,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="evaluation">
               <paper-material elevation="1">
-                <shokka-evaluation  base-ref="{{baseRef}}"
-                                    evaluation-categories="{{evaluationCategories}}"
-                                    evaluation-criteria="{{evaluationCriteria}}"></shokka-evaluation>
+                <shokka-evaluation  base-ref="[[baseRef]]"
+                                    evaluation-categories="[[evaluationCategories]]"
+                                    evaluation-criteria="[[evaluationCriteria]]"
+                                    evaluator-id="[[user.uid]]"></shokka-evaluation>
               </paper-material>
             </section>
 
@@ -175,26 +176,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
 
             <section data-route="module-info">
-              <paper-material elevation="1">
-                <h2 class="page-title">
-                Module:<span>{{params.number}}</span>
-                </h2>
-                <div>This is <span>{{params.number}}</span>'s section</div>
-              </paper-material>
+              <firebase-document
+                location="https://shokka.firebaseio.com/trainingModules/[[params.module]]"
+                data="{{module}}"></firebase-document>
+              <firebase-collection
+                order-by-child="order"
+                location="https://shokka.firebaseio.com/steps/[[params.module]]"
+                data="{{steps}}"></firebase-collection>
+              <shokka-module-header title="[[module.title]]" desc="[[module.desc]]"></shokka-module-header>
+              <template is="dom-repeat" items="[[steps]]" as="step">
+                <paper-material elevation="1">
+                  <h3>[[step.title]]</h3>
+                  <marked-element markdown=[[step.content]]>
+                    <div class="markdown-html custom"></div>
+                  </marked-element>
+                </paper-material>
+              </template>
             </section>
 
             <section data-route="training-info">
-              <paper-material elevation="1">
-                <h2 class="page-title">
-                Training: <span>{{params.name}}</span>
-                </h2>
-                <div>This is the <span>{{params.name}}</span> section</div>
-              </paper-material>
+              <firebase-collection
+                location="https://shokka.firebaseio.com/trainings/[[params.name]]/modules"
+                data="{{moduleKeys}}"></firebase-collection>
+                <iron-media-query query="(max-width: 600px)" query-matches="{{small}}"></iron-media-query>
+              <template is="dom-repeat" items="[[moduleKeys]]" as="moduleKey">
+                <shokka-module-card module-key$="[[moduleKey.value]]" small$="{{small}}"></shokka-module-card>
+              </template>              
             </section>
 
           </iron-pages>
         </div>
       </paper-scroll-header-panel>
+
     </paper-drawer-panel>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
@@ -219,6 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
+
 </body>
 
 </html>

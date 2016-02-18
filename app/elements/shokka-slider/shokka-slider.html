@@ -36,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _dataChanged: function(newValue) {
-        this.value = (newValue || {})[this.key];
+        this.value = ((newValue || {})[this.key] || 0);
       },
 
       _valueChanged: function(newValue) {
