@@ -13,7 +13,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
       <style>
       :host {
-        display: inline;
+        display: flex;
+        flex-direction: column;
       }
 
       .steps {
@@ -38,7 +39,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: absolute;
         margin: -1rem 0 1.5rem;
         width: 32.5%;
-        z-index: 1;
         background: var(--paper-menu-background-color);
         border-radius: 5px;
         border: 1px solid var(--divider-color);
@@ -56,6 +56,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline;
         --paper-progress-active-color: var(--dark-primary-color);
         --paper-progress-height: .5rem;
+        width: 100%;
+        order: 2;
       } 
 
       .list-item {
@@ -69,6 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--text-primary-color);
         max-width: 25%;
         margin-top: .9rem;
+        order: 2;
       }
 
       .toDo:before {
@@ -147,6 +150,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       </style>
+      <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
+        </paper-progress>
+        <paper-material class$="toDo {{arrowClass}}" style="left: {{completed}}%;">
+          <div class="item-title"><span>{{toDo.name}}</span></div>
+          <div class="item-description"><span>{{toDo.desc}}</span></div>
+        </paper-material>
       <firebase-collection
         order-by-child="order"
         location="{{roadMapRef}}"
@@ -168,12 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </div>
 
-        <paper-progress id="progress" value="{{completed}}" valuemin='0' valuemax='100' >
-        </paper-progress>
-        <paper-material class$="toDo {{arrowClass}}" style="left: {{completed}}%;">
-          <div class="item-title"><span>{{toDo.name}}</span></div>
-          <div class="item-description"><span>{{toDo.desc}}</span></div>
-        </paper-material>
+        
   </template>
 
   <script>

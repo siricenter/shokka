@@ -115,10 +115,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-            <section data-route="home">
-              <paper-material elevation="1">
-                <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
-              </paper-material>
+            <section id="home" data-route="home">
+              
 
               <paper-material elevation="1">
                 <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
@@ -129,6 +127,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
               <paper-material elevation="1">
                 <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+              </paper-material>
+              <paper-material elevation="1">
+                <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
               </paper-material>
             </section>
 
