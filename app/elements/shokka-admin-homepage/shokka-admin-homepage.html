@@ -1,3 +1,4 @@
+
 <!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -17,14 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <p> USERS UP FOR GRAD </p>
-    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForGrad" observe="gradDate usersInOrg.gradDate">
-      <p>First Name: {{user.fName}}</p>
-    </template>
-    <p> USERS UP FOR INTERNSHIP </p>
-    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForIntern" observe="internDate usersInOrg.internDate">
-      <p>First Name: {{user.fName}}</p>
-    </template>
+    <div>Hello from <span>{{foo}}</span></div>
   </template>
   <script>
   (function() {
@@ -34,30 +28,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-admin-homepage',
 
       properties: {
-      },
-
-      _upForGrad: function(user){
-        if(!user || !user.gradDate){
-          return false;
+        foo: {
+          type: String,
+          value: 'shokka-admin-homepage',
+          notify: true
         }
-        var today = new Date()
-        // Note: this will not be EXACTLY 4 months, but close enough.
-        var maxGradDate = new Date()
-        maxGradDate.setMonth(maxGradDate.getMonth() + 4)
-        var userGradDate = new Date(user.gradDate);
-        return (userGradDate >= today && userGradDate <= maxGradDate)
-      },
-
-      _upForIntern: function(user){
-        if(!user || !user.internDate){
-          return false;
-        }
-        var today = new Date()
-        // Note: this will not be EXACTLY 4 months, but close enough.
-        var maxGradDate = new Date()
-        maxGradDate.setMonth(maxGradDate.getMonth() + 4)
-        var userGradDate = new Date(user.internDate);
-        return (userGradDate >= today && userGradDate <= maxGradDate)
       }
     });
   })();
