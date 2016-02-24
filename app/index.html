@@ -125,7 +125,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <!-- Employee Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{userInfo.roles.manager}}">
-                  <p> HELLO FROM MANAGER PAGE </p>
+                  <shokka-manager-homepage users-in-org="{{usersInOrg}}"></shokka-manager-homepage>
                 </template>
               </template>
               <!-- Employee Home Page -->
