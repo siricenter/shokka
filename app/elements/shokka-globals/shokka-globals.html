@@ -13,9 +13,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-globals">
   <template>
     <firebase-document   location="{{evaluationCriteriaLocation}}" 
-                         data="{{evaluationCriteria}}"></firebase-collection>
+                         data="{{evaluationCriteria}}"></firebase-document>
     <firebase-collection location="{{evaluationCategoriesLocation}}" 
                          data="{{evaluationCategories}}"></firebase-collection>
+    <template template is="dom-if" if="{{userInfo.roles.admin}}">
+      <firebase-document   location="{{userIdsInOrgLocation}}" 
+                           data="{{userIdsObjectInOrg}}"
+                           on-firebase-value="_computeUsersInOrg"></firebase-document>
+    </template>
   </template>
   <script>
   (function() {
@@ -45,7 +50,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         evaluationCriteriaLocation: {
           type: String,
           computed: '_computeEvaluationCriteriaLocation(baseRef)'
+        },
+        userIdsInOrgLocation: {
+          type: String,
+          computed: '_computeUserIdsInOrgLocation(baseRef, userInfo)'
+        },
+        usersInOrg: {
+          type: Array,
+          notify: true
         }
+      },
+
+      _computeUserIdsInOrgLocation: function(baseRef, userInfo) {
+        return baseRef + '/orgs/' + userInfo.org + '/users'
       },
 
       _computeEvaluationCategoriesLocation: function(baseRef) {
@@ -54,6 +71,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computeEvaluationCriteriaLocation: function(baseRef) {
         return baseRef + '/evaluationCriteria';
+      },
+
+      _computeUsersInOrg: function(){
+        /************* userIdsObjectInOrg ***********
+        {
+          uid: true
+          uid2: true
+          uid3: true
+          ...
+        }
+        ********************************************/
+        var userIds = Object.keys(this.userIdsObjectInOrg);
+        // Empty old users (just in case)
+        this.usersInOrg = [];
+        // So I can use this.notifyPath or this.usersInOrg in the firebase call
+        var self = this;
+        for (var key in userIds) {
+          // Where the user is found in the database
+          var userRef = this.baseRef + '/users/' + userIds[key];
+          // Create query
+          var firebaseRef = new Firebase(userRef);
+          // Here is where I should be adding my people into the array
+          firebaseRef.on("value", function(snapshot) {
+            // Add in the user info to the array
+            self.push('usersInOrg', snapshot.val());
+            // Let index know I added it
+            self.notifyPath('usersInOrg', self.usersInOrg);
+          })
+        }
       }
     });
   })();
