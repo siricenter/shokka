@@ -95,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         moduleLocation: {
           type: String,
-          computed: "_computeModuleLocation(baseRef, moduleKey)"
+          computed: '_computeModuleLocation(baseRef, moduleKey)'
         },
         small: {
           type: Boolean,
@@ -105,11 +105,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // Functions
       _computeModuleLocation: function(baseRef, moduleKey) {
-        return baseRef + "/trainingModules/" + moduleKey;
+        return baseRef + '/trainingModules/' + moduleKey;
       },
       _updateStyles: function() {
-        var smallMixin = "padding-left: 16px; padding-right: 16px; align-self: flex-end; left: 0px;",
-            largeMixin = "padding-left: 30px; padding-right: 30px; align-self: flex-end; left: 0px;";
+        var smallMixin = 'padding-left: 16px; padding-right: 16px; align-self: flex-end; left: 0px;',
+            largeMixin = 'padding-left: 30px; padding-right: 30px; align-self: flex-end; left: 0px;';
 
         this.customStyle['--paper-card-header-text'] = this.small ? smallMixin : largeMixin;
         this.updateStyles();

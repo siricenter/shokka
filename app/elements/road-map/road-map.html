@@ -226,15 +226,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _setArrow: function() {
           if (this.completed <= 5) {
-            return "arrow-left";
+            return 'arrow-left';
           }
 
           else if (this.completed >= 80) {
-            return "arrow-right";
+            return 'arrow-right';
           } 
 
           else {
-            return "arrow-middle";
+            return 'arrow-middle';
           }
         },
 
@@ -281,6 +281,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _setCompleted: function(userRoadMap, steps) {
+          steps = steps; // REMOVE
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -289,9 +290,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            var obj2 = steps.filter(function(elem) {
-              return elem.__firebaseKey__ === userStep;
-            }).pop();
+            // var obj2 = steps.filter(function(elem) {
+            //   return elem.__firebaseKey__ === userStep;
+            // }).pop();
 
             for (var prop in obj) {
               // skip loop if the property is from prototype
@@ -300,7 +301,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                ret += obj2.items[prop].weight;
+                // ret += obj2.items[prop].weight;
               }
             }
           }
