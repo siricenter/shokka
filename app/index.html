@@ -65,7 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     evaluation-categories="{{evaluationCategories}}"
                     evaluation-criteria="{{evaluationCriteria}}"
                     user-info="{{userInfo}}"
-                    user="{{user}}"></shokka-globals>
+                    user="{{user}}"
+                    users-in-org="{{usersInOrg}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -115,21 +116,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
+            <!-- Home Page -->
             <section data-route="home">
-              <paper-material elevation="1">
-                <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
-              </paper-material>
+              <!-- Employee Home Page -->
+              <template template is="dom-if" if="{{userInfo.roles.admin}}">
+                <shokka-admin-homepage  users-in-org="{{usersInOrg}}"></shokka-admin-homepage>
+              </template>
+              <!-- Employee Home Page -->
+              <template template is="dom-if" if="{{!userInfo.roles.admin}}">
+                <template template is="dom-if" if="{{userInfo.roles.manager}}">
+                  <p> HELLO FROM MANAGER PAGE </p>
+                </template>
+              </template>
+              <!-- Employee Home Page -->
+              <template template is="dom-if" if="{{!userInfo.roles.admin}}">
+                <template template is="dom-if" if="{{!userInfo.roles.manager}}">
+                  <template template is="dom-if" if="{{userInfo.roles.employee}}">
+                    <paper-material elevation="1">
+                      <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
+                    </paper-material>
 
-              <paper-material elevation="1">
-                <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
-              </paper-material>
-              <paper-material elevation="1">
-                <shokka-eval-chart id="comparison" user-avg-evals="[[userInfo.evalYearAvg]]"
-                                    avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
-              </paper-material>
-              <paper-material elevation="1">
-                <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
-              </paper-material>
+                    <paper-material elevation="1">
+                      <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+                    </paper-material>
+                    <paper-material elevation="1">
+                      <shokka-eval-chart id="comparison" user-avg-evals="[[userInfo.evalYearAvg]]"
+                                          avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
+                    </paper-material>
+                    <paper-material elevation="1">
+                      <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+                    </paper-material>
+                  </template>
+                </template>
+              </template>
             </section>
 
             <section data-route="users">
