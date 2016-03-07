@@ -97,7 +97,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <firebase-login providers="password google" type="link" user-info="{{userInfo}}" user="{{user}}" base-ref="{{baseRef}}"></firebase-login>
+          <!-- Firebase Login
+                          userInfo needed all over the place, 
+                          user used when doing an evaluation, and 
+                          base-ref to quickly change the database ref -->
+          <firebase-login user-info="{{userInfo}}" 
+                          user="{{user}}" 
+                          base-ref="{{baseRef}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
