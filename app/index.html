@@ -82,6 +82,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
           </template>
 
+          <template template is="dom-if" if="{{userInfo.roles.manager}}">
+            <shokka-drawer-manager-content  base-ref='[[baseRef]]' 
+                                            teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
+          </template>
+
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
             <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
           </template>
@@ -122,10 +127,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <paper-material elevation="1">
                 <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
-              </paper-material>
-              <paper-material elevation="1">
-                <shokka-eval-chart id="comparison" user-avg-evals="[[userInfo.evalYearAvg]]"
-                                    avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
               </paper-material>
               <paper-material elevation="1">
                 <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
