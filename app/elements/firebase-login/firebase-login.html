@@ -184,25 +184,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.loginModal.toggle();
             },
             login: function(e) {
-                if (false) {
-                    console.log(e);
-                }
                 var email = this.$.email.value;
                 var pass = this.$.pass.value;
                 this.$.firebaseLogin.login({email:email, password:pass});
                 this.message = 'Login result: ' + e.detail.user;
-                //this.log(this.message);
+                this.log(this.message);
             },
-            logout: function(e){
-                if (false) {
-                    console.log(e);
-                }
+            logout: function(){
+                this.$.email.value = '';
+                this.$.pass.value = '';
+                this.userInfo = {};
+                this.userRef = null;
                 this.$.firebaseLogin.logout();
             },
-            onFirebaseLogin: function(e) {
-                if (false) {
-                    console.log(e);
-                }
+            onFirebaseLogin: function() {
                 this.message = 'User id: ' + JSON.stringify(this.user.uid);
                 this.log(this.message);
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
@@ -211,29 +206,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.btnAccount.style.display = 'block';
                 this.$.loginModal.close();
             },
-            onFirebaseLogout: function(e) {
-                if (false) {
-                    console.log(e);
-                }
+            onFirebaseLogout: function() {
                 this.$.btnLogin.style.display = 'block';
                 this.$.btnLogout.style.display = 'none';
-                // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
+                this.$.btnAccount.style.display = 'none';
             },
-            onFirebaseValue: function(e, detail) {
-                if (false) {
-                    console.log(e);
-                }
-                if (false) {
-                    console.log(detail);
-                }
+            onFirebaseValue: function() {
             },
-            inputChange: function(e, detail) { //TODO: make this an on-chage event and have it set a flag property
-                if (false) {
-                    console.log(e);
-                }
-                if (false) {
-                    console.log(detail);
-                }
+            inputChange: function(e) { //TODO: make this an on-chage event and have it set a flag property
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
             },
             errorHandler: function(e) {
@@ -243,15 +223,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             userSuccessHandler: function(e) {
                 this.message = e.type + ' success!';
-            },
-            log: function(log) {
-                if (false) {
-                    console.log(log);
-                }
-                // var d = new Date();
-                // var n = d.getTime();
-                //this.$.firebaseDocument.query.ref().push({log: log, time: n, user: this.user}) //TODO: setup firebase to have a log location
-                //console.log('log: ' + log + ' | time: ' + n + ' | user: ' + this.user);
             }
         });
     })();
