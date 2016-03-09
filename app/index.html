@@ -73,7 +73,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">Menu</span>
+          <a class="sidebar-title" href="#">
+            <span class="paper-font-title">Shokka</span>
+          </a>
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -83,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.manager}}">
-            <shokka-drawer-manager-content  base-ref='[[baseRef]]' 
+            <shokka-drawer-manager-content  base-ref='[[baseRef]]'
                                             teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
           </template>
 
@@ -106,13 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name">Shokka <span>[[module.title]]</span></div>
+            <div class="app-name">{{pageTitle}}</div>
           </div>
 
           <!-- Application sub title -->
-          <div class="bottom bottom-container center horizontal layout flex">
-            <div class="bottom-title paper-font-subhead flex">Onboarding, training and evaluation simplified</div>
-          </div>
+         <!--  <div class="bottom bottom-container center horizontal layout flex">
+            <div class="bottom-title paper-font-subhead flex"><span>something</span></div>
+          </div> -->
 
         </paper-toolbar>
 
@@ -120,8 +122,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-            <section id="home" data-route="home">
-              
+            <shokka-page data-route="home" data-title="My Dashboard" route="{{route}}" page-title="{{pageTitle}}">
+              <paper-material elevation="1">
+                <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
+              </paper-material>
 
               <paper-material elevation="1">
                 <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
@@ -132,42 +136,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="users">
+            <shokka-page data-route="users" data-title="Users" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2 class="page-title">Users</h2>
                 <p>This is the users section</p>
                 <a href="/users/Rob">Rob</a>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="user-info">
+            <shokka-page data-route="user-info" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2 class="page-title">
                 User:<span>{{params.name}}</span>
                 </h2>
                 <div>This is <span>{{params.name}}</span>'s section</div>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="contact">
+            <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2 class="page-title">Contact</h2>
                 <p>This is the contact section</p>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="evaluation">
+            <shokka-page data-route="evaluation" data-title="Evaluation" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <shokka-evaluation  base-ref="[[baseRef]]"
                                     evaluation-categories="[[evaluationCategories]]"
                                     evaluation-criteria="[[evaluationCriteria]]"
                                     evaluator-id="[[user.uid]]"></shokka-evaluation>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="modules">
+            <shokka-page data-route="modules" data-title="{{modules.title}}" route="{{route}}">
               <paper-material elevation="1">
                 <h2 class="page-title">Modules</h2>
                 <a href="/modules/1">1</a>
@@ -175,9 +179,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <a href="/modules/3">3</a>
                 <a href="/modules/4">4</a>
               </paper-material>
-            </section>
+            </shokka-page>
 
-            <section data-route="module-info">
+            <shokka-page data-route="module-info" data-title="{{module.title}}" route="{{route}}" page-title="{{pageTitle}}">
               <firebase-document
                 location="https://shokka.firebaseio.com/trainingModules/[[params.module]]"
                 data="{{module}}"></firebase-document>
@@ -194,18 +198,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   </marked-element>
                 </paper-material>
               </template>
-            </section>
+            </shokka-page>
 
-            <section data-route="training-info">
+            <shokka-page data-route="training-info" data-title="{{params.name}}" route="{{route}}" page-title="{{pageTitle}}">
               <firebase-collection
                 location="https://shokka.firebaseio.com/trainings/[[params.name]]/modules"
                 data="{{moduleKeys}}"></firebase-collection>
                 <iron-media-query query="(max-width: 600px)" query-matches="{{small}}"></iron-media-query>
               <template is="dom-repeat" items="[[moduleKeys]]" as="moduleKey">
                 <shokka-module-card module-key$="[[moduleKey.value]]" small$="{{small}}"></shokka-module-card>
-              </template>              
-            </section>
-
+              </template>
+            </shokka-page>
           </iron-pages>
         </div>
       </paper-scroll-header-panel>

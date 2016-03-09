@@ -51,6 +51,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   /* General styles */
+  .sidebar-title {
+  text-decoration: none;
+  color: var(--secondary-text-color);
+}
 
   #drawerToolbar {
     color: var(--secondary-text-color);
@@ -103,7 +107,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   }
 
   paper-toolbar.tall .app-name {
-    font-size: 40px;
+    color: var(--text-primary-color);
+    font-size: 2.8rem;
     font-weight: 300;
     /* Required for main area's paper-scroll-header-panel custom condensing transformation */
     -webkit-transform-origin: left center;
@@ -140,6 +145,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   /* Small */
   @media (max-width: 600px) {
+
+    .app-name>span::after {
+      content: " - Shokka";
+    }
 
     paper-material {
       --menu-container-display: none;
@@ -185,12 +194,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: var(--iron-pages-padding);
     }
 
-  }
-
-  @media all and (min-width: 600px) and (max-width: 960px) {
-    iron-pages {
-      padding: 48px 31px;
-    }
   }
 
   /* Material Design Adaptive Breakpoints */
