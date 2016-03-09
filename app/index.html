@@ -61,12 +61,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
-    <shokka-globals base-ref="{{baseRef}}"
-                    evaluation-categories="{{evaluationCategories}}"
-                    evaluation-criteria="{{evaluationCriteria}}"
-                    user-info="{{userInfo}}"
-                    user="{{user}}"
-                    users-in-org="{{usersInOrg}}"></shokka-globals>
+    <shokka-globals base-ref              ="{{baseRef}}"
+                    evaluation-categories ="{{evaluationCategories}}"
+                    evaluation-criteria   ="{{evaluationCriteria}}"
+                    user-info             ="{{userInfo}}"
+                    user                  ="{{user}}"
+                    org                   ="{{org}}"
+                    users-in-org          ="{{usersInOrg}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
@@ -131,11 +132,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Home Page -->
             <section data-route="home">
-              <!-- Employee Home Page -->
+              <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
-                <shokka-admin-homepage  users-in-org="{{usersInOrg}}"></shokka-admin-homepage>
+                <shokka-org-setup org="{{org}}"></shokka-org-setup>
               </template>
-              <!-- Employee Home Page -->
+              <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{userInfo.roles.manager}}">
                   <shokka-manager-homepage users-in-org="{{usersInOrg}}"></shokka-manager-homepage>
@@ -150,14 +151,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </paper-material>
 
                     <paper-material elevation="1">
-                      <shokka-eval-chart id="last" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+                      <shokka-eval-chart  id="last" 
+                                          user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
                     </paper-material>
                     <paper-material elevation="1">
-                      <shokka-eval-chart id="comparison" user-avg-evals="[[userInfo.evalYearAvg]]"
+                      <shokka-eval-chart  id="comparison" 
+                                          user-avg-evals="[[userInfo.evalYearAvg]]"
                                           avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
                     </paper-material>
                     <paper-material elevation="1">
-                      <shokka-eval-chart id="overTime" user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+                      <shokka-eval-chart  id="overTime" 
+                                          user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
                     </paper-material>
                   </template>
                 </template>

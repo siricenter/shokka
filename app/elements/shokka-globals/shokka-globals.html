@@ -16,9 +16,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                          data="{{evaluationCriteria}}"></firebase-document>
     <firebase-collection location="{{evaluationCategoriesLocation}}" 
                          data="{{evaluationCategories}}"></firebase-collection>
-    <template template is="dom-if" if="{{orgUserInfoAllowed}}">
-      <firebase-document   location="{{userIdsInOrgLocation}}" 
-                           data="{{userIdsObjectInOrg}}"
+    <template template is="dom-if" if="{{orgInfoAllowed}}">
+      <firebase-document   location="{{orgLocation}}" 
+                           data="{{org}}"
                            on-firebase-value="_computeUsersInOrg"></firebase-document>
     </template>
   </template>
@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           computed: '_computeEvaluationCriteriaLocation(baseRef)'
         },
-        userIdsInOrgLocation: {
+        orgLocation: {
           type: String,
           computed: '_computeUserIdsInOrgLocation(baseRef, userInfo)'
         },
@@ -59,18 +59,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           notify: true
         },
-        orgUserInfoAllowed: {
+        orgInfoAllowed: {
           type: Boolean,
-          computed: '_computeOrgUserInfoAllowed(userInfo.roles)'
+          computed: '_computeOrgInfoAllowed(userInfo.roles)'
+        },
+        org: {
+          type: Object,
+          notify: true
         }
       },
 
-      _computeOrgUserInfoAllowed: function(roles) {
+      _computeOrgInfoAllowed: function(roles) {
         return (roles.admin || roles.manager);
       },
 
       _computeUserIdsInOrgLocation: function(baseRef, userInfo) {
-        return baseRef + '/orgs/' + userInfo.org + '/users';
+        return baseRef + '/orgs/' + userInfo.org;
       },
 
       _computeEvaluationCategoriesLocation: function(baseRef) {
@@ -90,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           ...
         }
         ********************************************/
-        var userIds = Object.keys(this.userIdsObjectInOrg);
+        var userIds = Object.keys(this.org.users);
         // Empty old users (just in case)
         this.usersInOrg = [];
         // So I can use this.notifyPath or this.usersInOrg in the firebase call

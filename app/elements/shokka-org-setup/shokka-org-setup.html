@@ -1,0 +1,63 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-org-setup">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-material elevation="5">
+      <h1>Portfolios</h1>
+      <template template is="dom-repeat" items="{{portfolioArray}}" as="portfolio">
+        <p>{{portfolio.name}}</p>
+      </template>
+      <h1>Teams</h1>
+      <template template is="dom-repeat" items="{{teamArray}}" as="team">
+        <p>{{team.name}}</p>
+      </template>
+      <!-- THIS LINK IS NOT ACCURATE -->
+      <a href="/">
+        <iron-icon icon="main"></iron-icon>
+        <span>Create A User</span>
+      </a>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-org-setup',
+
+      properties: {
+        usersInOrg: {
+          type: Array
+        },
+        portfolioArray: {
+          type: Array
+        },
+        org: {
+          type: Object,
+          observer: '_objToArray'
+        }
+      },
+
+      _objToArray: function (obj){
+        this.portfolioArray = Object.keys(obj.portfolios).map(function (key) {return obj.portfolios[key]});
+        this.teamArray = Object.keys(obj.teams).map(function (key) {return obj.teams[key]});
+      }
+    });
+  })();
+  </script>
+</dom-module>
