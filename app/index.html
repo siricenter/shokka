@@ -107,11 +107,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Toolbar icons -->
           <!-- Firebase Login
-                          userInfo needed all over the place, 
-                          user used when doing an evaluation, and 
+                          userInfo needed all over the place,
+                          user used when doing an evaluation, and
                           base-ref to quickly change the database ref -->
-          <firebase-login user-info="{{userInfo}}" 
-                          user="{{user}}" 
+          <firebase-login user-info="{{userInfo}}"
+                          user="{{user}}"
                           base-ref="{{baseRef}}"></firebase-login>
 
           <!-- Application name -->
@@ -120,9 +120,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <!-- Application sub title -->
-         <!--  <div class="bottom bottom-container center horizontal layout flex">
-            <div class="bottom-title paper-font-subhead flex"><span>something</span></div>
-          </div> -->
+          <!-- Removing the following 3 lines causes a illegal invocation error -->
+         <div class="bottom bottom-container center horizontal layout flex">
+            <div class="bottom-title paper-font-subhead flex"></div>
+          </div>
 
         </paper-toolbar>
 
@@ -151,16 +152,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </paper-material>
 
                     <paper-material elevation="1">
-                      <shokka-eval-chart  id="last" 
+                      <shokka-eval-chart  id="last"
                                           user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
                     </paper-material>
                     <paper-material elevation="1">
-                      <shokka-eval-chart  id="comparison" 
+                      <shokka-eval-chart  id="comparison"
                                           user-avg-evals="[[userInfo.evalYearAvg]]"
                                           avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
                     </paper-material>
                     <paper-material elevation="1">
-                      <shokka-eval-chart  id="overTime" 
+                      <shokka-eval-chart  id="overTime"
                                           user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
                     </paper-material>
                   </template>

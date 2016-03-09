@@ -231,7 +231,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             onFirebaseLogin: function() {
                 this.message = 'User id: ' + JSON.stringify(this.user.uid);
-                this.log(this.message);
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
                 this.$.btnLogin.style.display = 'none';
                 this.$.btnLogout.style.display = 'block';
@@ -249,9 +248,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
             },
             errorHandler: function(e) {
-                this.log('Login Status');
                 this.message = 'Error: ' + e.detail.message;
-                this.log(this.message);
             },
             userSuccessHandler: function(e) {
                 this.message = e.type + ' success!';
