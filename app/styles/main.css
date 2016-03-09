@@ -13,6 +13,11 @@ body {
   color: #333;
 }
 
-#headerContainer {
-  z-index: 103;
+#home {
+  display: flex;
+  flex-direction: column;
+}
+
+#home :not(:last-child) {
+	order: 1;
 }
