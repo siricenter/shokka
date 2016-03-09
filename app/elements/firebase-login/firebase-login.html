@@ -109,11 +109,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                    <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange"></paper-input>
+                    <paper-input label="internship date" id="accountInternDate" type="date" value="{{userInfo.internshipDate}}" on-change="inputChange"></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
                     <paper-input label="graduation date" id="accountGradDate" type="date" value="{{userInfo.gradDate}}" on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                    <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange" disabled></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                <!-- userInfo.manager will need to be added to the database. I would do it, but don't have access to it yet -->
+                    <paper-input label="manager" id="accountManager" type="date" value="{{userInfo.manager}}" on-change="inputChange" disabled></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
             </div>
