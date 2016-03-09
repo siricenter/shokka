@@ -1,3 +1,4 @@
+
 <!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -10,21 +11,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-admin-content">
+<dom-module id="shokka-admin-homepage">
   <template>
-    <h1> HELLO FROM ADMIN VIEW <h1>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>Hello from <span>{{foo}}</span></div>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-admin-content',
+      is: 'shokka-admin-homepage',
 
       properties: {
         foo: {
           type: String,
-          value: 'shokka-drawer-admin-content',
+          value: 'shokka-admin-homepage',
           notify: true
         }
       }

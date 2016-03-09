@@ -7,27 +7,46 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-admin-content">
+<dom-module id="shokka-page">
   <template>
-    <h1> HELLO FROM ADMIN VIEW <h1>
+    <style>
+    </style>
+    <content></content>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-admin-content',
+      is: 'shokka-page',
 
       properties: {
-        foo: {
+        dataTitle: {
           type: String,
-          value: 'shokka-drawer-admin-content',
+          value: ''
+        },
+        pageTitle: {
+          type: String,
           notify: true
+        },
+        route: String,
+        dataRoute: String
+      },
+
+      observers: [
+        'getTitle(dataTitle, route)'
+      ],
+
+      // Functions
+
+      getTitle: function(dataTitle, route) {
+        if (this.dataRoute === route) {
+          this.pageTitle = dataTitle;
         }
       }
+      
     });
   })();
   </script>

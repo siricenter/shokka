@@ -70,29 +70,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             color: var(--text-primary-color);
         }
         </style>
-        <firebase-auth  id="firebaseLogin" 
-                        location="{{baseRef}}" 
-                        user="{{user}}" 
-                        provider="{{provider}}" 
-                        status-known="{{statusKnown}}" 
-                        on-login="onFirebaseLogin" 
-                        on-logout="onFirebaseLogout" 
-                        on-error="errorHandler" 
-                        on-user-created="userSuccessHandler" 
-                        on-password-changed="userSuccessHandler" 
-                        on-password-reset="userSuccessHandler" 
+        <firebase-auth  id="firebaseLogin"
+                        location="{{baseRef}}"
+                        user="{{user}}"
+                        provider="{{provider}}"
+                        status-known="{{statusKnown}}"
+                        on-login="onFirebaseLogin"
+                        on-logout="onFirebaseLogout"
+                        on-error="errorHandler"
+                        on-user-created="userSuccessHandler"
+                        on-password-changed="userSuccessHandler"
+                        on-password-reset="userSuccessHandler"
                         on-user-removed="userSuccessHandler"></firebase-auth>
-        <firebase-document  id="userDocument" 
-                            location="{{userRef}}" 
-                            data="{{userInfo}}" 
+        <firebase-document  id="userDocument"
+                            location="{{userRef}}"
+                            data="{{userInfo}}"
                             on-firebase-value="onFirebaseValue"></firebase-document>
         <div id="accountNave" class="layout horizontal">
             <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin">
                 <iron-icon icon="account-box"></iron-icon>
                 Login
             </paper-button>
-            <paper-button   id="btnAccount" 
-                            data-dialog="account-modal" 
+            <paper-button   id="btnAccount"
+                            data-dialog="account-modal"
                             on-tap="toggleAccount">
                 Hello {{userInfo.fName}}
                 <iron-icon icon="arrow-drop-down"></iron-icon>
@@ -100,15 +100,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-button id="btnLogout" on-tap="logout">
                 <iron-icon icon="account-box"></iron-icon>Logout</paper-button>
         </div>
-        <paper-dialog   id="loginModal" 
-                        class="modal-dialog" 
-                        with-backdrop 
-                        entry-animation="scale-up-animation" 
+        <paper-dialog   id="loginModal"
+                        class="modal-dialog"
+                        with-backdrop
+                        entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2>Login</h2>
             <paper-input    label="email" id="email"></paper-input>
-            <paper-input    label="password" 
-                            type="password" 
+            <paper-input    label="password"
+                            type="password"
                             id="pass"></paper-input>
             <div class="buttons">
                 <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login">
@@ -117,41 +117,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-button>
             </div>
         </paper-dialog>
-        <paper-dialog   id="accountModal" 
-                        class="modal-dialog" 
-                        with-backdrop 
-                        entry-animation="scale-up-animation" 
+        <paper-dialog   id="accountModal"
+                        class="modal-dialog"
+                        with-backdrop
+                        entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2>Account Info</h2>
             <div id="profile-wrapper">
                 <div class="profile-row">
-                    <paper-input    label="first name" 
-                                    id="accountFname" 
-                                    value="{{userInfo.fName}}" 
+                    <paper-input    label="first name"
+                                    id="accountFname"
+                                    value="{{userInfo.fName}}"
                                     on-change="inputChange"></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                    <paper-input    label="last name" 
-                                    id="accountLname" 
-                                    value="{{userInfo.lName}}" 
+                    <paper-input    label="last name"
+                                    id="accountLname"
+                                    value="{{userInfo.lName}}"
                                     on-change="inputChange"></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                    <paper-input    label="email" 
-                                    type="email" 
-                                    id="accountEmail" 
-                                    value="{{userInfo.email}}" 
+                    <paper-input    label="email"
+                                    type="email"
+                                    id="accountEmail"
+                                    value="{{userInfo.email}}"
                                     on-change="inputChange"></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                    <paper-input    label="graduation date" 
-                                    id="accountGradDate" 
-                                    type="date" 
-                                    value="{{userInfo.gradDate}}" 
+                    <paper-input    label="graduation date"
+                                    id="accountGradDate"
+                                    type="date"
+                                    value="{{userInfo.gradDate}}"
                                     on-change="inputChange"></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                    <paper-input label="email" type="email" id="accountEmail" value="{{userInfo.email}}" on-change="inputChange" disabled></paper-input>
+                    <iron-icon class="check-icon" icon="check"></iron-icon>
+                </div>
+                <div class="profile-row">
+                <!-- userInfo.manager will need to be added to the database. I would do it, but don't have access to it yet -->
+                    <paper-input label="manager" id="accountManager" type="date" value="{{userInfo.manager}}" on-change="inputChange" disabled></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
             </div>
@@ -214,6 +223,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.message = 'Login result: ' + e.detail.user;
             },
             logout: function(){
+                this.$.email.value = '';
+                this.$.pass.value = '';
+                this.userInfo = {};
+                this.userRef = null;
                 this.$.firebaseLogin.logout();
             },
             onFirebaseLogin: function() {
@@ -228,7 +241,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             onFirebaseLogout: function() {
                 this.$.btnLogin.style.display = 'block';
                 this.$.btnLogout.style.display = 'none';
-                // TODO: handle clearing user data on the page and showing either the login modal or a splash screen or something
+                this.$.btnAccount.style.display = 'none';
             },
             onFirebaseValue: function() {
             },
@@ -242,8 +255,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             userSuccessHandler: function(e) {
                 this.message = e.type + ' success!';
-            },
-            log: function() {
             }
         });
     })();

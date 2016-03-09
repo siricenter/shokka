@@ -10,23 +10,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-admin-content">
+<dom-module id="shokka-user-item">
   <template>
-    <h1> HELLO FROM ADMIN VIEW <h1>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <firebase-document  location="{{userNameLocation}}"
+                        data="{{userName}}"></firebase-document>
+    <p>{{userName}}</p>
+
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-admin-content',
+      is: 'shokka-user-item',
 
       properties: {
-        foo: {
+        userNameLocation: {
           type: String,
-          value: 'shokka-drawer-admin-content',
-          notify: true
+          computed: '_computeUserNameLocation(baseRef, uid)'
         }
+      },
+
+      _computeUserNameLocation: function(baseRef, uid) {
+        return baseRef + '/users/' + uid + '/fullName';
       }
     });
   })();
