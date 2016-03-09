@@ -58,7 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-progress-height: .5rem;
         width: 100%;
         order: 2;
-      } 
+      }
 
       .list-item {
         max-width: 95%;
@@ -111,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .arrow-middle {
         transform: translate(-20%);
       }
-        
+
       .item-title {
         width: 100%;
         margin: .3rem .1rem;
@@ -177,7 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </div>
 
-        
+
   </template>
 
   <script>
@@ -205,7 +205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Object,
             computed: '_computeToDo(userRoadMap, steps)'
           }
-          
+
         },
 
         _computeToDo: function(userRoadMap, steps) {
@@ -235,7 +235,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           else if (this.completed >= 80) {
             return 'arrow-right';
-          } 
+          }
 
           else {
             return 'arrow-middle';
@@ -285,6 +285,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _setCompleted: function(userRoadMap, steps) {
+          steps = steps; // REMOVE
           var ret = 0;
           for (var userStep in userRoadMap) {
             // skip loop if the property is from prototype
@@ -293,7 +294,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            var obj2 = steps.filter(function(elem) { 
+            var obj2 = steps.filter(function(elem) {
               return elem.__firebaseKey__ === userStep;
             }).pop(); // jshint ignore:line
 
@@ -304,7 +305,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                ret += obj2.items[prop].weight;
+                // ret += obj2.items[prop].weight;
               }
             }
           }

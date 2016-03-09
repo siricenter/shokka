@@ -1,0 +1,65 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-manager-homepage">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <p> USERS UP FOR GRAD </p>
+    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForGrad" observe="gradDate usersInOrg.gradDate">
+      <p>First Name: {{user.fName}}</p>
+    </template>
+    <p> USERS UP FOR INTERNSHIP </p>
+    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForIntern" observe="internDate usersInOrg.internDate">
+      <p>First Name: {{user.fName}}</p>
+    </template>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-manager-homepage',
+
+      properties: {
+      },
+
+      _upForGrad: function(user){
+        if(!user || !user.gradDate){
+          return false;
+        }
+        var today = new Date();
+        // Note: this will not be EXACTLY 4 months, but close enough.
+        var maxGradDate = new Date();
+        maxGradDate.setMonth(maxGradDate.getMonth() + 4);
+        var userGradDate = new Date(user.gradDate);
+        return (userGradDate >= today && userGradDate <= maxGradDate);
+      },
+
+      _upForIntern: function(user){
+        if(!user || !user.internDate){
+          return false;
+        }
+        var today = new Date();
+        // Note: this will not be EXACTLY 4 months, but close enough.
+        var maxGradDate = new Date();
+        maxGradDate.setMonth(maxGradDate.getMonth() + 4);
+        var userGradDate = new Date(user.internDate);
+        return (userGradDate >= today && userGradDate <= maxGradDate);
+      }
+    });
+  })();
+  </script>
+</dom-module>
