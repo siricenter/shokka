@@ -18,6 +18,6 @@ body {
   flex-direction: column;
 }
 
-#home :not(:last-child) {
+#home paper-material:not(:last-of-type) {
 	order: 1;
 }

@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <!-- Home Page -->
-            <section data-route="home">
+            <section id="home" data-route="home">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
                 <shokka-org-setup org="{{org}}"></shokka-org-setup>
@@ -148,10 +148,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <template template is="dom-if" if="{{!userInfo.roles.manager}}">
                   <template template is="dom-if" if="{{userInfo.roles.employee}}">
                     <paper-material elevation="1">
-                      <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
-                    </paper-material>
-
-                    <paper-material elevation="1">
                       <shokka-eval-chart  id="last"
                                           user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
                     </paper-material>
@@ -163,6 +159,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <paper-material elevation="1">
                       <shokka-eval-chart  id="overTime"
                                           user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
+                    </paper-material>
+                    <paper-material elevation="1">
+                      <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
                     </paper-material>
                   </template>
                 </template>
