@@ -70,4 +70,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.getElementById('mainContainer').scrollTop = 0;
   };
 
+  app.getPortfolioName = function(org, portfolio) {
+    return org.portfolios[portfolio].name;
+  };
+
+  app.getPortfolioTeamNames = function(org, portfolio) {
+    var teams = []
+    var teamKeys = Object.keys(org.portfolios[portfolio].teams);
+    for (var i = teamKeys.length - 1; i >= 0; i--) {
+      teams.push(org.teams[teamKeys[i]].name);
+    }
+    return teams;
+  };
+
 })(document);
