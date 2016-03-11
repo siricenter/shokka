@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <!-- Home Page -->
-            <section data-route="home">
+            <shokka-page data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
                 <shokka-org-setup org="{{org}}"></shokka-org-setup>
@@ -167,7 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   </template>
                 </template>
               </template>
-            </section>
+            </shokka-page>
 
             <shokka-page data-route="users" data-title="Users" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
