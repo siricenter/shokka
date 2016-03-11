@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _computeOrgInfoAllowed: function(roles) {
-        return (roles.admin || roles.manager);
+        return ((roles || {}).admin || (roles || {}).manager);
       },
 
       _computeUserIdsInOrgLocation: function(baseRef, userInfo) {
@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           ...
         }
         ********************************************/
-        var userIds = Object.keys(this.org.users);
+        var userIds = Object.keys((this.org || {}).users || {});
         // Empty old users (just in case)
         this.usersInOrg = [];
         // So I can use this.notifyPath or this.usersInOrg in the firebase call

@@ -46,6 +46,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _objKeys: function(obj){
+        if (!obj) {
+          return null;
+        }
         return Object.keys(obj);
       }
     });

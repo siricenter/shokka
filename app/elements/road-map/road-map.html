@@ -294,9 +294,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             var obj = userRoadMap[userStep]; // In setup for example
-            var obj2 = steps.filter(function(elem) {
-              return elem.__firebaseKey__ === userStep;
-            }).pop(); // jshint ignore:line
 
             for (var prop in obj) {
               // skip loop if the property is from prototype
@@ -305,7 +302,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
 
               if (obj[prop] === true) {
-                // ret += obj2.items[prop].weight;
               }
             }
           }
