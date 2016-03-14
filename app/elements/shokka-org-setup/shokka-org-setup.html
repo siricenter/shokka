@@ -20,11 +20,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material elevation="5">
       <h1>Portfolios</h1>
       <template template is="dom-repeat" items="{{portfolioArray}}" as="portfolio">
-        <a href='/portfolios/[[portfolio.__firebaseKey__]]'>{{portfolio.name}}</a>
+        <p><a href='/portfolios/[[portfolio.__firebaseKey__]]'>{{portfolio.name}}</a></p>
       </template>
       <h1>Teams</h1>
       <template template is="dom-repeat" items="{{teamArray}}" as="team">
-        <p>{{team.name}}</p>
+        <p><a href='/teams/[[team.__firebaseKey__]]'>{{team.name}}</a></p>
       </template>
       <!-- THIS LINK IS NOT ACCURATE -->
       <a href="/">
@@ -64,7 +64,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           returnObject.__firebaseKey__ = key;
           return returnObject;
         });
-        this.teamArray = Object.keys(obj.teams).map(function (key) {return (obj.teams || {})[key];});
+        this.teamArray = Object.keys(obj.teams).map(function (key) {
+          var returnObject = (obj.teams || {})[key];
+          returnObject.__firebaseKey__ = key;
+          return returnObject;
+        });
       }
     });
   })();

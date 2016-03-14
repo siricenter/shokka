@@ -71,14 +71,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.getPortfolioName = function(org, portfolio) {
-    return org.portfolios[portfolio].name;
+    return (((org || {}).portfolios || {})[portfolio] || {}).name;
   };
 
-  app.getPortfolioTeamNames = function(org, portfolio) {
-    var teams = []
-    var teamKeys = Object.keys(org.portfolios[portfolio].teams);
+  app.getTeamName = function(org, team) {
+    return org.teams[team].name;
+  };
+
+  app.getGroupName = function(org, group) {
+    return org.groups[group].name;
+  };
+
+  app.getPortfolioTeams = function(org, portfolio) {
+    var teams = [];
+    var teamKeys = Object.keys((((org || {}).portfolios || {})[portfolio] || {}).teams || {});
     for (var i = teamKeys.length - 1; i >= 0; i--) {
-      teams.push(org.teams[teamKeys[i]].name);
+      teams.push(org.teams[teamKeys[i]]);
     }
     return teams;
   };

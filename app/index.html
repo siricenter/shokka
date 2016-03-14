@@ -132,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <!-- Home Page -->
-            <shokka-page data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
+            <shokka-page id="home" data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
                 <shokka-org-setup org="{{org}}"></shokka-org-setup>
@@ -242,9 +242,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <shokka-page data-route="portfolio-info" data-title="{{getPortfolioName(org, params.portfolio)}}" route="{{route}}" page-title="{{pageTitle}}">
               <h1>{{getPortfolioName(org, params.portfolio)}}</h1>
-              <template is="dom-repeat" items="{{getPortfolioTeamNames(org, params.portfolio)}}" as="teamName">
-                <p>{{teamName}}</p>
+              <template is="dom-repeat" items="{{getPortfolioTeams(org, params.portfolio)}}" as="team">
+                <p><a href="/teams/{{team.__firebaseKey__}}">{{team.name}}</a></p>
               </template>
+              <h2>HOME</h2>
+              <p><a href='/'>Home</a></p>
+            </shokka-page>
+
+            <shokka-page data-route="team-info" data-title="{{getTeamName(org, params.team)}}" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-team team-name="{{params.team}}"
+                                base-ref="{{baseRef}}"
+                                org="{{org}}"></shokka-edit-team>
+            </shokka-page>
+
+            <shokka-page data-route="group-info" data-title="{{getGroupName(org, params.group)}}" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-group group-name="{{params.group}}"
+                                base-ref="{{baseRef}}"
+                                org="{{org}}"></shokka-edit-group>
             </shokka-page>
           </iron-pages>
         </div>
