@@ -10,22 +10,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-drawer-admin-content">
+<dom-module id="shokka-user-list">
   <template>
-    <p><a href='/users'> Users </a></p>
+    <p>HELLO</p>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-drawer-admin-content',
+      is: 'shokka-user-list',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'shokka-drawer-admin-content',
-          notify: true
+        baseRef: {
+          type: String
         }
       }
     });

@@ -91,4 +91,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     return teams;
   };
 
+  app._toKeyArray = function(obj){
+    return Object.keys(obj || {});
+  };
+
+  app._toArray = function(obj){
+    return Object.keys(obj || {}).map(function (key) {
+      return obj[key];
+    });  
+  };
+
 })(document);
