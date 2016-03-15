@@ -171,8 +171,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page data-route="users" data-title="Users" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2 class="page-title">Users</h2>
-                <p>This is the users section</p>
-                <a href="/users/Rob">Rob</a>
+                <button>+</button>
+                <template is="dom-repeat" items="{{usersInOrg}}" as="user">
+                  <paper-material elevation="1">
+                    [picture] || {{user.fName}} {{user.lName}} || 
+                    <template is="dom-repeat" items={{_toArray(user.teams)}} as="group">{{group.name}}</template> || 
+                    <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">{{role}}</template>
+                  </paper-material>
+                </template>
               </paper-material>
             </shokka-page>
 
