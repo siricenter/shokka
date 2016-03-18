@@ -268,7 +268,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="categories" data-title="Categories" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-categories base-ref="{{baseRef}}" org="{{org}}"></shokka-categories>
+              <shokka-categories base-ref="{{baseRef}}" org-id="{{userInfo.org}}"></shokka-categories>
+            </shokka-page>
+
+            <shokka-page data-route="categories-assign" data-title="Assign Categories" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{userInfo.org}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
             </shokka-page>
           </iron-pages>
         </div>

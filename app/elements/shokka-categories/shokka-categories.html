@@ -16,13 +16,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
+    <firebase-collection  location="{{modulesLocation}}"
+                          data="{{moduleIds}}"></firebase-collection>
+    <template is="dom-repeat" items="{{moduleIds}}" as="moduleId">
+      <shokka-module  base-ref="[[baseRef]]"
+                      module-id="[[moduleId.__firebaseKey__]]"></shokka-module>
+    </template>
+    <p>##################################################################</p>
+    <firebase-collection  location="{{categoriesLocation}}"
+                          data="{{categoriesIds}}"></firebase-collection>
+    <template is="dom-repeat" items="{{categoriesIds}}" as="categoryId">
+      <shokka-category  base-ref="[[baseRef]]"
+                        category-id="[[categoryId.__firebaseKey__]]"></shokka-module>
+    </template>
+
     <template is="dom-repeat" items="{{moduleArray}}" as="module">
       <p>MODULE</p>
       <p>Name: {{module.title}}</p>
       <p>Desc: {{module.desc}}</p>
       <p>--------------------------------------------------------------------</p>
     </template>
-    <p>##################################################################</p>
     <template is="dom-repeat" items="{{categoryArray}}" as="category">
       <p>Category</p>
       <p>Name: {{category.name}}</p>
@@ -53,8 +66,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         observers: [
           '_buildModuleArray(org)',
-          '_buildCategoriesArray(org)'
+          '_buildCategoryArray(org)',
+          '_buildModulesLocation(baseRef, orgId)',
+          '_buildCategoriesLocation(baseRef, orgId)'
         ],
+
+        _buildModulesLocation: function(baseRef, orgId) {
+          this.modulesLocation = baseRef + '/orgs/' + orgId + '/modules';
+        },
+
+        _buildCategoriesLocation: function(baseRef, orgId) {
+          this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
+        },
 
         _buildModuleArray: function(org) {
           var moduleKeys = Object.keys(org.modules || {});
@@ -64,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var self = this;
           var snapshot = function(snapshot) {
             var moduleObj = snapshot.val();
-            moduleObj.__firebaseKey__ = snapshot.key()
+            moduleObj.__firebaseKey__ = snapshot.key();
               // Add in the info to the array
               self.push('moduleArray', moduleObj);
               // Let index know I added it
@@ -80,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        _buildCategoriesArray: function(org) {
+        _buildCategoryArray: function(org) {
           var categoryKeys = Object.keys(org.categories || {});
           // Empty old users (just in case)
           this.categoryArray = [];
@@ -108,7 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _getModuleTitle: function(array, key) {
           return array.filter(function(obj) {
-            return obj.__firebaseKey__ == key;
+            return obj.__firebaseKey__ === key;
           })[0].title;
         }
       });
