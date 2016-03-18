@@ -10,21 +10,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-user-list">
+<dom-module id="shokka-category">
   <template>
-    <p>HELLO</p>
+    <firebase-document  location="{{categoryLocation}}"
+                        data="{{category}}">
+    <p>Category Name: {{category.name}}</p>
+    <template is="dom-repeat" items="{{moduleArray}}" as="moduleId">
+      <shokka-module  base-ref="[[baseRef]]"
+                      module-id="[[moduleId]]"></shokka-module>
+    </template>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'shokka-user-list',
+      is: 'shokka-category',
 
       properties: {
         baseRef: {
           type: String
         }
+      },
+
+      observers: [
+        '_computeCategoryLocation(baseRef, categoryId)',
+        '_computeModuleArray(category)'
+      ],
+
+      _computeCategoryLocation: function(baseRef, categoryId) {
+        this.categoryLocation = baseRef + '/categories/' + categoryId;
+      },
+
+      _computeModuleArray: function(category) {
+        this.moduleArray = Object.keys(category.modules);
       }
     });
   })();
