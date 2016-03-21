@@ -75,11 +75,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.getTeamName = function(org, team) {
-    return org.teams[team].name;
+    return (((org || {}).teams || {})[team] || {}).name;
   };
 
   app.getGroupName = function(org, group) {
-    return org.groups[group].name;
+    return (((org || {}).groups || {})[group] || {}.name;
   };
 
   app.getPortfolioTeams = function(org, portfolio) {
