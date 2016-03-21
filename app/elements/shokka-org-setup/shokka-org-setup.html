@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
 <dom-module id="shokka-org-setup">
   <template>
@@ -17,21 +18,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <paper-material elevation="5">
-      <h1>Portfolios</h1>
-      <template template is="dom-repeat" items="{{portfolioArray}}" as="portfolio">
-        <p><a href='/portfolios/[[portfolio.__firebaseKey__]]'>{{portfolio.name}}</a></p>
+    <h1>Portfolios</h1>
+    <firebase-collection  id="portfolioArrayCollection"
+                          location="{{portfoliosLocation}}" 
+                          data="{{portfolios}}"></firebase-collection>
+    <template template is="dom-repeat" items="{{portfolios}}" as="portfolio">
+      <p><a href='/portfolios/[[portfolio.__firebaseKey__]]'>{{portfolio.name}}</a></p>
+    </template>
+    <paper-button on-tap="togglePortfolio">Add Portfolio</paper-button>
+    <h1>Teams</h1>
+    <firebase-collection location="{{teamsLocation}}" data="{{teams}}"></firebase-collection>
+    <template template is="dom-repeat" items="{{teams}}" as="team">
+      <p><a href='/teams/[[team.__firebaseKey__]]'>{{team.name}}</a></p>
+    </template>
+    <!-- THIS LINK IS NOT ACCURATE -->
+    <a href="/">
+      <iron-icon icon="main"></iron-icon>
+      <span>Create A User</span>
+    </a>
+    <paper-dialog id="portfolioModal"
+                  class="modal-dialog"
+                  with-backdrop
+                  entry-animation="scale-up-animation"
+                  exit-animation="fade-out-animation">
+      <h2>PORTFOLIO INFO</h2>
+      <paper-input id="portName" label="Name"></paper-input>
+      <template is="dom-repeat" items="{{teams}}" as="team">
+        <paper-checkbox id="{{team.__firebaseKey__}}" class="team-checkbox">{{team.name}}</paper-checkbox>
       </template>
-      <h1>Teams</h1>
-      <template template is="dom-repeat" items="{{teamArray}}" as="team">
-        <p><a href='/teams/[[team.__firebaseKey__]]'>{{team.name}}</a></p>
-      </template>
-      <!-- THIS LINK IS NOT ACCURATE -->
-      <a href="/">
-        <iron-icon icon="main"></iron-icon>
-        <span>Create A User</span>
-      </a>
-    </paper-material>
+      <paper-button on-tap="submitPortfolio">Submit</paper-button>
+    </paper-dialog>
   </template>
   <script>
   (function() {
@@ -41,34 +57,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-org-setup',
 
       properties: {
-        usersInOrg: {
-          type: Array
-        },
-        portfolioArray: {
-          type: Array
-        },
-        org: {
-          type: Object,
-          observer: '_objToArray'
-        }
       },
 
-      _objToArray: function (obj){
-        if (!obj) {
-          this.portfolioArray = [];
-          this.teamArray = [];
-          return;
-        }
-        this.portfolioArray = Object.keys(obj.portfolios).map(function (key) {
-          var returnObject = (obj.portfolios || {})[key];
-          returnObject.__firebaseKey__ = key;
-          return returnObject;
-        });
-        this.teamArray = Object.keys(obj.teams).map(function (key) {
-          var returnObject = (obj.teams || {})[key];
-          returnObject.__firebaseKey__ = key;
-          return returnObject;
-        });
+      observers: [
+        '_setTeamsLocation(baseRef, orgId)',
+        '_setPortfoilioLocation(baseRef, orgId)'
+      ],
+
+      _setPortfoilioLocation: function(baseRef, orgId) {
+        this.portfoliosLocation = baseRef + '/orgs/' + orgId + '/portfolios';
+      },
+
+      _setTeamsLocation: function(baseRef, orgId) {
+        this.teamsLocation = baseRef + '/orgs/' + orgId + '/teams';
+      },
+
+      togglePortfolio: function() {
+          this.$.portfolioModal.toggle();
+      },
+
+      submitPortfolio: function() {
+        var portfolio = {name: this.$.portName.value};
+        portfolio.teams = [].slice.apply(document.querySelectorAll('.team-checkbox[checked]')).reduce(function(total, elem){total[elem.id] = true; return total;}, {});
+
+        this.$.portfolioArrayCollection.add(portfolio);
       }
     });
   })();
