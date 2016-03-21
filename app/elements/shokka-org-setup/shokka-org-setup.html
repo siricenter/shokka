@@ -12,6 +12,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module id="shokka-org-setup">
   <template>
@@ -113,14 +115,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         portfolio.teams = [].slice.apply(document.querySelectorAll('.team-checkbox[checked]')).reduce(function(total, elem){total[elem.id] = true; return total;}, {});
 
         this.$.portfolioArrayCollection.add(portfolio);
+        this.$.portfolioName.value = '';
+        for (var items = this.$.portfolioModal.querySelectorAll('[checked]'), i = items.length - 1; i >= 0; i--)
+        {
+          items[i].checked = false;
+        }
         this.$.portfolioModal.toggle();
       },
 
       submitTeam: function() {
         var team = {name: this.$.teamName.value};
-        this.$.teamName.value = ""
-        var url = this.baseRef + '/units/' + this.$.teamArrayCollection.add(team).key()
-        var unitTeamRef = new Firebase(url)
+        var url = this.baseRef + '/units/' + this.$.teamArrayCollection.add(team).key();
+        var unitTeamRef = new Firebase(url); // jshint ignore:line
         var self = this;
         team.children = [].slice.apply(document.querySelectorAll('.group-checkbox[checked]')).reduce(function(total, elem) {
           total[elem.id] = {'name': self.org.groups[elem.id].name}; return total;
@@ -133,6 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         {
           items[i].checked = false;
         }
+        this.$.teamName.value = '';
         this.$.teamModal.toggle();
       }
     });
