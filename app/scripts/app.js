@@ -70,6 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.getElementById('mainContainer').scrollTop = 0;
   };
 
+  //TODO: may not need this anymore but may need to move this same function out of shokka-edit-portfolio
   app.getPortfolioName = function(org, portfolio) {
     return (((org || {}).portfolios || {})[portfolio] || {}).name;
   };
@@ -98,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app._toArray = function(obj){
     return Object.keys(obj || {}).map(function (key) {
       return obj[key];
-    });  
+    });
   };
 
 })(document);

@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../shokka-team-modal/shokka-team-modal.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
 
 <dom-module id="shokka-edit-portfolio">
   <template>
@@ -18,11 +19,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-	<h1>Teams</h1>
-	<shokka-portfolio-teams-list  base-ref="[[baseRef]]" portfolio-id="[[portfolioId]]" org-id="{{orgId}}"></shokka-portfolio-teams-list>
-	<paper-button on-tap="toggleTeam">Add New Team</paper-button>
-	<h2>HOME</h2>
-	<p><a href='/'>Home</a></p>
+      <paper-material elevation="1">
+        <h1><paper-input value="{{getPortfolioName(org, params.portfolio)}}" label="Portfolio Name"></paper-input></h1>
+        <shokka-textarea-select label="Teams" selected="{{getPortfolioTeams(org, params.portfolio)}}"></shokka-textarea-select>
+        <h1>Teams</h1>
+        <shokka-portfolio-teams-list  base-ref="[[baseRef]]" portfolio-id="[[portfolioId]]" org-id="{{orgId}}"></shokka-portfolio-teams-list>
+        <paper-button on-tap="toggleTeam">Add New Team</paper-button>
+        <h2>HOME</h2>
+        <p><a href='/'>Home</a></p>
+      </paper-material>
     <firebase-document  location="{{teamLocation}}"
                         data="{{team}}"></firebase-document>
     <shokka-team-modal id="teamModal" base-ref="[[baseRef]]" org-id="[[orgId]]" portfolio-id="[[portfolioId]]"></shokka-team-modal>
@@ -31,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (function() {
       'use strict';
-      
+
       Polymer({
         is: 'shokka-edit-portfolio',
 
@@ -60,7 +65,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         getGroupName: function(team, groupId) {
           return (((team || {}).children || {})[groupId] || {}).name;
-        }
+        },
+
+        getPortfolioName = function(org, portfolio) {
+          return (((org || {}).portfolios || {})[portfolio] || {}).name;
+        };
 
       });
     })();
