@@ -174,8 +174,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <button>+</button>
                 <template is="dom-repeat" items="{{usersInOrg}}" as="user">
                   <paper-material elevation="1">
-                    [picture] || {{user.fName}} {{user.lName}} || 
-                    <template is="dom-repeat" items={{_toArray(user.teams)}} as="group">{{group.name}}</template> || 
+                    [picture] || {{user.fName}} {{user.lName}} ||
+                    <template is="dom-repeat" items={{_toArray(user.teams)}} as="group">{{group.name}}</template> ||
                     <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">{{role}}</template>
                   </paper-material>
                 </template>
@@ -246,14 +246,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </template>
             </shokka-page>
 
-            <shokka-page data-route="portfolio-info" data-title="Portfolio" route="{{route}}" page-title="{{pageTitle}}">
-              <paper-material elevation="1">
-                <h1><paper-input value="{{getPortfolioName(org, params.portfolio)}}" label="Portfolio Name"></paper-input></h1>
-                <shokka-textarea-select label="Teams" selected="{{getPortfolioTeams(org, params.portfolio)}}"></shokka-textarea-select>
-                
-                <h2>HOME</h2>
-                <p><a href='/'>Home</a></p>
-              </paper-material>
+            <shokka-page data-route="portfolio-info" data-title="{{getPortfolioName(org, params.portfolio)}}" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-portfolio  portfolio-id="[[params.portfolio]]"
+                                      org-id="[[userInfo.org]]"
+                                      base-ref="[[baseRef]]"></shokka-edit-portfolio>
             </shokka-page>
 
             <shokka-page data-route="team-info" data-title="{{getTeamName(org, params.team)}}" route="{{route}}" page-title="{{pageTitle}}">
