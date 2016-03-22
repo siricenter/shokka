@@ -20,16 +20,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
       <paper-material elevation="1">
-        <h1><paper-input value="{{getPortfolioName(org, params.portfolio)}}" label="Portfolio Name"></paper-input></h1>
-        <shokka-textarea-select label="Teams" selected="{{getPortfolioTeams(org, params.portfolio)}}"></shokka-textarea-select>
-        <h1>Teams</h1>
-        <shokka-portfolio-teams-list  base-ref="[[baseRef]]" portfolio-id="[[portfolioId]]" org-id="{{orgId}}"></shokka-portfolio-teams-list>
+        <firebase-document  location="{{portfolioLocation}}"
+                            data="{{portfolio}}"></firebase-document>
+        <h1><paper-input value="{{portfolio.name}}" label="Portfolio Name"></paper-input></h1>
+        <firebase-collection  order-by-child="parent"
+                              equal-to="{{portfolioId}}"
+                              location="{{teamsLocation}}"
+                              data="{{teams}}"></firebase-collection>
+        <shokka-textarea-select label="Teams" selected="{{teams}}"></shokka-textarea-select>
         <paper-button on-tap="toggleTeam">Add New Team</paper-button>
         <h2>HOME</h2>
         <p><a href='/'>Home</a></p>
       </paper-material>
-    <firebase-document  location="{{teamLocation}}"
-                        data="{{team}}"></firebase-document>
     <shokka-team-modal id="teamModal" base-ref="[[baseRef]]" org-id="[[orgId]]" portfolio-id="[[portfolioId]]"></shokka-team-modal>
   </template>
 
@@ -41,19 +43,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-edit-portfolio',
 
         properties: {
-          teamLocation: {
-            type: String,
-            computed: '_computeTeamLocation(baseRef, teamName)'
-          },
+          teamsLocation: String,
           groupIdArray: {
             type: Array,
             computed: '_computeGroupIdArray(team)'
-          }
+          },
+          portfolioLocation: String
         },
 
-		toggleTeam: function() {
-		  this.$.teamModal.toggle();
-		},
+        observers: [
+          '_setPortfolioLocation(baseRef, orgId, portfolioId)',
+          '_setTeamsLocation(baseRef)'
+        ],
+
+    		toggleTeam: function() {
+    		  this.$.teamModal.toggle();
+    		},
 
         _computeTeamLocation: function(base, teamName) {
           return base + '/units/' + teamName;
@@ -61,6 +66,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _computeGroupIdArray: function(team) {
           return Object.keys((team || {}).children || {});
+        },
+
+        _setPortfolioLocation: function(baseRef, orgId, portfolioId) {
+          this.portfolioLocation = baseRef + '/orgs/' + orgId + '/portfolios/' + portfolioId;
+        },
+
+        _setTeamsLocation: function(baseRef, orgId, portfolioId) {
+          this.teamsLocation = baseRef + '/units';
         },
 
         getGroupName: function(team, groupId) {
