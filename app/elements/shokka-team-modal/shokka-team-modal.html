@@ -74,21 +74,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         submitTeam: function() {
+          if(!this.portfolioId) {
+            return;
+          }
           var team = {name: this.$.teamName.value};
-          var url = this.baseRef + '/units/' + this.$.teamArrayCollection.add(team).key();
+          var key = this.$.teamArrayCollection.add(team).key()
+          var url = this.baseRef + '/units/' + key;
           var unitTeamRef = new Firebase(url); // jshint ignore:line
-          var self = this;
           team.children = [].slice.apply(document.querySelectorAll('.group-checkbox[checked]')).reduce(function(total, elem) {
-            var ref = new Firebase(self.baseRef + '/orgs/' + self.orgId + '/groups/' + elem.id + '/name')
-            console.log(ref)
-            total[elem.id] = {'name': self.org.groups[elem.id].name}; 
+            total[elem.id] = true; 
             return total;
           }, {});
-          team.parent = { 'id': this.$.teamRadioGroup.selected,
-                          'name': this.org.portfolios[this.$.teamRadioGroup.selected].name };
+          team.parent = this.$.teamRadioGroup.selected;
           team.type = 'team';
           unitTeamRef.set(team);
-          for (var items = this.$.teamModal.querySelectorAll('[checked]'), i = items.length - 1; i >= 0; i--)
+
+
+          var url = this.baseRef + '/orgs/' + this.orgId + '/portfolios/' + this.portfolioId + '/teams/' + key;
+          console.log(url)
+          var portfolioTeamRef = new Firebase(url); // jshint ignore:line
+          portfolioTeamRef.set(true);
+
+          for (var items = this.$.teamModal.querySelectorAll('paper-checkbox[checked]'), i = items.length - 1; i >= 0; i--)
           {
             items[i].checked = false;
           }
