@@ -135,7 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page id="home" data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
-                <shokka-org-setup org="{{org}}"></shokka-org-setup>
+                <shokka-org-setup org="{{org}}" base-ref="{{baseRef}}" org-id="{{userInfo.org}}"></shokka-org-setup>
               </template>
               <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
@@ -266,6 +266,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-edit-group group-name="{{params.group}}"
                                 base-ref="{{baseRef}}"
                                 org="{{org}}"></shokka-edit-group>
+            </shokka-page>
+
+            <shokka-page data-route="categories" data-title="Categories" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-categories base-ref="{{baseRef}}" org-id="{{userInfo.org}}"></shokka-categories>
+            </shokka-page>
+
+            <shokka-page data-route="categories-assign" data-title="Assign Categories" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{userInfo.org}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
             </shokka-page>
           </iron-pages>
         </div>

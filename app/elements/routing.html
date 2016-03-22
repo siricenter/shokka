@@ -69,6 +69,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'evaluation';
     });
 
+    page('/categories', scrollToTop, function() {
+      app.route = 'categories';
+    });
+
+    page('/categories/assign', scrollToTop, function() {
+      app.route = 'categories-assign';
+    });
+
     // add #! before urls
     page({
       hashbang: true

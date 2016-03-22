@@ -20,11 +20,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <p>{{team.name}}</p>
     <firebase-document  location="{{teamLocation}}"
                         data="{{team}}"></firebase-document>
-      <template is="dom-repeat" items="{{_toKeyArray(team.users)}}" as="uid">
-        <shokka-user-item uid={{uid}}
-                          base-ref={{baseRef}}></shokka-user-item>
+    <template is="dom-repeat" items="{{_toKeyArray(team.users)}}" as="uid">
+      <shokka-user-item uid={{uid}}
+                        base-ref={{baseRef}}></shokka-user-item>
 
-      </template>
+    </template>
   </template>
   <script>
   (function() {
@@ -45,7 +45,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _toKeyArray: function(obj) {
-        return Object.keys(obj);
+        return Object.keys(obj || {});
       },
 
       _computeUserNameLocation: function() {
