@@ -247,10 +247,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="portfolio-info" data-title="{{getPortfolioName(org, params.portfolio)}}" route="{{route}}" page-title="{{pageTitle}}">
-              <h1>Teams</h1>
-              <shokka-portfolio-teams-list  base-ref="[[baseRef]]" portfolio-id="[[params.portfolio]]" org-id="{{userInfo.org}}" org="{{org}}"></shokka-portfolio-teams-list>
-              <h2>HOME</h2>
-              <p><a href='/'>Home</a></p>
+              <shokka-edit-portfolio  portfolio-id="[[params.portfolio]]"
+                                      org-id="[[userInfo.org]]"
+                                      base-ref="[[baseRef]]"></shokka-edit-portfolio>
             </shokka-page>
 
             <shokka-page data-route="team-info" data-title="{{getTeamName(org, params.team)}}" route="{{route}}" page-title="{{pageTitle}}">
