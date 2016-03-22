@@ -1,0 +1,102 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-team-modal">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-dialog id="teamModal"
+                  class="modal-dialog"
+                  with-backdrop
+                  entry-animation="scale-up-animation"
+                  exit-animation="fade-out-animation">  
+      <firebase-collection  id="portfolioArrayCollection"
+                            location="{{portfoliosLocation}}" 
+                            data="{{portfolios}}"></firebase-collection>  
+      <firebase-collection  id="teamArrayCollection"
+                            location="{{teamsLocation}}" 
+                            data="{{teams}}"></firebase-collection>
+      <firebase-collection location="{{groupsLocation}}" data="{{groups}}"></firebase-collection>
+      <h2>TEAM INFO</h2>
+      <paper-input id="teamName" label="Name"></paper-input>
+      <template is="dom-repeat" items="{{groups}}" as="group">
+        <paper-checkbox id="{{group.__firebaseKey__}}" class="group-checkbox">{{group.name}}</paper-checkbox>
+      </template>
+      <paper-radio-group id="teamRadioGroup" attr-for-selected="id" selected="{{portfolioId}}">
+        <template is="dom-repeat" items="{{portfolios}}" as="portfolio">
+          <paper-radio-button id="{{portfolio.__firebaseKey__}}" class="portfolio-radio">{{portfolio.name}}</paper-radio-button>
+        </template>
+      </paper-radio-group>
+      <paper-button on-tap="submitTeam">Submit</paper-button>
+    </paper-dialog>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'shokka-team-modal',
+        properties: {
+        },
+
+        observers: [
+          '_setPortfoiliosLocation(baseRef, orgId)',
+          '_setTeamsLocation(baseRef, orgId)',
+          '_setGroupsLocation(baseRef, orgId)'
+        ],
+
+        toggle: function() {
+          this.$.teamModal.toggle();
+        },
+
+        _setPortfoiliosLocation: function(baseRef, orgId) {
+          this.portfoliosLocation = baseRef + '/orgs/' + orgId + '/portfolios';
+        },
+
+        _setTeamsLocation: function(baseRef, orgId) {
+          this.teamsLocation = baseRef + '/orgs/' + orgId + '/teams';
+        },
+
+        _setGroupsLocation: function(baseRef, orgId) {
+          this.groupsLocation = baseRef + '/orgs/' + orgId + '/groups';
+        },
+
+        submitTeam: function() {
+          var team = {name: this.$.teamName.value};
+          var url = this.baseRef + '/units/' + this.$.teamArrayCollection.add(team).key();
+          var unitTeamRef = new Firebase(url); // jshint ignore:line
+          var self = this;
+          team.children = [].slice.apply(document.querySelectorAll('.group-checkbox[checked]')).reduce(function(total, elem) {
+            var ref = new Firebase(self.baseRef + '/orgs/' + self.orgId + '/groups/' + elem.id + '/name')
+            console.log(ref)
+            total[elem.id] = {'name': self.org.groups[elem.id].name}; 
+            return total;
+          }, {});
+          team.parent = { 'id': this.$.teamRadioGroup.selected,
+                          'name': this.org.portfolios[this.$.teamRadioGroup.selected].name };
+          team.type = 'team';
+          unitTeamRef.set(team);
+          for (var items = this.$.teamModal.querySelectorAll('[checked]'), i = items.length - 1; i >= 0; i--)
+          {
+            items[i].checked = false;
+          }
+          this.$.teamName.value = '';
+          this.$.teamModal.toggle();
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

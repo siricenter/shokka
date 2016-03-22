@@ -55,24 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
       <paper-button on-tap="submitPortfolio">Submit</paper-button>
     </paper-dialog>
-    <paper-dialog id="teamModal"
-                  class="modal-dialog"
-                  with-backdrop
-                  entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <firebase-collection location="{{groupsLocation}}" data="{{groups}}"></firebase-collection>
-      <h2>TEAM INFO</h2>
-      <paper-input id="teamName" label="Name"></paper-input>
-      <template is="dom-repeat" items="{{groups}}" as="group">
-        <paper-checkbox id="{{group.__firebaseKey__}}" class="group-checkbox">{{group.name}}</paper-checkbox>
-      </template>
-      <paper-radio-group id="teamRadioGroup" attr-for-selected="id" allow-empty-selection>
-        <template is="dom-repeat" items="{{portfolios}}" as="portfolio">
-          <paper-radio-button id="{{portfolio.__firebaseKey__}}" class="portfolio-radio">{{portfolio.name}}</paper-radio-button>
-        </template>
-      </paper-radio-group>
-      <paper-button on-tap="submitTeam">Submit</paper-button>
-    </paper-dialog>
+    <shokka-team-modal id="teamModal" base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-team-modal>
   </template>
   <script>
   (function() {
@@ -86,8 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       observers: [
         '_setTeamsLocation(baseRef, orgId)',
-        '_setPortfoilioLocation(baseRef, orgId)',
-        '_setGroupsLocation(baseRef, orgId)'
+        '_setPortfoilioLocation(baseRef, orgId)'
       ],
 
       _setPortfoilioLocation: function(baseRef, orgId) {
@@ -96,10 +78,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _setTeamsLocation: function(baseRef, orgId) {
         this.teamsLocation = baseRef + '/orgs/' + orgId + '/teams';
-      },
-
-      _setGroupsLocation: function(baseRef, orgId) {
-        this.groupsLocation = baseRef + '/orgs/' + orgId + '/groups';
       },
 
       togglePortfolio: function() {
@@ -121,26 +99,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           items[i].checked = false;
         }
         this.$.portfolioModal.toggle();
-      },
-
-      submitTeam: function() {
-        var team = {name: this.$.teamName.value};
-        var url = this.baseRef + '/units/' + this.$.teamArrayCollection.add(team).key();
-        var unitTeamRef = new Firebase(url); // jshint ignore:line
-        var self = this;
-        team.children = [].slice.apply(document.querySelectorAll('.group-checkbox[checked]')).reduce(function(total, elem) {
-          total[elem.id] = {'name': self.org.groups[elem.id].name}; return total;
-        }, {});
-        team.parent = { 'id': this.$.teamRadioGroup.selected,
-                        'name': this.org.portfolios[this.$.teamRadioGroup.selected].name };
-        team.type = 'team';
-        unitTeamRef.set(team);
-        for (var items = this.$.teamModal.querySelectorAll('[checked]'), i = items.length - 1; i >= 0; i--)
-        {
-          items[i].checked = false;
-        }
-        this.$.teamName.value = '';
-        this.$.teamModal.toggle();
       }
     });
   })();
