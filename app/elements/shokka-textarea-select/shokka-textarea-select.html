@@ -49,16 +49,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true
           },
 
-          floatLabel: {
-            type: Boolean,
-            computed: '_computeFloatLabel(selected)'
-          }
+          floatLabel: Boolean
 
         },
 
+        observers: [
+          '_computeFloatLabel(selected, selected.splices)'
+        ],
+
         // Functions
         _computeFloatLabel: function(selected) {
-          return selected.length;
+          this.floatLabel = selected.length;
         }
       });
 
