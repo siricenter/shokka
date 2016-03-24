@@ -29,14 +29,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             equal-to="portfolio"
                             location="{{unitsLocation}}"
                             data="{{portfolios}}"></firebase-collection>
-      <shokka-textarea-select label="Portfolios" selected="{{portfolios}}"></shokka-textarea-select>
+      <shokka-textarea-select label="Portfolios" selected="{{portfolios}}" base-url="/portfolios"></shokka-textarea-select>
       <paper-button on-tap="togglePortfolio" raised>Add New Portfolio</paper-button>
       <firebase-collection  id="teamArrayCollection"
                             order-by-child="type"
                             equal-to="team"
                             location="{{unitsLocation}}" 
                             data="{{teams}}"></firebase-collection>
-      <shokka-textarea-select label="Teams" selected="{{teams}}"></shokka-textarea-select>
+      <shokka-textarea-select label="Teams" selected="{{teams}}" base-url="/teams"></shokka-textarea-select>
       <paper-button on-tap="toggleTeam" raised>Add New Team</paper-button>
     </paper-material>
     <paper-dialog id="portfolioModal"
