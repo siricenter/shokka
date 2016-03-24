@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style><firebase-document  location="{{teamLocation}}"
                                 data="{{team}}"></firebase-document>
     <h1> GROUPS </h1>
-    <firebase-collection log order-by-child="parent/id"
+    <firebase-collection  order-by-child="parent/id"
                           equal-to="{{teamId}}"
                           location="{{groupsLocation}}"
                           data="{{groups}}"></firebase-collection>
