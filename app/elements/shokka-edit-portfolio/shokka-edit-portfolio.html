@@ -27,8 +27,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                               equal-to="{{portfolioId}}"
                               location="{{teamsLocation}}"
                               data="{{teams}}"></firebase-collection>
-        <shokka-textarea-select label="Teams" selected="{{teams}}"></shokka-textarea-select>
-        <paper-button on-tap="toggleTeam">Add New Team</paper-button>
+        <shokka-textarea-select label="Teams" selected="{{teams}}" base-url="/teams"></shokka-textarea-select>
+        <paper-button on-tap="toggleTeam" raised>Add New Team</paper-button>
         <h2>HOME</h2>
         <p><a href='/'>Home</a></p>
       </paper-material>
@@ -53,7 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         observers: [
           '_setPortfolioLocation(baseRef, orgId, portfolioId)',
-          '_setTeamsLocation(baseRef)'
+          '_setTeamsLocation(baseRef, orgId)'
         ],
 
     		toggleTeam: function() {
@@ -69,11 +69,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _setPortfolioLocation: function(baseRef, orgId, portfolioId) {
-          this.portfolioLocation = baseRef + '/orgs/' + orgId + '/portfolios/' + portfolioId;
+          this.portfolioLocation = baseRef + '/orgs/' + orgId + '/units/' + portfolioId;
         },
 
-        _setTeamsLocation: function(baseRef, orgId, portfolioId) {
-          this.teamsLocation = baseRef + '/units';
+        _setTeamsLocation: function(baseRef, orgId) {
+          this.teamsLocation = baseRef + '/orgs/' + orgId + '/units';
         },
 
         getGroupName: function(team, groupId) {
