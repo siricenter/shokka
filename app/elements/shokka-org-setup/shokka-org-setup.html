@@ -17,32 +17,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-org-setup">
   <template>
+    <style include="shared-styles"></style>
     <style>
       :host {
         display: block;
       }
     </style>
-    <h1>Portfolios</h1>
-    <firebase-collection  id="portfolioArrayCollection"
-                          location="{{portfoliosLocation}}" 
-                          data="{{portfolios}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{portfolios}}" as="portfolio">
-      <p><a href='/portfolios/[[portfolio.__firebaseKey__]]'>{{portfolio.name}}</a></p>
-    </template>
-    <paper-button on-tap="togglePortfolio">Add New Portfolio</paper-button>
-    <h1>Teams</h1>
-    <firebase-collection  id="teamArrayCollection"
-                          location="{{teamsLocation}}" 
-                          data="{{teams}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{teams}}" as="team">
-      <p><a href='/teams/[[team.__firebaseKey__]]'>{{team.name}}</a></p>
-    </template>
-    <paper-button on-tap="toggleTeam">Add New Team</paper-button>
-    <!-- THIS LINK IS NOT ACCURATE -->
-    <p><a href="/">
-      <iron-icon icon="main"></iron-icon>
-      <span>Create A User</span>
-    </a></p>
+    <paper-material elevation="1">
+      <firebase-collection  id="portfolioArrayCollection"
+                            order-by-child="type"
+                            equal-to="portfolio"
+                            location="{{unitsLocation}}"
+                            data="{{portfolios}}"></firebase-collection>
+      <shokka-textarea-select label="Portfolios" selected="{{portfolios}}"></shokka-textarea-select>
+      <paper-button on-tap="togglePortfolio" raised>Add New Portfolio</paper-button>
+      <firebase-collection  id="teamArrayCollection"
+                            order-by-child="type"
+                            equal-to="team"
+                            location="{{unitsLocation}}" 
+                            data="{{teams}}"></firebase-collection>
+      <shokka-textarea-select label="Teams" selected="{{teams}}"></shokka-textarea-select>
+      <paper-button on-tap="toggleTeam" raised>Add New Team</paper-button>
+    </paper-material>
     <paper-dialog id="portfolioModal"
                   class="modal-dialog"
                   with-backdrop
@@ -68,16 +64,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_setTeamsLocation(baseRef, orgId)',
-        '_setPortfoilioLocation(baseRef, orgId)'
+        '_setUnitsLocation(baseRef, orgId)'
       ],
 
-      _setPortfoilioLocation: function(baseRef, orgId) {
-        this.portfoliosLocation = baseRef + '/orgs/' + orgId + '/portfolios';
-      },
-
-      _setTeamsLocation: function(baseRef, orgId) {
-        this.teamsLocation = baseRef + '/orgs/' + orgId + '/teams';
+      _setUnitsLocation: function(baseRef, orgId) {
+        this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
       },
 
       togglePortfolio: function() {

@@ -16,6 +16,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
       <style>
         :host {
+          --paper-input-container-label-floating: {
+            font-size: 2rem;
+            font-weight: bold;
+            padding-bottom: .5rem;
+            color: #333;
+          };
+        }
+
+        paper-input-container {
+          margin: 2rem 0 1rem;
         }
       </style>
       <paper-input-container always-float-label="[[floatLabel]]">
