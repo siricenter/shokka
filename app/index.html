@@ -259,9 +259,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="group-info" data-title="{{getGroupName(org, params.group)}}" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-group group-name="{{params.group}}"
-                                base-ref="{{baseRef}}"
-                                org="{{org}}"></shokka-edit-group>
+              <shokka-edit-group group-id="[[params.group]]"
+                                base-ref="[[baseRef]]"
+                                org-id="[[userInfo.org]]"></shokka-edit-group>
             </shokka-page>
 
             <shokka-page data-route="categories" data-title="Categories" route="{{route}}" page-title="{{pageTitle}}">

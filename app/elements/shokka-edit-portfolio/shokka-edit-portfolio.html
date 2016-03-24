@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <firebase-document  location="{{portfolioLocation}}"
                             data="{{portfolio}}"></firebase-document>
         <h1><paper-input value="{{portfolio.name}}" label="Portfolio Name"></paper-input></h1>
-        <firebase-collection  order-by-child="parent"
+        <firebase-collection  order-by-child="parent/id"
                               equal-to="{{portfolioId}}"
                               location="{{teamsLocation}}"
                               data="{{teams}}"></firebase-collection>
