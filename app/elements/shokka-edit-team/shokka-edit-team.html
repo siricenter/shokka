@@ -16,15 +16,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
-    </style>
-    <firebase-document  location="{{teamLocation}}"
-                        data="{{team}}"></firebase-document>
+    </style><firebase-document  location="{{teamLocation}}"
+                                data="{{team}}"></firebase-document>
     <h1> GROUPS </h1>
-    <template is="dom-repeat" items="{{groupIdArray}}" as="groupId">
-      <p><a href="/groups/{{groupId}}">{{getGroupName(team, groupId)}}</a></p>
+    <firebase-collection log order-by-child="parent"
+                          equal-to="{{teamId}}"
+                          location="{{groupsLocation}}"
+                          data="{{groups}}"></firebase-collection>
+    <template is="dom-repeat" items="{{groups}}" as="group">
+      <p><a href="/groups/{{group.__firebaseKey__}}">{{group.name}}</a></p>
     </template>
     <h2> PARENT </h2>
-    <p><a href="/portfolios/{{team.parent.id}}">{{team.parent.name}}</a></p>
+    <p><a href="/portfolios/{{team.__firebaseKey__}}">{{team.name}}</a></p>
   </template>
 
   <script>
@@ -35,18 +38,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-edit-team',
 
         properties: {
-          teamLocation: {
-            type: String,
-            computed: '_computeTeamLocation(baseRef, teamName)'
-          },
+          teamLocation: String,
+          groupsLocation: String,
           groupIdArray: {
             type: Array,
             computed: '_computeGroupIdArray(team)'
           }
         },
 
-        _computeTeamLocation: function(base, teamName) {
-          return base + '/units/' + teamName;
+        observers: [
+          '_setTeamLocation(baseRef, orgId, teamId)',
+          '_setGroupsLocation(baseRef, orgId)'
+        ],
+
+        _setGroupsLocation: function(baseRef, orgId) {
+          this.groupsLocation = baseRef + '/orgs/' + orgId + '/units';
+        },
+
+        _setTeamLocation: function(baseRef, orgId, teamId) {
+          this.teamLocation = baseRef + '/orgs/' + orgId + '/units/' + teamId;
         },
 
         _computeGroupIdArray: function(team) {

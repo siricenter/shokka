@@ -253,9 +253,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="team-info" data-title="{{getTeamName(org, params.team)}}" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-team team-name="{{params.team}}"
-                                base-ref="{{baseRef}}"
-                                org="{{org}}"></shokka-edit-team>
+              <shokka-edit-team team-id="[[params.team]]"
+                                base-ref="[[baseRef]]"
+                                org-id="[[userInfo.org]]"></shokka-edit-team>
             </shokka-page>
 
             <shokka-page data-route="group-info" data-title="{{getGroupName(org, params.group)}}" route="{{route}}" page-title="{{pageTitle}}">
