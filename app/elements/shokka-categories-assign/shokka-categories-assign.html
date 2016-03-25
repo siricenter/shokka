@@ -17,14 +17,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <firebase-collection  location="{{categoriesLocation}}"
-                          data="{{categoriesIds}}"></firebase-collection>
-    <template is="dom-repeat" items="{{categoriesIds}}" as="categoryId">
+                          data="{{categories}}"></firebase-collection>
+    <template is="dom-repeat" items="{{categories}}" as="category">
       <shokka-category-tile   base-ref="[[baseRef]]"
-                              category-id="[[categoryId.__firebaseKey__]]"></shokka-category-tile>
+                              org-id="[[orgId]]"
+                              category-id="[[category.__firebaseKey__]]"></shokka-category-tile>
     </template>
     <p>##################################################################</p>
     <template is="dom-repeat" items="{{teamIds}}" as="teamId">
       <shokka-unit-tile   base-ref="[[baseRef]]"
+                          org-id="[[orgId]]"
                           unit-id="[[teamId]]"></shokka-unit-tile>
     </template>
   </template>
@@ -48,11 +50,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers: [
-          '_buildCategoriesLocation(baseRef, orgId)',
+          '_setCategoriesLocation(baseRef, orgId)',
           '_buildTeamIds(teamIdsObject)'
         ],
 
-        _buildCategoriesLocation: function(baseRef, orgId) {
+        _setCategoriesLocation: function(baseRef, orgId) {
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
         },
 

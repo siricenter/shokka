@@ -53,7 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_computeUnitLocation(baseRef, unitId)',
+        '_setUnitLocation(baseRef, orgId, unitId)',
         '_setType(unit)',
         '_createChildrenArray(unit)',
         '_createCategoryArray(unit)'
@@ -67,8 +67,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.categoryArray = Object.keys((unit || {}).categories || {});
       },
 
-      _computeUnitLocation: function(baseRef, unitId) {
-        this.unitLocation = baseRef + '/units/' + unitId;
+      _setUnitLocation: function(baseRef, orgId, unitId) {
+        this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
       },
 
       _setType: function(team) {
