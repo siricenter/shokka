@@ -152,7 +152,7 @@ Custom property | Description | Default
     </div>
     <div id="selected" class="selected-options">
       <template is="dom-repeat" items="{{selected}}">
-        <a href="/teams/{{item.__firebaseKey__}}"><paper-button raised>{{item.name}}<iron-icon icon="close" on-mouseover="iconHoverOn" on-mouseout="iconHoverOff" on-tap="removeSelected"></iron-icon></paper-button></a>
+        <a href="{{baseUrl}}/{{item.__firebaseKey__}}"><paper-button raised>{{item.name}}<iron-icon icon="close" on-mouseover="iconHoverOn" on-mouseout="iconHoverOff" on-tap="removeSelected"></iron-icon></paper-button></a>
       </template>
     </div>
   </template>

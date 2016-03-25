@@ -16,11 +16,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
       <style>
         :host {
+          --paper-input-container-label-floating: {
+            font-size: 2rem;
+            font-weight: bold;
+            padding-bottom: .5rem;
+            color: #333;
+          };
+        }
+
+        paper-input-container {
+          margin: 2rem 0 1rem;
         }
       </style>
       <paper-input-container always-float-label="[[floatLabel]]">
         <label hidden$="[[!label]]">[[label]]</label>
-        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}}></shokka-textarea-select-textarea>
+        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}} base-url="{{baseUrl}}"></shokka-textarea-select-textarea>
       </paper-input-container>
   </template>
 
