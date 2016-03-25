@@ -78,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return;
           }
           var team = {name: this.$.teamName.value};
-          var key = this.$.teamArrayCollection.add(team).key()
+          var key = this.$.teamArrayCollection.add(team).key();
           var url = this.baseRef + '/units/' + key;
           var unitTeamRef = new Firebase(url); // jshint ignore:line
           team.children = [].slice.apply(document.querySelectorAll('.group-checkbox[checked]')).reduce(function(total, elem) {
@@ -90,8 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           unitTeamRef.set(team);
 
 
-          var url = this.baseRef + '/orgs/' + this.orgId + '/portfolios/' + this.portfolioId + '/teams/' + key;
-          console.log(url)
+          url = this.baseRef + '/orgs/' + this.orgId + '/portfolios/' + this.portfolioId + '/teams/' + key;
           var portfolioTeamRef = new Firebase(url); // jshint ignore:line
           portfolioTeamRef.set(true);
 
