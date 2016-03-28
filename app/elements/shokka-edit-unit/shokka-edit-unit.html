@@ -23,23 +23,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <firebase-document  location="{{unitLocation}}"
                             data="{{unit}}"></firebase-document>
         <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
-        <template is="dom-if" if="{{isGroup}}">
-          <firebase-collection  order-by-child="teams/{{unitId}}"
-                                order-value-type="boolean"
-                                equal-to="true"
-                                location="{{usersLocation}}"
-                                data="{{teams}}"></firebase-collection>
-        </template>
-        <template is="dom-if" if="{{_isNotGroup(isGroup)}}">
-          <firebase-collection  order-by-child="parent"
-                                equal-to="{{unitId}}"
-                                location="{{teamsLocation}}"
-                                data="{{teams}}"></firebase-collection>
-        </template>
-        <shokka-textarea-select label="Children" selected="{{teams}}" base-url="{{childPath}}"></shokka-textarea-select>
-        <paper-button on-tap="toggleTeam">Add New Child</paper-button>
+        <firebase-collection  location="{{firebaseCollectionProperties.location}}"
+                              order-value-type="{{firebaseCollectionProperties.orderValueType}}"
+                              order-by-child="{{firebaseCollectionProperties.orderByChild}}"
+                              equal-to="{{firebaseCollectionProperties.equalTo}}"
+                              data="{{children}}"></firebase-collection>
+        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}"></shokka-textarea-select>
+        <paper-button raised on-tap="toggleTeam">Add New Child</paper-button>
         <h2>Parent</h2>
-        <p><a href='{{parentPath}}'>Parent</a></p>
+        <p><a href='{{parentPath}}'>Up</a></p>
       </paper-material>
     <template is="dom-if" if="isPortfolio">
       <shokka-team-modal id="unitModal" base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[portfolioId]]"></shokka-team-modal>
@@ -54,43 +46,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-edit-unit',
 
         properties: {
-          teamsLocation: String,
-          groupIdArray: {
-            type: Array,
-            computed: '_computeGroupIdArray(team)'
-          },
-          portfolioLocation: String
         },
 
         observers: [
-          '_setIsUnits(unit)',
+          '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
           '_setUnitLocation(baseRef, orgId, unitId)',
-          '_setUnitsLocation(baseRef, orgId)'
+          '_setUnitsLocation(baseRef, orgId)',
+          '_setPaths(unit)'
         ],
 
-        _isNotGroup: function(isGroup) {
-          return !isGroup;
-        },
-
-        _setIsUnits: function(unit) {
-          this.isPortfolio = unit.type === 'portfolio';
-          this.isTeam = unit.type === 'team';
-          this.isGroup = unit.type === 'group';
-          if (this.isPortfolio) {
+        _setPaths: function(unit) {
+          if (unit.type === 'portfolio') {
+            this.parentPath = '/';
             this.childPath = 'teams';
-          } else if (this.isTeam) {
+          } else if (unit.type === 'team') {
             this.parentPath = '/portfolios/';
             this.childPath = 'groups';
-          } else if ( this.isGroup) {
+          } else if (unit.type === 'group') {
             this.parentPath = '/teams/';
-            this.childpath = 'users';
+            this.childPath = 'users';
+          } else {
+            this.parentPath = '#';
+            this.childPath = '#';
           }
+          this.parentPath += unit.parent || '';
+        },
 
-          console.log('Portfolio: ', this.isPortfolio);
-          console.log('Team: ', this.isTeam);
-          console.log('Group: ', this.isGroup);
-          console.log('Parent Path: ', this.parentPath);
-          console.log('Child Path: ', this.childPath);
+        _setFirebaseCollection: function(baseRef, orgId, unitId, unit) {
+          var firebaseCollectionArray = [
+            {
+              // For porfolios or teams
+              orderByChild: 'parent',
+              orderValueType: 'string',
+              equalTo: unitId,
+              location: baseRef + '/orgs/' + orgId + '/units'
+            },
+            {
+              // for groups because they are special
+              orderByChild: 'teams/' + unitId,
+              orderValueType: 'boolean',
+              equalTo: 'true',
+              location: baseRef + '/orgs/' + orgId + '/users'
+            }
+          ];
+
+          this.firebaseCollectionProperties = firebaseCollectionArray[unit.type === 'group' ? 1 : 0];
         },
 
     		toggleUnit: function() {
@@ -99,10 +99,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _computeUnitLocation: function(base, teamName) {
           return base + '/units/' + teamName;
-        },
-
-        _computeGroupIdArray: function(team) {
-          return Object.keys((team || {}).children || {});
         },
 
         _setUnitLocation: function(baseRef, orgId, unitId) {

@@ -71,11 +71,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
       },
 
-      _setType: function(team) {
-        if (team.type === 'team') {
-          this.isTeam = true;
+      _setType: function(unit) {
+        if ((unit || {}).type === 'team') {
+          this.isunit = true;
           this.isGroup = false;
-        } else if (team.type === 'group') {
+        } else if ((unit || {}).type === 'group') {
           this.isTeam = false;
           this.isGroup = true;
         } else {
