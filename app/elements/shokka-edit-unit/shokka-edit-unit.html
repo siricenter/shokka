@@ -49,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers: [
+          '_resetFirebaseCollection(unitId)',
           '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
           '_setUnitLocation(baseRef, orgId, unitId)',
           '_setUnitsLocation(baseRef, orgId)',
@@ -70,6 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.childPath = '#';
           }
           this.parentPath += unit.parent || '';
+        },
+
+        _resetFirebaseCollection: function() {
+          this.firebaseCollectionProperties = null;
         },
 
         _setFirebaseCollection: function(baseRef, orgId, unitId, unit) {
