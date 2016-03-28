@@ -31,11 +31,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_computeModuleLocation(baseRef, moduleId)'
+        '_computeModuleLocation(baseRef, orgId, moduleId)'
       ],
 
-      _computeModuleLocation: function(baseRef, moduleId) {
-        this.moduleLocation = baseRef + '/modules/' + moduleId;
+      _computeModuleLocation: function(baseRef, orgId, moduleId) {
+        this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
       }
     });
   })();
