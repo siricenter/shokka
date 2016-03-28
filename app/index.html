@@ -246,22 +246,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </template>
             </shokka-page>
 
+            <shokka-page data-route="unit-info" data-title="Unit" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-unit unit-id="[[params.unit]]"
+                                org-id="[[userInfo.org]]"
+                                base-ref="[[baseRef]]"></shokka-edit-unit>
+            </shokka-page>
+
             <shokka-page data-route="portfolio-info" data-title="Portfolio" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-portfolio  portfolio-id="[[params.portfolio]]"
-                                      org-id="[[userInfo.org]]"
-                                      base-ref="[[baseRef]]"></shokka-edit-portfolio>
+              <shokka-edit-unit unit-id="[[params.portfolio]]"
+                                org-id="[[userInfo.org]]"
+                                base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
-            <shokka-page data-route="team-info" data-title="{{getTeamName(org, params.team)}}" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-team team-name="{{params.team}}"
-                                base-ref="{{baseRef}}"
-                                org="{{org}}"></shokka-edit-team>
+            <shokka-page data-route="team-info" data-title="Team" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-unit unit-id="[[params.team]]"
+                                org-id="[[userInfo.org]]"
+                                base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
-            <shokka-page data-route="group-info" data-title="{{getGroupName(org, params.group)}}" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-group group-name="{{params.group}}"
-                                base-ref="{{baseRef}}"
-                                org="{{org}}"></shokka-edit-group>
+            <shokka-page data-route="group-info" data-title="Group" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-unit unit-id="[[params.group]]"
+                                org-id="[[userInfo.org]]"
+                                base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
             <shokka-page data-route="categories" data-title="Categories" route="{{route}}" page-title="{{pageTitle}}">
