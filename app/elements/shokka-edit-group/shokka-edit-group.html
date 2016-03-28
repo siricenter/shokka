@@ -35,18 +35,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-edit-group',
 
         properties: {
-          groupLocation: {
-            type: String,
-            computed: '_computeGroupLocation(baseRef, groupName)'
-          },
+          groupLocation: String,
           userIdArray: {
             type: Array,
             computed: '_computeUserIdArray(group)'
           }
         },
 
-        _computeGroupLocation: function(base, groupName) {
-          return base + '/units/' + groupName;
+        observers: [
+          '_setGroupLocation(baseRef, orgId, groupId)',
+        ],
+
+        _setGroupLocation: function(baseRef, orgId, groupId) {
+          this.groupLocation = baseRef + '/orgs/' + orgId + '/units/' + groupId;
         },
 
         _computeUserIdArray: function(group) {

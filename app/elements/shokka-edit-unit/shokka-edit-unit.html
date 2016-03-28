@@ -1,0 +1,124 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../shokka-team-modal/shokka-team-modal.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+
+<dom-module id="shokka-edit-unit">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+      <paper-material elevation="1">
+        <firebase-document  location="{{unitLocation}}"
+                            data="{{unit}}"></firebase-document>
+        <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
+        <firebase-collection  location="{{firebaseCollectionProperties.location}}"
+                              order-value-type="{{firebaseCollectionProperties.orderValueType}}"
+                              order-by-child="{{firebaseCollectionProperties.orderByChild}}"
+                              equal-to="{{firebaseCollectionProperties.equalTo}}"
+                              data="{{children}}"></firebase-collection>
+        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}"></shokka-textarea-select>
+        <paper-button raised on-tap="toggleTeam">Add New Child</paper-button>
+        <h2>Parent</h2>
+        <p><a href='{{parentPath}}'>Up</a></p>
+      </paper-material>
+    <template is="dom-if" if="isPortfolio">
+      <shokka-team-modal id="unitModal" base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[portfolioId]]"></shokka-team-modal>
+    </template>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'shokka-edit-unit',
+
+        properties: {
+        },
+
+        observers: [
+          '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
+          '_setUnitLocation(baseRef, orgId, unitId)',
+          '_setUnitsLocation(baseRef, orgId)',
+          '_setPaths(unit)'
+        ],
+
+        _setPaths: function(unit) {
+          if (unit.type === 'portfolio') {
+            this.parentPath = '/';
+            this.childPath = 'teams';
+          } else if (unit.type === 'team') {
+            this.parentPath = '/portfolios/';
+            this.childPath = 'groups';
+          } else if (unit.type === 'group') {
+            this.parentPath = '/teams/';
+            this.childPath = 'users';
+          } else {
+            this.parentPath = '#';
+            this.childPath = '#';
+          }
+          this.parentPath += unit.parent || '';
+        },
+
+        _setFirebaseCollection: function(baseRef, orgId, unitId, unit) {
+          var firebaseCollectionArray = [
+            {
+              // For porfolios or teams
+              orderByChild: 'parent',
+              orderValueType: 'string',
+              equalTo: unitId,
+              location: baseRef + '/orgs/' + orgId + '/units'
+            },
+            {
+              // for groups because they are special
+              orderByChild: 'teams/' + unitId,
+              orderValueType: 'boolean',
+              equalTo: 'true',
+              location: baseRef + '/orgs/' + orgId + '/users'
+            }
+          ];
+
+          this.firebaseCollectionProperties = firebaseCollectionArray[unit.type === 'group' ? 1 : 0];
+        },
+
+    		toggleUnit: function() {
+    		  this.$.teamModal.toggle();
+    		},
+
+        _computeUnitLocation: function(base, teamName) {
+          return base + '/units/' + teamName;
+        },
+
+        _setUnitLocation: function(baseRef, orgId, unitId) {
+          this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
+        },
+
+        _setUnitsLocation: function(baseRef, orgId) {
+          this.teamsLocation = baseRef + '/orgs/' + orgId + '/units';
+        },
+
+        _setUsersLocation: function(baseRef, orgId) {
+          this.teamsLocation = baseRef + '/orgs/' + orgId + '/units';
+        },
+
+        getUnitName: function(org, unitId) {
+          return (((org || {}).units || {})[unitId] || {}).name;
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>

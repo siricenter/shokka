@@ -30,11 +30,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_computeCategoryLocation(baseRef, categoryId)'
+        '_setCategoryLocation(baseRef, orgId, categoryId)'
       ],
 
-      _computeCategoryLocation: function(baseRef, categoryId) {
-        this.categoryLocation = baseRef + '/categories/' + categoryId;
+      _setCategoryLocation: function(baseRef, orgId, categoryId) {
+        this.categoryLocation = baseRef + '/orgs/' + orgId + '/categories/' + categoryId;
       }
     });
   })();

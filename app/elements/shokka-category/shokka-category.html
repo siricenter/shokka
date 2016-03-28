@@ -17,7 +17,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <p>Category Name: {{category.name}}</p>
     <template is="dom-repeat" items="{{moduleArray}}" as="moduleId">
       <shokka-module  base-ref="[[baseRef]]"
-                      module-id="[[moduleId]]"></shokka-module>
+                      module-id="[[moduleId]]"
+                      org-id="[[orgId]]"></shokka-module>
     </template>
   </template>
   <script>
@@ -34,12 +35,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_computeCategoryLocation(baseRef, categoryId)',
+        '_setCategoryLocation(baseRef, orgId, categoryId)',
         '_computeModuleArray(category)'
       ],
 
-      _computeCategoryLocation: function(baseRef, categoryId) {
-        this.categoryLocation = baseRef + '/categories/' + categoryId;
+      _setCategoryLocation: function(baseRef, orgId, categoryId) {
+        this.categoryLocation = baseRef + '/orgs/' + orgId + '/categories/' + categoryId;
       },
 
       _computeModuleArray: function(category) {
