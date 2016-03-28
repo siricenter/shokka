@@ -53,11 +53,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
 
         _buildCategoriesLocation: function(baseRef, orgId) {
+          if (!baseRef || !orgId) {
+            this.categoriesLocation = null;
+          }
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
         },
 
         _buildTeamIds: function(teamIdsObject) {
-          this.teamIds = Object.keys(teamIdsObject);
+          this.teamIds = Object.keys(teamIdsObject || {});
         }
       });
     })();
