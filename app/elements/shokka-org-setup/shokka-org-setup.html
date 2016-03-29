@@ -30,28 +30,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             location="{{unitsLocation}}"
                             data="{{portfolios}}"></firebase-collection>
       <shokka-textarea-select label="Portfolios" selected="{{portfolios}}" base-url="/portfolios"></shokka-textarea-select>
-      <paper-button on-tap="togglePortfolio" raised>Add New Portfolio</paper-button>
+      <paper-button raised on-tap="createPortfolio">New Portfolio</paper-button>
       <firebase-collection  id="teamArrayCollection"
                             order-by-child="type"
                             equal-to="team"
                             location="{{unitsLocation}}" 
                             data="{{teams}}"></firebase-collection>
       <shokka-textarea-select label="Teams" selected="{{teams}}" base-url="/teams"></shokka-textarea-select>
-      <paper-button on-tap="toggleTeam" raised>Add New Team</paper-button>
+      <paper-button raised on-tap="createTeam">New Team</paper-button>
     </paper-material>
-    <paper-dialog id="portfolioModal"
-                  class="modal-dialog"
-                  with-backdrop
-                  entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <h2>PORTFOLIO INFO</h2>
-      <paper-input id="portName" label="Name"></paper-input>
-      <template is="dom-repeat" items="{{teams}}" as="team">
-        <paper-checkbox id="{{team.__firebaseKey__}}" class="team-checkbox">{{team.name}}</paper-checkbox>
-      </template>
-      <paper-button on-tap="submitPortfolio">Submit</paper-button>
-    </paper-dialog>
-    <shokka-team-modal id="teamModal" base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-team-modal>
   </template>
   <script>
   (function() {
@@ -67,29 +54,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_setUnitsLocation(baseRef, orgId)'
       ],
 
+      createPortfolio: function() {
+        window.page('#!/portfolios/' + this.$.portfolioArrayCollection.add({type: 'portfolio'}).key());
+      },
+
+      createTeam: function() {
+        window.page('#!/teams/' + this.$.teamArrayCollection.add({type: 'team'}).key());
+      },
+
       _setUnitsLocation: function(baseRef, orgId) {
         this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
-      },
-
-      togglePortfolio: function() {
-          this.$.portfolioModal.toggle();
-      },
-
-      toggleTeam: function() {
-          this.$.teamModal.toggle();
-      },
-
-      submitPortfolio: function() {
-        var portfolio = {name: this.$.portName.value};
-        portfolio.teams = [].slice.apply(document.querySelectorAll('.team-checkbox[checked]')).reduce(function(total, elem){total[elem.id] = true; return total;}, {});
-
-        this.$.portfolioArrayCollection.add(portfolio);
-        this.$.portfolioName.value = '';
-        for (var items = this.$.portfolioModal.querySelectorAll('[checked]'), i = items.length - 1; i >= 0; i--)
-        {
-          items[i].checked = false;
-        }
-        this.$.portfolioModal.toggle();
       }
     });
   })();
