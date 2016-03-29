@@ -19,10 +19,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
+      <firebase-collection  location="{{unitsLocation}}"
+                            equal-to="{{parentType}}"
+                            order-by-child="type"
+                            data="{{possibleParents}}"></firebase-collection>
       <paper-material elevation="1">
         <firebase-document  location="{{unitLocation}}"
                             data="{{unit}}"></firebase-document>
         <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
+        <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
+            <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
+              <paper-item value="{{possibleParent.__firebaseKey__}}">{{possibleParent.name}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
         <firebase-collection  location="{{firebaseCollectionProperties.location}}"
                               order-value-type="{{firebaseCollectionProperties.orderValueType}}"
                               order-by-child="{{firebaseCollectionProperties.orderByChild}}"
@@ -57,15 +68,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
 
         _setPaths: function(unit) {
+          this.isPortfolio = false;
           if (unit.type === 'portfolio') {
+            this.isPortfolio = true;
             this.parentPath = '/';
             this.childPath = 'teams';
+            this.parentType = null;
           } else if (unit.type === 'team') {
             this.parentPath = '/portfolios/';
             this.childPath = 'groups';
+            this.parentType = 'portfolio';
           } else if (unit.type === 'group') {
             this.parentPath = '/teams/';
             this.childPath = 'users';
+            this.parentType = 'team';
           } else {
             this.parentPath = '#';
             this.childPath = '#';
@@ -98,28 +114,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.firebaseCollectionProperties = firebaseCollectionArray[unit.type === 'group' ? 1 : 0];
         },
 
-    		toggleUnit: function() {
-    		  this.$.teamModal.toggle();
-    		},
-
-        _computeUnitLocation: function(base, teamName) {
-          return base + '/units/' + teamName;
-        },
-
         _setUnitLocation: function(baseRef, orgId, unitId) {
           this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
         },
 
         _setUnitsLocation: function(baseRef, orgId) {
-          this.teamsLocation = baseRef + '/orgs/' + orgId + '/units';
-        },
-
-        _setUsersLocation: function(baseRef, orgId) {
-          this.teamsLocation = baseRef + '/orgs/' + orgId + '/units';
-        },
-
-        getUnitName: function(org, unitId) {
-          return (((org || {}).units || {})[unitId] || {}).name;
+          this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
         }
 
       });
