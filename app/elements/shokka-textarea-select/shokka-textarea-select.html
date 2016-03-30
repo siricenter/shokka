@@ -30,7 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </style>
       <paper-input-container always-float-label="[[floatLabel]]">
         <label hidden$="[[!label]]">[[label]]</label>
-        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}} base-url="{{baseUrl}}"></shokka-textarea-select-textarea>
+        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}} base-url="{{baseUrl}}" firebase-id="{{firebaseId}}"></shokka-textarea-select-textarea>
       </paper-input-container>
   </template>
 
@@ -43,6 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         properties: {
           label: String,
+          floatLabel: Boolean,
 
           /**
            * List of autocomplete options - not implimented yet.
@@ -57,9 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           selected: {
             type: Array,
             notify: true
-          },
-
-          floatLabel: Boolean
+          }
 
         },
 
