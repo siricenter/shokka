@@ -147,22 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{!userInfo.roles.manager}}">
                   <template template is="dom-if" if="{{userInfo.roles.employee}}">
-                    <paper-material elevation="1">
-                      <shokka-eval-chart  id="last"
-                                          user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
-                    </paper-material>
-                    <paper-material elevation="1">
-                      <shokka-eval-chart  id="comparison"
-                                          user-avg-evals="[[userInfo.evalYearAvg]]"
-                                          avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
-                    </paper-material>
-                    <paper-material elevation="1">
-                      <shokka-eval-chart  id="overTime"
-                                          user-avg-evals="[[userInfo.evalYearAvg]]"></shokka-eval-chart>
-                    </paper-material>
-                    <paper-material elevation="1">
-                      <road-map base-ref="{{baseRef}}" user-road-map="{{userInfo.roadMap}}"></road-map>
-                    </paper-material>
+                    <shokka-employee-view base-ref="{{baseRef}}" org-id="{{userInfo.org}}" viewer-info="{{userInfo}}" viewee-id="{{user.uid}}"></shokka-employee-view>
                   </template>
                 </template>
               </template>
@@ -182,13 +167,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </shokka-page>
 
-            <shokka-page data-route="user-info" route="{{route}}" page-title="{{pageTitle}}">
-              <paper-material elevation="1">
-                <h2 class="page-title">
-                User:<span>{{params.name}}</span>
-                </h2>
-                <div>This is <span>{{params.name}}</span>'s section</div>
-              </paper-material>
+            <shokka-page data-route="user-info" data-title="User Overview" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-employee-view base-ref="{{baseRef}}" org-id="{{userInfo.org}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
             </shokka-page>
 
             <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
