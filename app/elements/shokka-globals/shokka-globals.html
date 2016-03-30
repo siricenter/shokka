@@ -16,11 +16,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                          data="{{evaluationCriteria}}"></firebase-document>
     <firebase-collection location="{{evaluationCategoriesLocation}}" 
                          data="{{evaluationCategories}}"></firebase-collection>
-    <template template is="dom-if" if="{{orgInfoAllowed}}">
-      <firebase-document   location="{{orgLocation}}" 
-                           data="{{org}}"
-                           on-firebase-value="_computeUsersInOrg"></firebase-document>
-    </template>
   </template>
   <script>
   (function() {

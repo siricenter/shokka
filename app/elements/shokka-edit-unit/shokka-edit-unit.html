@@ -1,0 +1,149 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../shokka-team-modal/shokka-team-modal.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+
+<dom-module id="shokka-edit-unit">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+      <firebase-collection  location="{{unitsLocation}}"
+                            equal-to="{{parentType}}"
+                            order-by-child="type"
+                            data="{{possibleParents}}"></firebase-collection>
+      <paper-material elevation="1">
+        <firebase-document  location="{{unitLocation}}"
+                            data="{{unit}}"></firebase-document>
+        <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
+        <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
+            <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
+              <paper-item value="{{possibleParent.__firebaseKey__}}">{{possibleParent.name}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
+        <firebase-collection  id="childrenCollection"
+                              location="{{firebaseCollectionProperties.location}}"
+                              order-value-type="{{firebaseCollectionProperties.orderValueType}}"
+                              order-by-child="{{firebaseCollectionProperties.orderByChild}}"
+                              equal-to="{{firebaseCollectionProperties.equalTo}}"
+                              data="{{children}"></firebase-collection>
+        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}"></shokka-textarea-select>
+        <paper-button raised on-tap="_createChild">New Child</paper-button>
+        <h2>Parent</h2>
+        <p><a href='{{parentPath}}'>Up</a></p>
+      </paper-material>
+    <template is="dom-if" if="isPortfolio">
+      <shokka-team-modal id="unitModal" base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[portfolioId]]"></shokka-team-modal>
+    </template>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'shokka-edit-unit',
+
+        properties: {
+        },
+
+        observers: [
+          '_resetFirebaseCollection(unitId)',
+          '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
+          '_setUnitLocation(baseRef, orgId, unitId)',
+          '_setUnitsLocation(baseRef, orgId)',
+          '_setPaths(unit)'
+        ],
+
+        _createChild: function() {
+          var ref = this.$.childrenCollection;
+          if (this.unit.type === 'portfolio') {
+            window.page('#!/teams/' + ref.add({type: 'team', parent: this.unitId}).key());
+          } else if(this.unit.type === 'team') {
+            window.page('#!/groups/' + ref.add({type: 'group', parent: this.unitId}).key());
+          } else if(this.unit.type === 'group') {
+            // Will need to implement a signin for the user and to write to base level users
+            var user = {};
+            user.name = 'New User';
+            user.teams = {};
+            user.teams[this.unitId] = true;
+            window.page('#!/users/' + ref.add(user).key());
+          }
+        },
+
+        _setPaths: function(unit) {
+          this.isPortfolio = false;
+          if (unit.type === 'portfolio') {
+            this.isPortfolio = true;
+            this.parentPath = '/';
+            this.childPath = 'teams';
+            this.parentType = null;
+            this.childType = 'team';
+          } else if (unit.type === 'team') {
+            this.parentPath = '/portfolios/';
+            this.childPath = 'groups';
+            this.parentType = 'portfolio';
+            this.childType = 'group';
+          } else if (unit.type === 'group') {
+            this.parentPath = '/teams/';
+            this.childPath = 'users';
+            this.parentType = 'team';
+            this.childType = 'user';
+          } else {
+            this.parentPath = '#';
+            this.childPath = '#';
+          }
+          this.parentPath += unit.parent || '';
+        },
+
+        _resetFirebaseCollection: function() {
+          this.firebaseCollectionProperties = null;
+        },
+
+        _setFirebaseCollection: function(baseRef, orgId, unitId, unit) {
+          var firebaseCollectionArray = [
+            {
+              // For porfolios or teams
+              orderByChild: 'parent',
+              orderValueType: 'string',
+              equalTo: unitId,
+              location: baseRef + '/orgs/' + orgId + '/units'
+            },
+            {
+              // for groups because they are special
+              orderByChild: 'teams/' + unitId,
+              orderValueType: 'boolean',
+              equalTo: 'true',
+              location: baseRef + '/orgs/' + orgId + '/users'
+            }
+          ];
+
+          this.firebaseCollectionProperties = firebaseCollectionArray[unit.type === 'group' ? 1 : 0];
+        },
+
+        _setUnitLocation: function(baseRef, orgId, unitId) {
+          this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
+        },
+
+        _setUnitsLocation: function(baseRef, orgId) {
+          this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
+        }
+
+      });
+    })();
+  </script>
+
+</dom-module>

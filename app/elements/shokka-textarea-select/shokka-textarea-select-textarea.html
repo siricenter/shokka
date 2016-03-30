@@ -152,7 +152,7 @@ Custom property | Description | Default
     </div>
     <div id="selected" class="selected-options">
       <template is="dom-repeat" items="{{selected}}">
-        <a href="/teams/{{item.__firebaseKey__}}"><paper-button raised>{{item.name}}<iron-icon icon="close" on-mouseover="iconHoverOn" on-mouseout="iconHoverOff" on-tap="removeSelected"></iron-icon></paper-button></a>
+        <a href="{{baseUrl}}/{{item.__firebaseKey__}}"><paper-button raised>{{item.name}}<iron-icon icon="close" on-mouseover="iconHoverOn" on-mouseout="iconHoverOff" on-tap="removeSelected"></iron-icon></paper-button></a>
       </template>
     </div>
   </template>
@@ -333,7 +333,7 @@ Custom property | Description | Default
      */
     validate: function() {
       // Empty, non-required input is valid.
-      if (!this.required && this.value == '') {
+      if (!this.required && this.value === '') {
         this.invalid = false;
         return true;
       }
@@ -419,7 +419,7 @@ Custom property | Description | Default
           selectedHeight = selected.offsetHeight + 'px';
         } else {
           selectedHeight = (selected.offsetHeight - 24) + 'px';
-          indent = lastSelected.offsetLeft + lastSelected.offsetWidth + 8 + 'px'
+          indent = lastSelected.offsetLeft + lastSelected.offsetWidth + 8 + 'px';
         }
       }
 
@@ -438,7 +438,7 @@ Custom property | Description | Default
     removeSelected: function(e) {
       e.preventDefault();
       //e.target.parentElement
-      alert('The removal of this element needs to be implemented!');
+      alert('The removal of this element needs to be implemented!'); // jshint ignore:line
     }
   });
 </script>

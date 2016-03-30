@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input-container">
+<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input-behavior.html">
 <link rel="import" href="shokka-textarea-select-textarea.html">
 
@@ -16,11 +16,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
       <style>
         :host {
+          --paper-input-container-label-floating: {
+            font-size: 2rem;
+            font-weight: bold;
+            padding-bottom: .5rem;
+            color: #333;
+          };
+        }
+
+        paper-input-container {
+          margin: 2rem 0 1rem;
         }
       </style>
       <paper-input-container always-float-label="[[floatLabel]]">
         <label hidden$="[[!label]]">[[label]]</label>
-        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}}></shokka-textarea-select-textarea>
+        <shokka-textarea-select-textarea class="paper-input-input" selected={{selected}} base-url="{{baseUrl}}"></shokka-textarea-select-textarea>
       </paper-input-container>
   </template>
 
@@ -38,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            * List of autocomplete options - not implimented yet.
            */
           options: {
-            type: Array,
+            type: Array
           },
 
           /**
@@ -49,16 +59,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true
           },
 
-          floatLabel: {
-            type: Boolean,
-            computed: '_computeFloatLabel(selected)'
-          }
+          floatLabel: Boolean
 
         },
 
+        observers: [
+          '_computeFloatLabel(selected, selected.splices)'
+        ],
+
         // Functions
         _computeFloatLabel: function(selected) {
-          return selected.length;
+          this.floatLabel = selected.length;
         }
       });
 
