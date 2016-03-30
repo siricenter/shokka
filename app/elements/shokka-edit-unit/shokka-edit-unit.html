@@ -34,12 +34,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <firebase-collection  location="{{firebaseCollectionProperties.location}}"
+        <firebase-collection  id="childrenCollection"
+                              location="{{firebaseCollectionProperties.location}}"
                               order-value-type="{{firebaseCollectionProperties.orderValueType}}"
                               order-by-child="{{firebaseCollectionProperties.orderByChild}}"
                               equal-to="{{firebaseCollectionProperties.equalTo}}"
                               data="{{children}}"></firebase-collection>
-        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}"></shokka-textarea-select>
+        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}" firebase-id="childrenCollection"></shokka-textarea-select>
         <paper-button raised on-tap="toggleTeam">Add New Child</paper-button>
         <h2>Parent</h2>
         <p><a href='{{parentPath}}'>Up</a></p>

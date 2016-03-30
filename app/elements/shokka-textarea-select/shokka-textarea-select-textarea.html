@@ -152,7 +152,9 @@ Custom property | Description | Default
     </div>
     <div id="selected" class="selected-options">
       <template is="dom-repeat" items="{{selected}}">
-        <a href="{{baseUrl}}/{{item.__firebaseKey__}}"><paper-button raised>{{item.name}}<iron-icon icon="close" on-mouseover="iconHoverOn" on-mouseout="iconHoverOff" on-tap="removeSelected"></iron-icon></paper-button></a>
+        <a href="{{baseUrl}}/{{item.__firebaseKey__}}"><paper-button raised>
+            {{item.name}}<iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeSelected" item="{{item.__firebaseKey__}}"></iron-icon>
+        </paper-button></a>
       </template>
     </div>
   </template>
@@ -274,6 +276,11 @@ Custom property | Description | Default
         type: Array,
         notify: true,
         observer: '_adjustCursor'
+      },
+
+      firebase: {
+        type: Object,
+        computed: '_getFirebase(firebaseId)'
       }
 
     },
@@ -427,18 +434,26 @@ Custom property | Description | Default
       this.textarea.style.paddingTop = this.$.mirror.style.paddingTop = selectedHeight;
     },
 
-    iconHoverOn: function(e) {
+    _iconHoverOn: function(e) {
       e.target.icon = 'cancel';
     },
 
-    iconHoverOff: function(e) {
+    _iconHoverOff: function(e) {
       e.target.icon = 'close';
     },
 
-    removeSelected: function(e) {
+    _removeSelected: function(e) {
       e.preventDefault();
-      //e.target.parentElement
-      alert('The removal of this element needs to be implemented!'); // jshint ignore:line
+
+      // Remove the element from the firebase-collection passed in
+      this.firebase.removeByKey(e.target.item);
+
+      // Fire an event for deletion in other locations
+      this.fire('firebase-element-deleted', {elementId: e.target.item});
+    },
+
+    _getFirebase: function(firebaseId) {
+      return this.domHost.domHost.$[firebaseId];
     }
   });
 </script>
