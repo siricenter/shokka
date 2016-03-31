@@ -84,8 +84,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         on-user-removed="userSuccessHandler"></firebase-auth>
         <firebase-document  id="userDocument"
                             location="{{userRef}}"
-                            data="{{userInfo}}"
-                            on-firebase-value="onFirebaseValue"></firebase-document>
+                            data="{{userOrgInfo}}"></firebase-document>
+        <firebase-document  id="userOrgDocument"
+                            location="{{userOrgRef}}"
+                            data="{{userInfo}}"></firebase-document>
         <div id="accountNave" class="layout horizontal">
             <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin">
                 <iron-icon icon="account-box"></iron-icon>
@@ -179,6 +181,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             is: 'firebase-login',
 
             properties: {
+                orgId: {
+                    type: String,
+                    notify: true
+                },
                 user: {
                     type: Object,
                     value: null,
@@ -210,6 +216,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
 
+            observers: [
+                '_setUserOrgRef(baseRef, userOrgInfo.org, user.uid)'
+            ],
+
+            _setUserOrgRef: function(baseRef, oid, uid) {
+                this.orgId = oid;
+                this.userOrgRef = baseRef + '/orgs/' + oid + '/users/' + uid;
+            },
+
             toggleAccount: function() {
                 this.$.accountModal.toggle();
             },
@@ -230,7 +245,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.firebaseLogin.logout();
             },
             onFirebaseLogin: function() {
-                this.message = 'User id: ' + JSON.stringify(this.user.uid);
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
                 this.$.btnLogin.style.display = 'none';
                 this.$.btnLogout.style.display = 'block';
@@ -241,8 +255,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.btnLogin.style.display = 'block';
                 this.$.btnLogout.style.display = 'none';
                 this.$.btnAccount.style.display = 'none';
-            },
-            onFirebaseValue: function() {
             },
             inputChange: function(e) { //TODO: make this an on-chage event and have it set a flag property
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';

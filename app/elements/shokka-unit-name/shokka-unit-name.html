@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <firebase-document  location="{{unitNameLocation}}"
-                        data="{{name}}">
+                        data="{{name}}"log>
     <p>{{name}}</p>
   </template>
 
@@ -31,11 +31,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers: [
-          '_setUnitNameLocation(baseRef, unitId)'
+          '_setUnitNameLocation(baseRef, orgId, unitId)'
         ],
 
-        _setUnitNameLocation: function(baseRef, unitId) {
-          this.unitNameLocation = baseRef + '/units/' + unitId + '/name';
+        _setUnitNameLocation: function(baseRef, orgId, unitId) {
+          this.unitNameLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId + '/name';
         }
       });
     })();

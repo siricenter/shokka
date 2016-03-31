@@ -65,8 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     evaluation-categories ="{{evaluationCategories}}"
                     evaluation-criteria   ="{{evaluationCriteria}}"
                     user-info             ="{{userInfo}}"
+                    org-id                ="{{orgId}}"
                     user                  ="{{user}}"
-                    org                   ="{{org}}"
                     users-in-org          ="{{usersInOrg}}"></shokka-globals>
 
     <paper-drawer-panel id="paperDrawerPanel">
@@ -112,7 +112,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           base-ref to quickly change the database ref -->
           <firebase-login user-info="{{userInfo}}"
                           user="{{user}}"
-                          base-ref="{{baseRef}}"></firebase-login>
+                          base-ref="{{baseRef}}"
+                          org-id="{{orgId}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -135,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page id="home" data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
-                <shokka-org-setup org="{{org}}" base-ref="{{baseRef}}" org-id="{{userInfo.org}}"></shokka-org-setup>
+                <shokka-org-setup base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-org-setup>
               </template>
               <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
@@ -147,28 +148,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{!userInfo.roles.manager}}">
                   <template template is="dom-if" if="{{userInfo.roles.employee}}">
-                    <shokka-employee-view base-ref="{{baseRef}}" org-id="{{userInfo.org}}" viewer-info="{{userInfo}}" viewee-id="{{user.uid}}"></shokka-employee-view>
+                    <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="{{user.uid}}"></shokka-employee-view>
                   </template>
                 </template>
               </template>
             </shokka-page>
 
             <shokka-page data-route="users" data-title="Users" route="{{route}}" page-title="{{pageTitle}}">
-              <paper-material elevation="1">
-                <h2 class="page-title">Users</h2>
-                <button>+</button>
-                <template is="dom-repeat" items="{{usersInOrg}}" as="user">
-                  <paper-material elevation="1">
-                    [picture] || {{user.fName}} {{user.lName}} ||
-                    <template is="dom-repeat" items={{_toArray(user.teams)}} as="group">{{group.name}}</template> ||
-                    <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">{{role}}</template>
-                  </paper-material>
-                </template>
-              </paper-material>
+              <shokka-users base-ref="[[baseRef]]", org-id="[[orgId]]"></shokka-users>
             </shokka-page>
 
             <shokka-page data-route="user-info" data-title="User Overview" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-employee-view base-ref="{{baseRef}}" org-id="{{userInfo.org}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
+              <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
             </shokka-page>
 
             <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
@@ -228,34 +219,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <shokka-page data-route="unit-info" data-title="Unit" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-edit-unit unit-id="[[params.unit]]"
-                                org-id="[[userInfo.org]]"
+                                org-id="[[orgId]]"
                                 base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
             <shokka-page data-route="portfolio-info" data-title="Portfolio" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-edit-unit unit-id="[[params.portfolio]]"
-                                org-id="[[userInfo.org]]"
+                                org-id="[[orgId]]"
                                 base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
             <shokka-page data-route="team-info" data-title="Team" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-edit-unit unit-id="[[params.team]]"
-                                org-id="[[userInfo.org]]"
+                                org-id="[[orgId]]"
                                 base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
             <shokka-page data-route="group-info" data-title="Group" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-edit-unit unit-id="[[params.group]]"
-                                org-id="[[userInfo.org]]"
+                                org-id="[[orgId]]"
                                 base-ref="[[baseRef]]"></shokka-edit-unit>
             </shokka-page>
 
             <shokka-page data-route="categories" data-title="Categories" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-categories base-ref="{{baseRef}}" org-id="{{userInfo.org}}"></shokka-categories>
+              <shokka-categories base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-categories>
             </shokka-page>
 
             <shokka-page data-route="categories-assign" data-title="Assign Categories" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{userInfo.org}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
+              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{orgId}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
             </shokka-page>
           </iron-pages>
         </div>
