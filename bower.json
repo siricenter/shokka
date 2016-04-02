@@ -12,7 +12,8 @@
     "google-chart": "GoogleWebComponents/google-chart#~1.0.3",
     "firebase-element": "GoogleWebComponents/firebase-element#~1.0.8",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.2.0",
-    "marked-element": "PolymerElements/marked-element#~1.1.2"
+    "marked-element": "PolymerElements/marked-element#~1.1.2",
+    "moment": "^2.12.0"
   },
   "devDependencies": {
     "web-component-tester": "*",
