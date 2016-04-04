@@ -24,10 +24,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                               category-id="[[category.__firebaseKey__]]"></shokka-category-tile>
     </template>
     <p>##################################################################</p>
-    <template is="dom-repeat" items="{{teamIds}}" as="teamId">
+    <template is="dom-repeat" items="{{unitIds}}" as="unitId">
       <shokka-unit-tile   base-ref="[[baseRef]]"
                           org-id="[[orgId]]"
-                          unit-id="[[teamId]]"></shokka-unit-tile>
+                          unit-id="[[unitId]]"></shokka-unit-tile>
     </template>
   </template>
 
@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         observers: [
           '_setCategoriesLocation(baseRef, orgId)',
-          '_buildTeamIds(teamIdsObject)'
+          '_buildTeamIds(unitIdsObject)'
         ],
 
         _setCategoriesLocation: function(baseRef, orgId) {
@@ -61,8 +61,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
         },
 
-        _buildTeamIds: function(teamIdsObject) {
-          this.teamIds = Object.keys(teamIdsObject || {});
+        _buildTeamIds: function(unitIdsObject) {
+          this.unitIds = Object.keys(unitIdsObject || {});
         }
       });
     })();
