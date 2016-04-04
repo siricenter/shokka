@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/moment/moment.js"></script>
 
 <dom-module id="shokka-manager-homepage">
   <template>
@@ -22,7 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           order-by-child="gradDate"
                           end-at="{{endDate}}"
                           data="{{usersGraduating}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{usersGraduating}}" as="user" filter="_upForGrad" observe="gradDate user.gradDate">
+    <template template  is="dom-repeat" 
+                        items="{{usersGraduating}}" 
+                        as="user" 
+                        filter="_upForGrad" 
+                        observe="gradDate user.gradDate">
       <p>First Name: {{user.fName}} : {{user.gradDate}}</p>
     </template>
     <p> USERS UP FOR INTERNSHIP </p>
@@ -30,7 +35,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           order-by-child="internDate"
                           end-at="{{endDate}}"
                           data="{{usersUpForInternship}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{usersUpForInternship}}" as="user" filter="_upForIntern" observe="internDate usersInOrg.internDate">
+    <template template  is="dom-repeat" 
+                        items="{{usersUpForInternship}}" 
+                        as="user" 
+                        filter="_upForIntern" 
+                        observe="internDate usersInOrg.internDate">
       <p>First Name: {{user.fName}} : {{user.internDate}}</p>
     </template>
   </template>
@@ -45,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         endDate: {
           type: String,
           value: function() {
-            return moment(new Date()).add(4, 'months').format('YYYY[-]MM[-]DD');
+            return moment(new Date()).add(4, 'months').format('YYYY[-]MM[-]DD'); // jshint ignore:line
           }
         }
       },
@@ -62,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if(!user || !user.gradDate){
           return false;
         }
-        console.log(user);
         var today = new Date();
         // Note: this will not be EXACTLY 4 months, but close enough.
         var maxGradDate = new Date();
