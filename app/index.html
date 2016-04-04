@@ -184,23 +184,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-edit-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
             </shokka-page>
 
-            <shokka-page data-route="module-info" data-title="{{module.title}}" route="{{route}}" page-title="{{pageTitle}}">
-              <firebase-document
-                location="https://shokka.firebaseio.com/trainingModules/[[params.module]]"
-                data="{{module}}"></firebase-document>
-              <firebase-collection
-                order-by-child="order"
-                location="https://shokka.firebaseio.com/steps/[[params.module]]"
-                data="{{steps}}"></firebase-collection>
-              <shokka-module-header title="[[module.title]]" desc="[[module.desc]]"></shokka-module-header>
-              <template is="dom-repeat" items="[[steps]]" as="step">
-                <paper-material elevation="1">
-                  <h3>[[step.title]]</h3>
-                  <marked-element markdown=[[step.content]]>
-                    <div class="markdown-html custom"></div>
-                  </marked-element>
-                </paper-material>
-              </template>
+            <shokka-page  data-route="module-info" 
+                          data-title="Module" 
+                          route="{{route}}" 
+                          page-title="{{pageTitle}}">
+              <shokka-view-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-view-module>
             </shokka-page>
 
             <shokka-page data-route="training-info" data-title="{{params.name}}" route="{{route}}" page-title="{{pageTitle}}">
