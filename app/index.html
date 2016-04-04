@@ -180,6 +180,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </shokka-page>
 
+            <shokka-page data-route="module-edit" data-title="Add/Edit Module" route="{{route}}">
+              <shokka-edit-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
+            </shokka-page>
+
             <shokka-page data-route="module-info" data-title="{{module.title}}" route="{{route}}" page-title="{{pageTitle}}">
               <firebase-document
                 location="https://shokka.firebaseio.com/trainingModules/[[params.module]]"
