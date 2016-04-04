@@ -18,12 +18,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <p> USERS UP FOR GRAD </p>
-    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForGrad" observe="gradDate usersInOrg.gradDate">
-      <p>First Name: {{user.fName}}</p>
+    <firebase-collection  location="{{usersLocation}}"
+                          order-by-child="gradDate"
+                          end-at="{{endDate}}"
+                          data="{{usersGraduating}}"></firebase-collection>
+    <template template is="dom-repeat" items="{{usersGraduating}}" as="user" filter="_upForGrad" observe="gradDate user.gradDate">
+      <p>First Name: {{user.fName}} : {{user.gradDate}}</p>
     </template>
     <p> USERS UP FOR INTERNSHIP </p>
-    <template template is="dom-repeat" items="{{usersInOrg}}" as="user" filter="_upForIntern" observe="internDate usersInOrg.internDate">
-      <p>First Name: {{user.fName}}</p>
+    <firebase-collection  location="{{usersLocation}}"
+                          order-by-child="internDate"
+                          end-at="{{endDate}}"
+                          data="{{usersUpForInternship}}"></firebase-collection>
+    <template template is="dom-repeat" items="{{usersUpForInternship}}" as="user" filter="_upForIntern" observe="internDate usersInOrg.internDate">
+      <p>First Name: {{user.fName}} : {{user.internDate}}</p>
     </template>
   </template>
   <script>
@@ -34,12 +42,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-manager-homepage',
 
       properties: {
+        endDate: {
+          type: String,
+          value: function() {
+            return moment(new Date()).add(4, 'months').format('YYYY[-]MM[-]DD');
+          }
+        }
+      },
+
+      observers: [
+        '_setUsersLocation(baseRef, orgId)'
+      ],
+
+      _setUsersLocation: function(baseRef, orgId) {
+        this.usersLocation = baseRef + '/orgs/' + orgId + '/users';
       },
 
       _upForGrad: function(user){
         if(!user || !user.gradDate){
           return false;
         }
+        console.log(user);
         var today = new Date();
         // Note: this will not be EXACTLY 4 months, but close enough.
         var maxGradDate = new Date();

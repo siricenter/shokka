@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Group Name: {{unit.name}}</p>
       <template is="dom-repeat" items="{{categoryArray}}" as="category">
         <shokka-category-tile base-ref="{{baseRef}}"
+                              org-id="{{orgId}}"
                               category-id="{{category}}"></shokka-category-tile>
       </template>
       <p>//////////////////////////////</p>
@@ -26,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Team Name: {{unit.name}}</p>
       <template is="dom-repeat" items="{{childrenArray}}" as="group">
         <shokka-unit-tile base-ref="{{baseRef}}"
+                          org-id="{{orgId}}"
                           unit-id="{{group}}"></shokka-unit-tile>
       </template>
       <p>\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\</p>
@@ -73,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _setType: function(unit) {
         if ((unit || {}).type === 'team') {
-          this.isunit = true;
+          this.isTeam = true;
           this.isGroup = false;
         } else if ((unit || {}).type === 'group') {
           this.isTeam = false;

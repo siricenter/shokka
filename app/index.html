@@ -50,6 +50,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
 
+  <script src="bower_components/moment/moment.js"></script>
+
   <!-- will be replaced with elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
@@ -141,7 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{userInfo.roles.manager}}">
-                  <shokka-manager-homepage users-in-org="{{usersInOrg}}"></shokka-manager-homepage>
+                  <shokka-manager-homepage base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-manager-homepage>
                 </template>
               </template>
               <!-- Employee Home Page -->
@@ -240,7 +242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="categories-assign" data-title="Assign Categories" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{orgId}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
+              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{orgId}}" unit-ids-object="{{userInfo.managedUnits}}"></shokka-categories-assign>
             </shokka-page>
           </iron-pages>
         </div>
