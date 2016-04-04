@@ -178,14 +178,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </paper-material>
             </shokka-page>
 
-            <shokka-page data-route="modules" data-title="{{modules.title}}" route="{{route}}">
-              <paper-material elevation="1">
-                <h2 class="page-title">Modules</h2>
-                <a href="/modules/1">1</a>
-                <a href="/modules/2">2</a>
-                <a href="/modules/3">3</a>
-                <a href="/modules/4">4</a>
-              </paper-material>
+            <shokka-page data-route="module-edit" data-title="Add/Edit Module" route="{{route}}">
+              <shokka-edit-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
             </shokka-page>
 
             <shokka-page data-route="module-info" data-title="{{module.title}}" route="{{route}}" page-title="{{pageTitle}}">
