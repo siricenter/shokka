@@ -65,7 +65,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
           '_setUnitLocation(baseRef, orgId, unitId)',
           '_setUnitsLocation(baseRef, orgId)',
-          '_setPaths(unit)'
+          '_setPaths(unit)',
+          '_onIdChange(id)'
         ],
 
         _createChild: function() {
@@ -140,6 +141,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _setUnitsLocation: function(baseRef, orgId) {
           this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
+        },
+
+        _onIdChange: function() {
+          this.unitId = this.id;
         }
 
       });
