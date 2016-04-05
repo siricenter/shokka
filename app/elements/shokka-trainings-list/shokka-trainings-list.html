@@ -1,0 +1,160 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="shokka-trainings-list">
+  <template>
+    <style>
+      :host {
+        --paper-icon-button: {
+          align-self: flex-start;
+          color: var(--accent-color);
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          padding: 6px;
+        };
+        --paper-icon-button-hover: {
+          background: var(--accent-color);
+          color: white;
+        };
+      }
+
+      .item-title {
+        margin: 0;
+        font-size: 1.2rem;
+        flex-basis: calc(100% - 40px);
+      }
+
+      iron-list {
+        display: flex;
+        flex-direction: column;
+      }
+
+      paper-item {
+        display: flex;
+        justify-content: space-between;
+        padding: .5rem;
+        flex-flow: row wrap;
+        flex: 1;
+      }
+
+      paper-item:not(:last-child) {
+        border-bottom: var(--paper-grey-300) solid 1px;
+      }
+
+      paper-item .item-desc {
+        display: none;
+        width: 100%;
+      }
+
+      paper-item[active] .item-desc {
+        display: block;
+      }
+
+      .modal-dialog {
+          background-color: white;
+          width: 90%;
+          max-width: 800px;
+      }
+
+      .modal-dialog .hidden-content {
+        display: none;
+      }
+
+    </style>
+    <firebase-collection  id="firebaseCollection"
+                          location="{{location}}"
+                          end-at="{{endAt}}"
+                          equal-to="{{equalTo}}"
+                          limit-to-first="{{limitToFirst}}"
+                          limit-to-last="{{limitToLast}}"
+                          log="{{log}}"
+                          order-by-child="{{orderByChild}}"
+                          order-by-key="{{orderByKey}}"
+                          order-by-priority="{{orderByPriority}}"
+                          order-by-value="{{orderByValue}}"
+                          order-by-value-type="{{orderByValueType}}"
+                          start-at="{{startAt}}"
+                          on-firebase-value="resizeList"
+                          data="{{items}}"></firebase-collection>
+    <iron-list id="list" on-tap="resizeList" items="{{items}}" as="item" selection-enabled multi-selection>
+      <template>
+        <paper-item toggles tabindex$="[[tabIndex]]">
+          <h1 class=item-title>[[item.name]]</h1>
+          <paper-icon-button icon="create" id="{{item.__firebaseKey__}}" on-tap="openModal"></paper-icon-button>
+          <div class="item-desc">[[item.desc]]</div>
+        </paper-item>
+      </template>
+    </iron-list>
+    <paper-dialog id="trainingsModal"
+                  class="modal-dialog"
+                  with-backdrop
+                  entry-animation="scale-up-animation"
+                  exit-animation="fade-out-animation">
+      <div class="hidden-content">
+        <content id="modalContent"></content>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'shokka-trainings-list',
+
+        properties: {
+          modalForm: Object,
+          data: {
+            type: Array,
+            computed: 'setData(items)',
+            notify: true,
+            readOnly: true
+          }
+        },
+
+        observers: [
+        ],
+
+        // Functions
+        setData: function(items) {
+          return items;
+        },
+        resizeList: function() {
+          this.$.list.fire('iron-resize');
+        },
+
+        openModal: function(e) {
+          e.stopPropagation();
+
+          // modalForm.baseRef = this.baseRef;
+          // modalForm.orgId = this.orgId;
+          this.modalForm.id = e.currentTarget.id;
+
+          this.$.trainingsModal.open();
+        },
+
+        attached: function() {
+          var trainingsModal = this.$.trainingsModal;
+
+          this.modalForm = this.getContentChildren('#modalContent')[0];
+          Polymer.dom(trainingsModal).appendChild(this.modalForm);
+        }
+      });
+
+    })();
+  </script>
+
+</dom-module>
