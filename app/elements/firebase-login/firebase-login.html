@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             color: var(--text-primary-color);
         }
         </style>
-        <firebase-auth  id="firebaseLogin"
+        <firebase-auth  id="firebaseAuth"
                         location="{{baseRef}}"
                         user="{{user}}"
                         provider="{{provider}}"
@@ -181,6 +181,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             is: 'firebase-login',
 
             properties: {
+                firebaseAuth: {
+                    type: Object,
+                    notify: true
+                },
                 orgId: {
                     type: String,
                     notify: true
@@ -220,6 +224,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_setUserOrgRef(baseRef, userOrgInfo.org, user.uid)'
             ],
 
+            ready: function() {
+                this.firebaseAuth = this.$.firebaseAuth;
+            },
+
             _setUserOrgRef: function(baseRef, oid, uid) {
                 this.orgId = oid;
                 this.userOrgRef = baseRef + '/orgs/' + oid + '/users/' + uid;
@@ -234,7 +242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             login: function(e) {
                 var email = this.$.email.value;
                 var pass = this.$.pass.value;
-                this.$.firebaseLogin.login({email:email, password:pass});
+                this.$.firebaseAuth.login({email:email, password:pass});
                 this.message = 'Login result: ' + e.detail.user;
             },
             logout: function(){
@@ -242,7 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.pass.value = '';
                 this.userInfo = {};
                 this.userRef = null;
-                this.$.firebaseLogin.logout();
+                this.$.firebaseAuth.logout();
             },
             onFirebaseLogin: function() {
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
