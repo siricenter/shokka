@@ -13,18 +13,72 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-edit-module">
   <template>
     <style include="shared-styles"></style>
+    <style include="custom-style"></style>
     <style>
       :host {
         display: block;
+      }
+
+      paper-material {
+        display: flex;
+        flex-direction: column;
+      }
+
+      paper-textarea {
+        margin: 2rem 0 1rem;
+
+        --paper-input-container-label-floating: {
+          font-size: 2rem;
+          font-weight: bold;
+          padding-bottom: .5rem;
+          color: #333;
+        };
+      }
+
+      label {
+        display: block;
+        font-size: 2rem;
+        font-weight: bold;
+        padding-bottom: .5rem;
+        color: #333;
+        line-height: 24px;
+        transform: scale(0.75);
+        transform-origin: left top;
+      }
+
+      #preview {
+        display: none;
+      }
+
+      #preview.open {
+        display: block;
+      }
+
+      paper-button {
+        align-self: flex-end;
+        margin-top: -1rem;
+      }
+
+      paper-button:before {
+        display: block;
+        content: "SHOW PREVIEW";
+      }
+
+      paper-button[active]:before {
+        content: "HIDE PREVIEW";
       }
     </style>
     <firebase-document  location="{{moduleLocation}}"
                         data="{{module}}"></firebase-document>
     <paper-material elevation="1">
-      <paper-input value="{{module.title}}"></paper-input>
-      <paper-input value="{{module.desc}}"></paper-input>
-      <paper-textarea value="{{module.content}}"></paper-textarea>
-      <marked-element markdown="{{module.content}}"></marked-element>
+      <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
+      <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
+      <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
+      <paper-button on-tap="togglePreview" toggles="true"></paper-button>
+      <section id="preview">
+        <label for="preview">Content Preview</label>
+        <marked-element markdown="{{module.content}}"></marked-element>
+      </section>
     </paper-material>
   </template>
 
@@ -44,6 +98,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         
         _setModuleLocation: function(baseRef, orgId, moduleId) {
           this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
+        },
+
+        togglePreview: function(e) {
+          this.$.preview.classList.toggle('open');
         }
       });
     })();
