@@ -51,7 +51,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #preview.open {
-        display: block;
+        display: flex;
+        flex-direction: column;
       }
 
       paper-button {
@@ -59,12 +60,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: -1rem;
       }
 
-      paper-button:before {
+      #previewButton:before {
         display: block;
         content: "SHOW PREVIEW";
       }
 
-      paper-button[active]:before {
+      #previewButton[active]:before {
         content: "HIDE PREVIEW";
       }
     </style>
@@ -74,10 +75,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
       <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
       <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
-      <paper-button on-tap="togglePreview" toggles="true"></paper-button>
+      <paper-button id="previewButton" on-tap="togglePreview" toggles="true"></paper-button>
       <section id="preview">
         <label for="preview">Content Preview</label>
         <marked-element markdown="{{module.content}}"></marked-element>
+        <paper-button on-tap="togglePreview">HIDE PREVIEW</paper-button>
       </section>
     </paper-material>
   </template>
@@ -90,6 +92,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-edit-module',
 
         properties: {
+          previewOpen: {
+            type: Boolean,
+            value: false,
+            notify: true
+          }
         },
 
         observers:[
@@ -100,8 +107,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
         },
 
-        togglePreview: function(e) {
+        togglePreview: function() {
           this.$.preview.classList.toggle('open');
+          this.previewOpen = this.$.previewButton.active = this.$.preview.classList.contains('open');
+        },
+
+        ready: function() {
+          this.$.preview.classList.add(this.previewOpen ? 'open' : null);
+          this.$.previewButton.active = this.previewOpen;
         }
       });
     })();
