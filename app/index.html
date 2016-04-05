@@ -115,7 +115,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <firebase-login user-info="{{userInfo}}"
                           user="{{user}}"
                           base-ref="{{baseRef}}"
-                          org-id="{{orgId}}"></firebase-login>
+                          org-id="{{orgId}}"
+                          firebase-auth="{{firebaseAuth}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -138,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page id="home" data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
-                <shokka-org-setup base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-org-setup>
+                <shokka-org-setup base-ref="{{baseRef}}" org-id="{{orgId}}" firebase-auth="{{firebaseAuth}}"></shokka-org-setup>
               </template>
               <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
