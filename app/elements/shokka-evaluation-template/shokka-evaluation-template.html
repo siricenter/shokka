@@ -1,0 +1,205 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-evaluation-template">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host .group {
+        margin-left: 20px;
+      }
+      :host .group .question {
+        margin-left: 20px;
+      }
+
+      @keyframes highlight {
+        0% {
+          background: #CCFFCC;
+          opacity: 1;
+        }
+        100% {
+          background: none;
+          opacity: 0;
+        }
+      }
+
+      /* The element to apply the animation to */
+      :host #fb_saved_output {
+          background-color: none;
+          opacity: 0;
+          padding: 5px 5px 5px 25px;
+          font-weight: bold;
+      }
+      :host #fb_saved_output.active {
+        animation-name: highlight;
+        animation-duration: 2s;
+      }
+      .delete {
+        background-color: red;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+    <paper-material elevation="1">
+      <h2>New Evaluation Template</h2>
+      <firebase-document  id="fbEvalTemplate"
+                            location="{{fbEvalTemplate}}"
+                            on-firebase-value="_fb_returned"
+                            data="{{evalTemplate}}" log></firebase-document>
+      <form is="iron-form" method="get" action="/" id="basic">
+        <paper-input name="name" label="Template Name" required value="{{evalTemplate.name}}"></paper-input>
+          <ul class="group">
+            <template is="dom-repeat" items="{{_toArray(evalTemplate.question_groups)}}" as="group">
+                <paper-input name="group__label" label="Question Group" value="{{group.value.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.label"></paper-input>
+                <paper-button raised on-click="_remove_button" data-path$="evalTemplate.question_groups.{{group.key}}" class="delete">- Remove Question Group</paper-button>
+                <li class="question">
+                  <ul class="question__options">
+                    <template is="dom-repeat" items="{{_toArray(group.value.questions)}}" as="question">
+                      <li>
+                        <paper-input name="question__label" label="Question Label" value="{{question.value.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}.label"></paper-input>
+                        <paper-dropdown-menu label="Type" name="type" required on-paper-dropdown-close="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}.type">
+                          <paper-menu class="dropdown-content" selected="{{question.value.type}}" attr-for-selected="value">
+                            <paper-item value="text">Text</paper-item>
+                            <paper-item value="slider">Slider</paper-item>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                        <paper-button raised on-click="_remove_button" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}" class="delete">- Remove Question</paper-button>
+                      </li>
+                    </template>
+                    <li>
+                      <paper-input name="question__label__new" label="New Question"></paper-input>
+                      <paper-dropdown-menu label="Type" name="type" required>
+                        <paper-menu class="dropdown-content">
+                          <paper-item value="text">Text</paper-item>
+                          <paper-item value="slider">Slider</paper-item>
+                        </paper-menu>
+                      </paper-dropdown-menu>
+                      <paper-button raised on-click="_add_question" data-path$="evalTemplate.question_groups.{{group.key}}.questions">+ Add Question</paper-button>
+                    </li>
+                  </ul>
+                </li>
+            </template>
+            <li>
+              <paper-input id="group__label__new" label="New Question Group" data-path$="evalTemplate.question_groups"></paper-input>
+              <paper-button raised on-click="_add_group">+ Add Question Group</paper-button>
+            </li>
+          </ul>
+          <paper-button raised on-click="_remove_template__warning" class="delete">Delete Template</paper-button>
+          <paper-button raised on-click="_remove_template" class="delete delete--confirmation hide">Are you sure?</paper-button>
+      </form>
+      <div id="fb_saved_output" class="active">Changes have been saved</div>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-evaluation-template',
+
+      properties: {
+      },
+
+      observers: [
+        '_fbEvalTemplate(baseRef, orgId)',
+        '_fbEvalTemplate(baseRef, orgId, tempId)'
+      ],
+      ready: function(){
+      },
+      _createTemplate: function() {
+        this.evalTemplate = {};
+      },
+      _uid: function(){
+        return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+          });
+      },
+      _fb_returned: function(e) {
+        if (this.evalTemplate === null || this.evalTemplate === undefined) {
+          this._createTemplate();
+        } else {
+          var high = this.$.fb_saved_output;
+          high.classList.remove("active");
+          setTimeout(function() {
+              high.classList.add("active");
+          }, 1);
+        }
+      },
+      _fbEvalTemplate: function(baseRef, orgId, tempId = this._uid()){
+        this.fbEvalTemplate = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
+      },
+      _notify: function(e){
+        var target = e.target.domHost,
+          path = target.dataset.path;
+        this.set(path, e.target.value);
+      },
+      _toArray: function(obj){
+        if (obj)
+          return Object.keys(obj).map(function(item){return {key:item, value:obj[item]};});
+      },
+      _blaze: function(path){
+        path.split('.').reduce((last, item, index, array) => {
+          if (last[item] === undefined) {
+            last[item] = {};
+          }
+          return last[item];
+        }, this);
+      },
+      _add_group: function(e){
+        var label = e.currentTarget.domHost.$.group__label__new,
+          value = label.value,
+          path = 'evalTemplate.question_groups.' + this._uid();
+
+        this._blaze(path);
+
+        if (value) {
+          label.value = "";
+          this.set(path, {label: value, questions: {}});
+        }
+      },
+      _add_question: function(e){
+        var parent = e.target.parentElement,
+          labelE = parent.querySelector("paper-input input"),
+          typeE = parent.querySelector("paper-dropdown-menu input"),
+          label = labelE.value,
+          type = typeE.value,
+          path = e.target.dataset.path + '.' + this._uid();
+        if (label && type && path) {
+          this._blaze(path);
+          this.set(path, {label: label, type: type});
+          typeE.value = "";
+          labelE.value = "";
+        }
+      },
+      _remove_button: function(e){
+        var path = e.target.dataset.path;
+        if (path) {
+          this.set(path, null);
+        }
+      }, 
+      _remove_template__warning: function(e){
+        e.target.classList.add("hide");
+        e.target.parentElement.querySelector(".delete--confirmation.hide").classList.remove("hide");
+      },
+      _remove_template: function(e){
+        //TODO: How to push a delete up to firebase?
+        delete this.evalTemplate;
+        document.location = '/evaluation_templates';
+      }
+    });
+  })();
+  </script>
+</dom-module>
