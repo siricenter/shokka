@@ -108,10 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2>Login</h2>
-            <paper-input    label="email" id="email"></paper-input>
+            <paper-input    label="email" 
+                            id="email"
+                            on-keypress="_keyPressed"></paper-input>
             <paper-input    label="password"
                             type="password"
-                            id="pass"></paper-input>
+                            id="pass"
+                            on-keypress="_keyPressed"></paper-input>
             <div class="buttons">
                 <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login">
                     <iron-icon icon="forward"></iron-icon>
@@ -161,7 +164,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                <!-- userInfo.manager will need to be added to the database. I would do it, but don't have access to it yet -->
                     <paper-input label="manager" id="accountManager" type="date" value="{{userInfo.manager}}" on-change="inputChange" disabled></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
@@ -226,6 +228,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             ready: function() {
                 this.firebaseAuth = this.$.firebaseAuth;
+            },    
+
+            _keyPressed: function(e) {
+                if (13 === e.charCode) {
+                    this.login(e);
+                }
             },
 
             _setUserOrgRef: function(baseRef, oid, uid) {
@@ -251,6 +259,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.userInfo = {};
                 this.userRef = null;
                 this.$.firebaseAuth.logout();
+                window.location.reload(true);
             },
             onFirebaseLogin: function() {
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
@@ -264,14 +273,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.btnLogout.style.display = 'none';
                 this.$.btnAccount.style.display = 'none';
             },
-            inputChange: function(e) { //TODO: make this an on-chage event and have it set a flag property
+            inputChange: function(e) { //TODO: make this an on-change event and have it set a flag property
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
-            },
-            errorHandler: function(e) {
-                this.message = 'Error: ' + e.detail.message;
-            },
-            userSuccessHandler: function(e) {
-                this.message = e.type + ' success!';
             }
         });
     })();
