@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           data="{{teams}}"></firebase-collection>
     <template is="dom-repeat" items="{{teams}}" as="team">
       <p><a href="/teams/{{team.__firebaseKey__}}">
-        <shokka-unit-name base-ref="{{baseRef}}" unit-id="{{team.__firebaseKey__}}"></shokka-team-name>
+        <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="{{team.__firebaseKey__}}"></shokka-team-name>
       </a></p>
     </template>
   </template>
