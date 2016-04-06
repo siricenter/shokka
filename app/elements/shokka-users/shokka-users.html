@@ -18,7 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <paper-material elevation="1">
-      <button>+</button>
+      <paper-button raised on-tap="openUserModal">New User</paper-button>
       <firebase-collection  location="{{usersLocation}}"
                             data="{{users}}"></firebase-collection>
       <template is="dom-repeat" items="{{users}}" as="user">
@@ -33,6 +33,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-material>
       </template>
     </paper-material>
+    <firebase-auth  id="firebaseAuth"
+                    location="{{baseRef}}"
+                    user="{{authUser}}"
+                    on-user-created="userCreatedHandler"></firebase-auth>
+    <paper-dialog   id="userModal"
+                    class="modal-dialog"
+                    with-backdrop
+                    entry-animation="scale-up-animation"
+                    exit-animation="fade-out-animation">
+        <h2>Create New User</h2>
+        <paper-input    label="Email" value={{newEmail}}></paper-input>
+        <paper-input    label="Password" type="password" value={{newPass}}></paper-input>
+        <paper-input    label="First Name" value={{newFName}}></paper-input>
+        <paper-input    label="Last Name" value={{newLName}}></paper-input>
+        <paper-input    label="Graduation Date" value={{newGradDate}}></paper-input>
+        <paper-input    label="Internship Date" value={{newInternDate}}></paper-input>
+        <paper-button raised class="btn-confirm" on-tap="createUser">
+            <iron-icon icon="forward"></iron-icon>
+            Lets Go!
+        </paper-button>
+    </paper-dialog>
   </template>
 
   <script>
@@ -49,6 +70,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_setUsersLocation(baseRef, orgId)'
         ],
 
+        openUserModal: function() {
+          this.$.userModal.toggle();
+        },
+
         _setUsersLocation: function(baseRef, orgId) {
           this.usersLocation = baseRef + '/orgs/' + orgId + '/users';
         },
@@ -61,7 +86,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return Object.keys(obj || {}).map(function (key) {
             return obj[key];
           });
-        }
+        },
+        createUser: function() {
+          this.$.firebaseAuth.createUser(this.newEmail, this.newPass);
+          this.newPass = null;
+          this.$.userModal.toggle();
+        },
+        userCreatedHandler: function(e) {
+          var baseUser = new Firebase(this.baseRef + '/users/' + e.detail.user.uid); // jshint ignore:line
+          baseUser.set({org: this.orgId});
+          var user = new Firebase(this.baseRef + '/orgs/' + this.orgId + '/users/' + e.detail.user.uid); // jshint ignore:line
+          user.set({email: this.newEmail, fName: this.newFName, lName: this.newLName, gradDate: this.newGradDate || null, internDate: this.newInternDate || null});
+          this.newEmail = null;
+          this.newFName = null;
+          this.newLName = null;
+          this.newGradDate = null;
+          this.newInternDate = null;
+        },
       });
     })();
   </script>
