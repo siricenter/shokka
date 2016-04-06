@@ -45,6 +45,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'contact';
     });
 
+    page('/categories/assign', scrollToTop, function() {
+      app.route = 'categories-assign';
+    });
+
     page('/categories/:name', scrollToTop, function(data) {
       app.route = 'category-info';
       app.params = data.params;
@@ -86,10 +90,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/categories', scrollToTop, function() {
       app.route = 'categories';
-    });
-
-    page('/categories/assign', scrollToTop, function() {
-      app.route = 'categories-assign';
     });
 
     // add #! before urls
