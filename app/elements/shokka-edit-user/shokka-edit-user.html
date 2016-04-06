@@ -1,0 +1,64 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-document.html">
+
+<dom-module id="shokka-edit-user">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <firebase-document  location="{{userLocation}}"
+                        data="{{user}}"></firebase-document>
+    <paper-input label="Email" value={{user.email}}></paper-input>
+    <paper-input label="End Date" value={{user.endDate}}></paper-input>
+    <paper-input label="First Name" value={{user.fName}}></paper-input>
+    <paper-input label="Graduation Date" value={{user.gradDate}}></paper-input>
+    <paper-input label="Internship Date" value={{user.internDate}}></paper-input>
+    <paper-input label="Last Name" value={{user.lName}}></paper-input>
+    <h1>Managed Units:</h1>
+    <template is="dom-repeat" items={{_toKeyArray(user.managedUnits)}} as="unitId">
+      <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
+    </template>
+    <h1>Roles:</h1>
+    <paper-checkbox checked="{{user.roles.employee}}">Employee</paper-checkbox>
+    <paper-checkbox checked="{{user.roles.manager}}">Manager</paper-checkbox>
+    <paper-checkbox checked="{{user.roles.admin}}">Administrator</paper-checkbox>
+    <paper-input label="Start Date" value={{user.startDate}}></paper-input>
+    <h1>Groups:</h1>
+    <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
+      <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
+    </template>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'shokka-edit-user',
+        properties: {
+        },
+        observers: [
+          '_setUserLocation(baseRef, orgId, userId)'
+        ],
+        _setUserLocation: function(baseRef, orgId, userId) {
+          this.userLocation = baseRef + '/orgs/' + orgId + '/users/' + userId;
+        },
+        _toKeyArray: function(obj = {}) {
+          return Object.keys(obj);
+        },
+      });
+    })();
+  </script>
+
+</dom-module>
