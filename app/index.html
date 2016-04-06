@@ -165,6 +165,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
             </shokka-page>
 
+            <shokka-page data-route="user-edit" data-title="Edit User" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-user base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[params.uid]]"></shokka-edit-user>
+            </shokka-page>
+
             <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2 class="page-title">Contact</h2>
