@@ -19,9 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <firebase-collection  location="{{categoriesLocation}}"
                           data="{{categories}}"></firebase-collection>
     <template is="dom-repeat" items="{{categories}}" as="category">
-      <shokka-category-tile   base-ref="[[baseRef]]"
-                              org-id="[[orgId]]"
-                              category-id="[[category.__firebaseKey__]]"></shokka-category-tile>
+      <p>Category Name: {{category.name}}</p>
     </template>
     <p>##################################################################</p>
     <template is="dom-repeat" items="{{unitIds}}" as="unitId">
