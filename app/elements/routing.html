@@ -74,6 +74,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'evaluation';
     });
 
+    // Evaluation templates ---------------
+    page('/evaluation/templates', scrollToTop, function() {
+      app.route = 'evaluation-templates';
+    });
+
+    page('/evaluation/templates/new', scrollToTop, function() {
+      app.route = 'evaluation-template-item';
+    });
+
+    page('/evaluation/templates/edit/:tempId', scrollToTop, function(data) {
+      app.route = 'evaluation-template-item';
+      app.params = data.params;
+    });
+
+    // Evaluations ---------------
+    page('/evaluation/evaluations', scrollToTop, function() {
+      app.route = 'evaluations';
+    });
+
+    page('/evaluation/evaluations/new', scrollToTop, function() {
+      app.route = 'evaluation-item';
+    });
+
+    page('/evaluation/evaluations/edit/:id', scrollToTop, function(data) {
+      app.route = 'evaluation-item';
+      app.params = data.params;
+    });
+
     page('/categories', scrollToTop, function() {
       app.route = 'categories';
     });

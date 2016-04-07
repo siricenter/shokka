@@ -171,11 +171,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <shokka-page data-route="evaluation" data-title="Evaluation" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
-                <shokka-evaluation  base-ref="[[baseRef]]"
-                                    evaluation-categories="[[evaluationCategories]]"
-                                    evaluation-criteria="[[evaluationCriteria]]"
-                                    evaluator-id="[[user.uid]]"></shokka-evaluation>
+                <h2>Evaluations</h2>
+                <p><a href="/evaluation/evaluations/new">Employee Evaluations</a></p>
+                <p><a href="/evaluation/templates">Evaluation Templates</a></p>
               </paper-material>
+            </shokka-page>
+
+            <shokka-page data-route="evaluations" data-title="Evaluations" route="{{route}}" page-title="{{pageTitle}}">
+              <paper-material elevation="1">
+                <h2>Evaluations</h2>
+                <a href="/evaluation/templates/new">Create a New Evaluation Template</a>
+              </paper-material>
+            </shokka-page>
+
+            <shokka-page data-route="evaluation-item" data-title="Create/Edit Evaluation" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]"></shokka-evaluation>
+            </shokka-page>
+
+            <shokka-page data-route="evaluation-templates" data-title="Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
+              <paper-material elevation="1">
+                <h2>Evaluation Templates</h2>
+                <a href="/evaluation/templates/new">Create a New Evaluation Template</a>
+                <shokka-evaluation-template-list base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-evaluation-template-list>
+              </paper-material>
+            </shokka-page>
+
+            <shokka-page data-route="evaluation-template-item" data-title="Create/Edit Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]"></shokka-evaluation-template>
             </shokka-page>
 
             <shokka-page data-route="modules" data-title="{{modules.title}}" route="{{route}}">
