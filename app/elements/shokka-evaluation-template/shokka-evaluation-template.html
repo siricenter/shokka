@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-evaluation-template">
   <template>
+    <script type="text/javascript" src="../shokka-evaluation-functions/shokka-evaluation-functions.js"></script>
     <style>
       :host {
         display: block;
@@ -35,13 +36,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /* The element to apply the animation to */
-      :host #fb_saved_output {
+      :host #fbSavedOutput {
           background-color: none;
           opacity: 0;
           padding: 5px 5px 5px 25px;
           font-weight: bold;
       }
-      :host #fb_saved_output.active {
+      :host #fbSavedOutput.active {
         animation-name: highlight;
         animation-duration: 2s;
       }
@@ -56,26 +57,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h2>New Evaluation Template</h2>
       <firebase-document  id="fbEvalTemplate"
                             location="{{fbEvalTemplate}}"
-                            on-firebase-value="_fb_returned"
-                            data="{{evalTemplate}}" log></firebase-document>
+                            on-firebase-value="_fbReturned"
+                            data="{{evalTemplate}}"></firebase-document>
       <form is="iron-form" method="get" action="/" id="basic">
         <paper-input name="name" label="Template Name" required value="{{evalTemplate.name}}"></paper-input>
           <ul class="group">
             <template is="dom-repeat" items="{{_toArray(evalTemplate.question_groups)}}" as="group">
-                <paper-input name="group__label" label="Question Group" value="{{group.value.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.label"></paper-input>
-                <paper-button raised on-click="_remove_button" data-path$="evalTemplate.question_groups.{{group.key}}" class="delete">- Remove Question Group</paper-button>
+                <paper-input name="group__label" label="Question Group" value="{{group.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.label"></paper-input>
+                <paper-button raised on-click="_removeButton" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}" class="delete">- Remove Question Group</paper-button>
                 <li class="question">
                   <ul class="question__options">
-                    <template is="dom-repeat" items="{{_toArray(group.value.questions)}}" as="question">
+                    <template is="dom-repeat" items="{{_toArray(group.questions)}}" as="question">
                       <li>
-                        <paper-input name="question__label" label="Question Label" value="{{question.value.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}.label"></paper-input>
-                        <paper-dropdown-menu label="Type" name="type" required on-paper-dropdown-close="_notify" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}.type">
-                          <paper-menu class="dropdown-content" selected="{{question.value.type}}" attr-for-selected="value">
+                        <paper-input name="question__label" label="Question Label" value="{{question.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}.label"></paper-input>
+                        <paper-dropdown-menu label="Type" name="type" required on-paper-dropdown-close="_notify" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}.type">
+                          <paper-menu class="dropdown-content" selected="{{question.type}}" attr-for-selected="value">
                             <paper-item value="text">Text</paper-item>
                             <paper-item value="slider">Slider</paper-item>
                           </paper-menu>
                         </paper-dropdown-menu>
-                        <paper-button raised on-click="_remove_button" data-path$="evalTemplate.question_groups.{{group.key}}.questions.{{question.key}}" class="delete">- Remove Question</paper-button>
+                        <paper-button raised on-click="_removeButton" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}" class="delete">- Remove Question</paper-button>
                       </li>
                     </template>
                     <li>
@@ -86,20 +87,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           <paper-item value="slider">Slider</paper-item>
                         </paper-menu>
                       </paper-dropdown-menu>
-                      <paper-button raised on-click="_add_question" data-path$="evalTemplate.question_groups.{{group.key}}.questions">+ Add Question</paper-button>
+                      <paper-button raised on-click="_addQuestion" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions">+ Add Question</paper-button>
                     </li>
                   </ul>
                 </li>
             </template>
             <li>
-              <paper-input id="group__label__new" label="New Question Group" data-path$="evalTemplate.question_groups"></paper-input>
-              <paper-button raised on-click="_add_group">+ Add Question Group</paper-button>
+              <paper-input id="groupLabelNew" label="New Question Group" data-path$="evalTemplate.question_groups"></paper-input>
+              <paper-button raised on-click="addGroup">+ Add Question Group</paper-button>
             </li>
           </ul>
-          <paper-button raised on-click="_remove_template__warning" class="delete">Delete Template</paper-button>
-          <paper-button raised on-click="_remove_template" class="delete delete--confirmation hide">Are you sure?</paper-button>
+          <paper-button raised on-click="removeTemplateWarning" class="delete">Delete Template</paper-button>
+          <paper-button raised on-click="removeTemplate" class="delete delete--confirmation hide">Are you sure?</paper-button>
       </form>
-      <div id="fb_saved_output" class="active">Changes have been saved</div>
+      <div id="fbSavedOutput" class="active">Changes have been saved</div>
     </paper-material>
   </template>
   <script>
@@ -116,88 +117,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_fbEvalTemplate(baseRef, orgId)',
         '_fbEvalTemplate(baseRef, orgId, tempId)'
       ],
-      ready: function(){
-      },
+      // Create a new evaluation template in firebase
       _createTemplate: function() {
         this.evalTemplate = {};
       },
-      _uid: function(){
-        return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-            return v.toString(16);
-          });
+      _toArray: function(obj) {
+        return EF._toArray(obj);
       },
-      _fb_returned: function(e) {
+      _notify: function(obj) {
+        return EF._notify.call(this, obj);
+      },
+      _fbReturned: function() {
+        // If no template was returned - create one
         if (this.evalTemplate === null || this.evalTemplate === undefined) {
           this._createTemplate();
         } else {
-          var high = this.$.fb_saved_output;
-          high.classList.remove("active");
+          // For every update from firebase, highlight the "auto-save" div
+          var high = this.$.fbSavedOutput;
+          high.classList.remove('active');
           setTimeout(function() {
-              high.classList.add("active");
+              high.classList.add('active');
           }, 1);
         }
       },
-      _fbEvalTemplate: function(baseRef, orgId, tempId = this._uid()){
+      // If no template id was passed in, create a new key
+      _fbEvalTemplate: function(baseRef, orgId, tempId = EF._uid()){
         this.fbEvalTemplate = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
       },
-      _notify: function(e){
-        var target = e.target.domHost,
-          path = target.dataset.path;
-        this.set(path, e.target.value);
-      },
-      _toArray: function(obj){
-        if (obj)
-          return Object.keys(obj).map(function(item){return {key:item, value:obj[item]};});
-      },
-      _blaze: function(path){
-        path.split('.').reduce((last, item, index, array) => {
-          if (last[item] === undefined) {
-            last[item] = {};
-          }
-          return last[item];
-        }, this);
-      },
-      _add_group: function(e){
-        var label = e.currentTarget.domHost.$.group__label__new,
+      // Add a new question group
+      addGroup: function(e){
+        var label = e.currentTarget.domHost.$.groupLabelNew,
           value = label.value,
-          path = 'evalTemplate.question_groups.' + this._uid();
-
-        this._blaze(path);
+          path = 'evalTemplate.question_groups.' + EF._uid();
 
         if (value) {
-          label.value = "";
+          EF._blaze.call(this, path);
+          label.value = '';
           this.set(path, {label: value, questions: {}});
         }
       },
-      _add_question: function(e){
+      // Add a new question
+      _addQuestion: function(e){
         var parent = e.target.parentElement,
-          labelE = parent.querySelector("paper-input input"),
-          typeE = parent.querySelector("paper-dropdown-menu input"),
+          labelE = parent.querySelector('paper-input input'),
+          typeE = parent.querySelector('paper-dropdown-menu input'),
           label = labelE.value,
           type = typeE.value,
-          path = e.target.dataset.path + '.' + this._uid();
+          path = e.target.dataset.path + '.' + EF._uid();
         if (label && type && path) {
-          this._blaze(path);
+          EF._blaze.call(this, path);
           this.set(path, {label: label, type: type});
-          typeE.value = "";
-          labelE.value = "";
+          typeE.value = '';
+          labelE.value = '';
         }
       },
-      _remove_button: function(e){
+      // Remove the node from firebase
+      _removeButton: function(e){
         var path = e.target.dataset.path;
         if (path) {
           this.set(path, null);
         }
       }, 
-      _remove_template__warning: function(e){
-        e.target.classList.add("hide");
-        e.target.parentElement.querySelector(".delete--confirmation.hide").classList.remove("hide");
+      // Swap out the button for a confirmation button
+      removeTemplateWarning: function(e){
+        e.target.classList.add('hide');
+        e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
-      _remove_template: function(e){
+      removeTemplate: function(){
         //TODO: How to push a delete up to firebase?
         delete this.evalTemplate;
-        document.location = '/evaluation_templates';
+        document.location = '/evaluation/templates';
       }
     });
   })();
