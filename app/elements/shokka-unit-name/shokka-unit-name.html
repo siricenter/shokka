@@ -16,8 +16,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <firebase-document  location="{{unitNameLocation}}"
-                        data="{{name}}">
+    <firebase-document  location="{{unitLocation}}"
+                        data="{{unit}}"
+                        on-firebase-value="onFirebaseValue">
     <p>{{name}}</p>
   </template>
 
@@ -28,14 +29,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'shokka-unit-name',
         properties: {
+          name: {
+            type: String,
+            value: '',
+            notify: true
+          },
+          unitType: {
+            type: String,
+            value: '',
+            notify: true
+          }
         },
 
         observers: [
-          '_setUnitNameLocation(baseRef, orgId, unitId)'
+          '_setUnitLocation(baseRef, orgId, unitId)'
         ],
 
-        _setUnitNameLocation: function(baseRef, orgId, unitId) {
-          this.unitNameLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId + '/name';
+        onFirebaseValue: function() {
+          if (this.unit.type === "team") {
+            this.name = this.unit.name;
+          }
+        },
+
+        _setUnitLocation: function(baseRef, orgId, unitId) {
+          this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
         }
       });
     })();
