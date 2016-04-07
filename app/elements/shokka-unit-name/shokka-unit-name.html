@@ -14,12 +14,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        text-align: center;
+        margin: .5rem 0 .5rem;
       }
     </style>
     <firebase-document  location="{{unitLocation}}"
                         data="{{unit}}"
                         on-firebase-value="onFirebaseValue">
-    <p>{{name}}</p>
+    <span>{{name}}</span>
   </template>
 
   <script>

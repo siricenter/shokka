@@ -16,23 +16,78 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      paper-material {
+        padding: 1rem 1rem 2rem;
+      }
+      .category-container {
+        display: flex;
+      }
+      .category {
+        font-size: 1.8rem;
+        width: 25%;
+        text-align: center;
+      }
+      .user-container {
+        width: 100%;
+        padding: 0;
+        margin-top: 1rem;
+        display: flex;
+      }
+      .team-container {
+        width: 25%;
+        display: flex;
+        flex-flow: column;
+      }
+      .role-container {
+        width: 25%;
+        display: flex;
+        flex-flow: column;
+      }
+      .user-picture {
+        width: 25%;
+      }
+      .user-name {
+        width: 25%;
+        text-align: center;
+        margin: .5rem 0 .5rem;
+      }
+      .user-role {
+        width: 100%;
+        text-align: center;
+        margin: .5rem 0 .5rem;
+      }
+      paper-fab {
+        margin: 1rem 0 0 auto;
+      }
     </style>
     <paper-material elevation="1">
-      <paper-button raised on-tap="openUserModal">New User</paper-button>
+      <div class="category-container">
+        <div class="category"><span>Picture</span></div>
+        <div class="category"><span>Name</span></div>
+        <div class="category"><span>Team</span></div>
+        <div class="category"><span>Role</span></div>      
+      </div>
       <firebase-collection  location="{{usersLocation}}"
                             data="{{users}}"></firebase-collection>
       <template is="dom-repeat" items="{{users}}" as="user">
-        <paper-material elevation="1">
-          [picture] || {{user.fName}} {{user.lName}} ||
-          <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
-            <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="[[unitId]]"></shokka-unit-name>
-          </template> ||
-          <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
-            {{role}}
-          </template>
+        <paper-material class="user-container" elevation="2">
+          <span class="user user-picture">[picture]</span>
+          <span class="user user-name">{{user.fName}} {{user.lName}}</span>
+          <div class="team-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
+              <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="[[unitId]]"></shokka-unit-name>
+            </template>
+          </div>
+          <div class="role-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
+              <span class="user-role">{{role}}</span>
+            </template> 
+          </div>
         </paper-material>
       </template>
+
     </paper-material>
+    <paper-fab icon="add" on-tap="openUserModal"></paper-fab>
     <firebase-auth  id="firebaseAuth"
                     location="{{baseRef}}"
                     user="{{authUser}}"
