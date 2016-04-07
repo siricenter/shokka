@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-evaluation-template">
   <template>
     <script type="text/javascript" src="../shokka-evaluation-functions/shokka-evaluation-functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="../shokka-evaluation/shokka-evaluation-styles.css">
     <style>
       :host {
         display: block;
@@ -22,35 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       :host .group .question {
         margin-left: 20px;
-      }
-
-      @keyframes highlight {
-        0% {
-          background: #CCFFCC;
-          opacity: 1;
-        }
-        100% {
-          background: none;
-          opacity: 0;
-        }
-      }
-
-      /* The element to apply the animation to */
-      :host #fbSavedOutput {
-          background-color: none;
-          opacity: 0;
-          padding: 5px 5px 5px 25px;
-          font-weight: bold;
-      }
-      :host #fbSavedOutput.active {
-        animation-name: highlight;
-        animation-duration: 2s;
-      }
-      .delete {
-        background-color: red;
-      }
-      .hide {
-        display: none;
       }
     </style>
     <paper-material elevation="1">
@@ -124,8 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _toArray: function(obj) {
         return EF._toArray(obj);
       },
-      _notify: function(obj) {
-        return EF._notify.call(this, obj);
+      _notify: function(e) {
+        return EF._notify.call(this, e);
       },
       _fbReturned: function() {
         // If no template was returned - create one
