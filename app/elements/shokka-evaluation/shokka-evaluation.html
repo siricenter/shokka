@@ -56,8 +56,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <template is="dom-repeat" items="{{_toArray(group.questions)}}" as="question">
                   <li><h4>[[question.label]]</h4>
                     <div class="eval-tool">
-                      <paper-slider pin snaps max="5" step="1" on-change="_sliderNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" value"evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result"></paper-slider>
-                      <iron-autogrow-textarea placeholder="Start typing here..." rows=3 on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result"></iron-autogrow-textarea>
+                      <paper-slider pin snaps max="5" step="1" on-change="_sliderNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" value"evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" hidden$="{{_isNotText(question.type)}}"></paper-slider>
+                      <iron-autogrow-textarea placeholder="Start typing here..." rows=3 on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" hidden$="{{_isNotSlider(question.type)}}"></iron-autogrow-textarea>
                       <iron-autogrow-textarea placeholder="Notes about this question..." rows=3 on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.note"></iron-autogrow-textarea>
                     </div>
                   </li>
@@ -124,7 +124,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // If no template id was passed in, create a new key
-      _fbEvaluations: function(baseRef, orgId, userInfo, evalId = EF._uid()){
+      _fbEvaluations: function(baseRef, orgId, userInfo, evalId){
+        if (evalId === null || evalId === undefined) {
+          evalId = EF._uid();
+        }
         this.unitsManaged = Object.keys(userInfo.managedUnits);
         this.fbEvaluations = baseRef + '/orgs/' + orgId + '/evaluation/evaluations/' + evalId;
         this.fbTemplates = baseRef + '/orgs/' + orgId + '/evaluation/templates';
@@ -145,6 +148,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         //TODO: How to push a delete up to firebase?
         delete this.evaluation;
         document.location = '/evaluation/evaluations';
+      },
+      _isNotSlider: function(type) {
+        return type === "slider";
+      },
+      _isNotText: function(type) {
+        return type === "text";
       }
     });
   })();

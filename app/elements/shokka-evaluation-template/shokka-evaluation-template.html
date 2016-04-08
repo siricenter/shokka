@@ -44,8 +44,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-input name="question__label" label="Question Label" value="{{question.label}}" on-input="_notify" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}.label"></paper-input>
                         <paper-dropdown-menu label="Type" name="type" required on-paper-dropdown-close="_notify" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}.type">
                           <paper-menu class="dropdown-content" selected="{{question.type}}" attr-for-selected="value">
-                            <paper-item value="text">Text</paper-item>
-                            <paper-item value="slider">Slider</paper-item>
+                            <paper-item value="text">text</paper-item>
+                            <paper-item value="slider">slider</paper-item>
                           </paper-menu>
                         </paper-dropdown-menu>
                         <paper-button raised on-click="_removeButton" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}" class="delete">- Remove Question</paper-button>
@@ -55,8 +55,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <paper-input name="question__label__new" label="New Question"></paper-input>
                       <paper-dropdown-menu label="Type" name="type" required>
                         <paper-menu class="dropdown-content">
-                          <paper-item value="text">Text</paper-item>
-                          <paper-item value="slider">Slider</paper-item>
+                          <paper-item value="text">text</paper-item>
+                          <paper-item value="slider">slider</paper-item>
                         </paper-menu>
                       </paper-dropdown-menu>
                       <paper-button raised on-click="_addQuestion" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions">+ Add Question</paper-button>
@@ -112,7 +112,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // If no template id was passed in, create a new key
-      _fbEvalTemplate: function(baseRef, orgId, tempId = EF._uid()){
+      _fbEvalTemplate: function(baseRef, orgId, tempId){
+        if (tempId === null || tempId === undefined) {
+          tempId = EF._uid();
+        }
         this.fbEvalTemplate = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
       },
       // Add a new question group
