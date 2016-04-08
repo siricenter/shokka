@@ -85,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <template template is="dom-if" if="{{userInfo.roles.admin}}">
-            <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
+            <shokka-drawer-admin-content></shokka-drawer-admin-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.manager}}">
