@@ -50,6 +50,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
 
+  <script src="bower_components/moment/moment.js"></script>
+
   <!-- will be replaced with elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
@@ -83,16 +85,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <template template is="dom-if" if="{{userInfo.roles.admin}}">
-            <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
+            <shokka-drawer-admin-content></shokka-drawer-admin-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.manager}}">
             <shokka-drawer-manager-content  base-ref='[[baseRef]]'
-                                            teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
+                                            org-id='[[orgId]]'
+                                            managed-units=[[userInfo.managedUnits]]></shokka-drawer-manager-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
-            <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
+            <template template is="dom-repeat" items="{{toKeyArray(userInfo.groups)}}" as="group">
+              <shokka-drawer-employee-content base-ref=[[baseRef]]
+                                              org-id=[[orgId]]
+                                              group-id=[[group]]></shokka-drawer-employee-content>
+            </template>
           </template>
         </paper-menu>
       </paper-scroll-header-panel>
@@ -113,7 +120,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <firebase-login user-info="{{userInfo}}"
                           user="{{user}}"
                           base-ref="{{baseRef}}"
-                          org-id="{{orgId}}"></firebase-login>
+                          org-id="{{orgId}}"
+                          firebase-auth="{{firebaseAuth}}"></firebase-login>
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
@@ -136,12 +144,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page id="home" data-route="home" data-title="Homepage" route="{{route}}" page-title="{{pageTitle}}">
               <!-- Admin Home Page -->
               <template template is="dom-if" if="{{userInfo.roles.admin}}">
-                <shokka-org-setup base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-org-setup>
+                <shokka-org-setup base-ref="{{baseRef}}" org-id="{{orgId}}" firebase-auth="{{firebaseAuth}}"></shokka-org-setup>
               </template>
               <!-- Manager Home Page -->
               <template template is="dom-if" if="{{!userInfo.roles.admin}}">
                 <template template is="dom-if" if="{{userInfo.roles.manager}}">
-                  <shokka-manager-homepage users-in-org="{{usersInOrg}}"></shokka-manager-homepage>
+                  <shokka-manager-homepage base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-manager-homepage>
                 </template>
               </template>
               <!-- Employee Home Page -->
@@ -160,6 +168,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <shokka-page data-route="user-info" data-title="User Overview" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
+            </shokka-page>
+
+            <shokka-page data-route="user-edit" data-title="Edit User" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-edit-user base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[params.uid]]"></shokka-edit-user>
             </shokka-page>
 
             <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
@@ -201,33 +213,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]"></shokka-evaluation-template>
             </shokka-page>
 
-            <shokka-page data-route="modules" data-title="{{modules.title}}" route="{{route}}">
-              <paper-material elevation="1">
-                <h2 class="page-title">Modules</h2>
-                <a href="/modules/1">1</a>
-                <a href="/modules/2">2</a>
-                <a href="/modules/3">3</a>
-                <a href="/modules/4">4</a>
-              </paper-material>
+            <shokka-page data-route="module-edit" data-title="Add/Edit Module" route="{{route}}">
+              <shokka-edit-module preview-open base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
             </shokka-page>
 
-            <shokka-page data-route="module-info" data-title="{{module.title}}" route="{{route}}" page-title="{{pageTitle}}">
-              <firebase-document
-                location="https://shokka.firebaseio.com/trainingModules/[[params.module]]"
-                data="{{module}}"></firebase-document>
-              <firebase-collection
-                order-by-child="order"
-                location="https://shokka.firebaseio.com/steps/[[params.module]]"
-                data="{{steps}}"></firebase-collection>
-              <shokka-module-header title="[[module.title]]" desc="[[module.desc]]"></shokka-module-header>
-              <template is="dom-repeat" items="[[steps]]" as="step">
-                <paper-material elevation="1">
-                  <h3>[[step.title]]</h3>
-                  <marked-element markdown=[[step.content]]>
-                    <div class="markdown-html custom"></div>
-                  </marked-element>
-                </paper-material>
-              </template>
+            <shokka-page  data-route="module-info" 
+                          data-title="Module" 
+                          route="{{route}}" 
+                          page-title="{{pageTitle}}">
+              <shokka-view-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-view-module>
             </shokka-page>
 
             <shokka-page data-route="training-info" data-title="{{params.name}}" route="{{route}}" page-title="{{pageTitle}}">
@@ -269,7 +263,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="categories-assign" data-title="Assign Categories" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{orgId}}" team-ids-object="{{userInfo.teams}}"></shokka-categories-assign>
+              <shokka-categories-assign base-ref="{{baseRef}}" org-id="{{orgId}}" unit-ids-object="{{userInfo.managedUnits}}"></shokka-categories-assign>
             </shokka-page>
           </iron-pages>
         </div>

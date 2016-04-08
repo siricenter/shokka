@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             color: var(--text-primary-color);
         }
         </style>
-        <firebase-auth  id="firebaseLogin"
+        <firebase-auth  id="firebaseAuth"
                         location="{{baseRef}}"
                         user="{{user}}"
                         provider="{{provider}}"
@@ -108,10 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2>Login</h2>
-            <paper-input    label="email" id="email"></paper-input>
+            <paper-input    label="email" 
+                            id="email"
+                            on-keypress="_keyPressed"></paper-input>
             <paper-input    label="password"
                             type="password"
-                            id="pass"></paper-input>
+                            id="pass"
+                            on-keypress="_keyPressed"></paper-input>
             <div class="buttons">
                 <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login">
                     <iron-icon icon="forward"></iron-icon>
@@ -161,7 +164,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
                 <div class="profile-row">
-                <!-- userInfo.manager will need to be added to the database. I would do it, but don't have access to it yet -->
                     <paper-input label="manager" id="accountManager" type="date" value="{{userInfo.manager}}" on-change="inputChange" disabled></paper-input>
                     <iron-icon class="check-icon" icon="check"></iron-icon>
                 </div>
@@ -181,6 +183,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             is: 'firebase-login',
 
             properties: {
+                firebaseAuth: {
+                    type: Object,
+                    notify: true
+                },
                 orgId: {
                     type: String,
                     notify: true
@@ -220,6 +226,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 '_setUserOrgRef(baseRef, userOrgInfo.org, user.uid)'
             ],
 
+            ready: function() {
+                this.firebaseAuth = this.$.firebaseAuth;
+            },    
+
+            _keyPressed: function(e) {
+                if (13 === e.charCode) {
+                    this.login(e);
+                }
+            },
+
             _setUserOrgRef: function(baseRef, oid, uid) {
                 this.orgId = oid;
                 this.userOrgRef = baseRef + '/orgs/' + oid + '/users/' + uid;
@@ -234,7 +250,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             login: function(e) {
                 var email = this.$.email.value;
                 var pass = this.$.pass.value;
-                this.$.firebaseLogin.login({email:email, password:pass});
+                this.$.firebaseAuth.login({email:email, password:pass});
                 this.message = 'Login result: ' + e.detail.user;
             },
             logout: function(){
@@ -242,7 +258,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.pass.value = '';
                 this.userInfo = {};
                 this.userRef = null;
-                this.$.firebaseLogin.logout();
+                this.$.firebaseAuth.logout();
+                window.location.reload(true);
             },
             onFirebaseLogin: function() {
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
@@ -256,14 +273,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.$.btnLogout.style.display = 'none';
                 this.$.btnAccount.style.display = 'none';
             },
-            inputChange: function(e) { //TODO: make this an on-chage event and have it set a flag property
+            inputChange: function(e) { //TODO: make this an on-change event and have it set a flag property
                 e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.style.display = 'block';
-            },
-            errorHandler: function(e) {
-                this.message = 'Error: ' + e.detail.message;
-            },
-            userSuccessHandler: function(e) {
-                this.message = e.type + ' success!';
             }
         });
     })();

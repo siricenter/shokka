@@ -1,0 +1,122 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<dom-module id="shokka-edit-module">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-material {
+        display: flex;
+        flex-direction: column;
+      }
+
+      paper-textarea {
+        margin: 2rem 0 1rem;
+
+        --paper-input-container-label-floating: {
+          font-size: 2rem;
+          font-weight: bold;
+          padding-bottom: .5rem;
+          color: #333;
+        };
+      }
+
+      label {
+        display: block;
+        font-size: 2rem;
+        font-weight: bold;
+        padding-bottom: .5rem;
+        color: #333;
+        line-height: 24px;
+        transform: scale(0.75);
+        transform-origin: left top;
+      }
+
+      #preview {
+        display: none;
+      }
+
+      #preview.open {
+        display: flex;
+        flex-direction: column;
+      }
+
+      paper-button {
+        align-self: flex-end;
+        margin-top: -1rem;
+      }
+
+      #previewButton:before {
+        display: block;
+        content: "SHOW PREVIEW";
+      }
+
+      #previewButton[active]:before {
+        content: "HIDE PREVIEW";
+      }
+    </style>
+    <firebase-document  location="{{moduleLocation}}"
+                        data="{{module}}"></firebase-document>
+    <paper-material elevation="1">
+      <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
+      <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
+      <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
+      <paper-button id="previewButton" on-tap="togglePreview" toggles="true"></paper-button>
+      <section id="preview">
+        <label for="preview">Content Preview</label>
+        <marked-element markdown="{{module.content}}"></marked-element>
+        <paper-button on-tap="togglePreview">HIDE PREVIEW</paper-button>
+      </section>
+    </paper-material>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      
+      Polymer({
+        is: 'shokka-edit-module',
+
+        properties: {
+          previewOpen: {
+            type: Boolean,
+            value: false,
+            notify: true
+          }
+        },
+
+        observers:[
+          '_setModuleLocation(baseRef, orgId, moduleId)'
+        ],
+        
+        _setModuleLocation: function(baseRef, orgId, moduleId) {
+          this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
+        },
+
+        togglePreview: function() {
+          this.$.preview.classList.toggle('open');
+          this.previewOpen = this.$.previewButton.active = this.$.preview.classList.contains('open');
+        },
+
+        ready: function() {
+          this.$.preview.classList.add(this.previewOpen ? 'open' : null);
+          this.$.previewButton.active = this.previewOpen;
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
