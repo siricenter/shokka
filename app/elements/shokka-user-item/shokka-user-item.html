@@ -32,12 +32,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         userNameLocation: {
           type: String,
-          computed: '_computeUserNameLocation(baseRef, uid)'
+          computed: '_computeUserNameLocation(baseRef, orgId, uid)'
         }
       },
 
-      _computeUserNameLocation: function(baseRef, uid) {
-        return baseRef + '/users/' + uid + '/fullName';
+      _computeUserNameLocation: function(baseRef, orgId, uid) {
+        return baseRef + '/orgs/' + orgId + '/users/' + uid + '/fName';
       }
     });
   })();
