@@ -13,19 +13,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
     </style>
-    <!-- Firebase for Drawer Content -->
-    <firebase-collection
-      order-by-child="name"
-      location="{{trainingsRef}}"
-      data="{{trainings}}"></firebase-collection>
-    <template template is="dom-repeat" items="{{trainings}}" as="training">
-      <a href="/trainings/{{training.__firebaseKey__}}">
-        <iron-icon icon="label"></iron-icon>
-        <span>{{training.name}}</span>
-      </a>
-      <template template is="dom-repeat" items="{{training.modules}}" as="module">
-        <shokka-sidebar-module module-id="[[module]]"></shokka-sidebar-module>
-      </template>
+    <firebase-document  location="{{groupLocation}}"
+                        data="{{group}}"></firebase-document>
+    <p>{{group.name}}</p>
+    <template template is="dom-repeat" items="{{_toKeyArray(group.categories)}}" as="categoryId">
+      <shokka-sidebar-category  base-ref="{{baseRef}}"
+                                org-id="{{orgId}}"
+                                category-id="{{categoryId}}"></shokka-sidebar-category>
     </template>
     <hr>
 
@@ -42,29 +36,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-drawer-employee-content',
 
       properties: {
-        baseRef: {
-          type: String,
-          value: 'https://shokka.firebaseio.com',
-          notify: true
-        },
-        trainingsRef: {
-          type: String,
-          computed: '_computeTrainingsRef(baseRef)'
-        },
-        module: {
-          type: String,
-          value: '',
-          notify: true
-        }
       },
 
-      listeners: {
+      observers: [
+        '_setGroupLocation(baseRef, orgId, groupId)'
+      ],
+
+      _toKeyArray: function(obj) {
+        return Object.keys(obj);
       },
 
-      // Functions
-      _computeTrainingsRef: function(baseRef) {
-        return baseRef + '/trainings';
-      }
+      _setGroupLocation: function(base, org, group) {
+        this.groupLocation = base + '/orgs/' + org + '/units/' + group;
+      },
     });
   })();
   </script>
