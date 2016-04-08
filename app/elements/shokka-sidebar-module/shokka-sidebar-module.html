@@ -17,12 +17,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <firebase-document id="{{fbDocID}}"
-      location="{{moduleRef}}"
-      data="{{moduleData}}"></firebase-document>
+    <firebase-document  location="{{moduleRef}}"
+                        data="{{module}}"></firebase-document>
     <a href="/modules/{{moduleId}}">
       <iron-icon icon="main"></iron-icon>
-      <span>{{moduleData.title}}</span>
+      <span>{{module.name}}</span>
     </a>
   </template>
   <script>
@@ -45,11 +44,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         moduleRef: {
           type: String,
-          computed: '_computeModuleRef(baseRef, moduleId)'
+          computed: '_computeModuleRef(baseRef, orgId, moduleId)'
         }
       },
-      _computeModuleRef: function(baseRef, moduleId) {
-        return baseRef + '/trainingModules/' + moduleId;
+      _computeModuleRef: function(baseRef, orgId, moduleId) {
+        return baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
       }
     });
   })();
