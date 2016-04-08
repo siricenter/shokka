@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../shokka-unit-menu/shokka-unit-menu.html">
 
 <dom-module id="shokka-drawer-manager-content">
   <template>
@@ -30,9 +31,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span>Assign Categories</span>
       </p>
     </a>
-    <template template is="dom-repeat" items="{{teamIdArray}}" as="teamId">
-      <shokka-team-menu team-id="[[teamId]]"
-                        base-ref="[[baseRef]]"></shokka-team-menu>
+    <template template is="dom-repeat" items="{{_objKeys(managedUnits)}}" as="unitId">
+      <shokka-unit-menu unit-id="[[unitId]]"
+                        org-id="[[orgId]]"
+                        base-ref="[[baseRef]]"></shokka-unit-menu>
     </template>
   </template>
   <script>
@@ -43,18 +45,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-drawer-manager-content',
 
       properties: {
-        teamIdArray: {
-          type: Array,
-          computed: '_objKeys(teams)'
-        },
-        teamLocation: {
-          type: String,
-          computed: '_computeTeamLocation(baseRef, teamId)'
-        }
-      },
-
-      _computeTeamLocation: function(baseRef, teamId) {
-        return baseRef + '/teams/' + teamId;
       },
 
       _objKeys: function(obj){

@@ -90,7 +90,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <template template is="dom-if" if="{{userInfo.roles.manager}}">
             <shokka-drawer-manager-content  base-ref='[[baseRef]]'
-                                            teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
+                                            org-id='[[orgId]]'
+                                            managed-units=[[userInfo.managedUnits]]></shokka-drawer-manager-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
