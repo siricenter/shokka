@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-evaluation-template">
   <template>
-    <script type="text/javascript" src="../shokka-evaluation-functions/shokka-evaluation-functions.js"></script>
+    <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
     <link rel="stylesheet" type="text/css" href="../shokka-evaluation/shokka-evaluation-styles.css">
     <style>
       :host {
@@ -86,7 +86,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_fbEvalTemplate(baseRef, orgId)',
         '_fbEvalTemplate(baseRef, orgId, tempId)'
       ],
       // Create a new evaluation template in firebase

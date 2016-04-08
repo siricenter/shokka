@@ -81,6 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/evaluation/templates/new', scrollToTop, function() {
       app.route = 'evaluation-template-item';
+      app.params = {tempId: null};
     });
 
     page('/evaluation/templates/edit/:tempId', scrollToTop, function(data) {
@@ -95,9 +96,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/evaluation/evaluations/new', scrollToTop, function() {
       app.route = 'evaluation-item';
+      app.params = {evalId: null};
     });
 
-    page('/evaluation/evaluations/edit/:id', scrollToTop, function(data) {
+    page('/evaluation/evaluations/edit/:evalId', scrollToTop, function(data) {
       app.route = 'evaluation-item';
       app.params = data.params;
     });

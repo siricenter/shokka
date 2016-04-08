@@ -29,12 +29,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h2>New Evaluation</h2>
       <firebase-document    location="{{fbEvaluations}}"
                             on-firebase-value="_fbReturned"
-                            data="{{evaluation}}" log></firebase-document>
+                            data="{{evaluation}}"></firebase-document>
       <form is="iron-form" method="get" action="/" id="basic">
-        <paper-dropdown-menu label="Employee" name="user" required on-paper-dropdown-close="_notify" data-path$="evaluation.user">
+        <paper-dropdown-menu label="Employee" name="user" required>
           <paper-menu class="dropdown-content" selected="{{evaluation.user}}" attr-for-selected="value">
-            <paper-item value="text">Jordan</paper-item>
-            <paper-item value="slider">Brendan</paper-item>
+            <template is="dom-repeat" items="{{unitsManaged}}" as="unit">
+              <shokka-evaluations-list-users unit="{{unit}}" org-id="[[orgId]]" base-ref="[[baseRef]]" value="{{evaluation.user}}"></shokka-evaluations-list-users>
+            </template>
           </paper-menu>
         </paper-dropdown-menu>
         <paper-dropdown-menu label="Evaluation" name="evaluation" required>
@@ -42,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <firebase-document  location="{{fbTemplates}}"
                                   order-by-child="order"
                                   on-firebase-value="_fbReturned"
-                                  data="{{templates}}" log></firebase-document>
+                                  data="{{templates}}"></firebase-document>
               <template is="dom-repeat" items="[[_toArray(templates)]]" as="template">
                 <paper-item value="[[template.__firebaseKey__]]">{{template.name}}</paper-item>
               </template>
@@ -82,8 +83,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_fbEvaluations(baseRef, orgId)',
-        '_fbEvaluations(baseRef, orgId, evalId)'
+        '_fbEvaluations(baseRef, orgId, userInfo, evalId)'
       ],
       // Create a new evaluation template in firebase
       _createEvaluation: function() {
@@ -124,7 +124,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       // If no template id was passed in, create a new key
-      _fbEvaluations: function(baseRef, orgId, evalId = EF._uid()){
+      _fbEvaluations: function(baseRef, orgId, userInfo, evalId = EF._uid()){
+        this.unitsManaged = Object.keys(userInfo.managedUnits);
         this.fbEvaluations = baseRef + '/orgs/' + orgId + '/evaluation/evaluations/' + evalId;
         this.fbTemplates = baseRef + '/orgs/' + orgId + '/evaluation/templates';
       },
