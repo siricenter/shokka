@@ -15,10 +15,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles"></style>
     <style>
       :host {
-        display: block;
-      }
-
-      paper-material {
         display: flex;
         flex-direction: column;
       }
@@ -70,17 +66,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <firebase-document  location="{{moduleLocation}}"
                         data="{{module}}"></firebase-document>
-    <paper-material elevation="1">
-      <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
-      <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
-      <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
-      <paper-button id="previewButton" on-tap="togglePreview" toggles="true"></paper-button>
-      <section id="preview">
-        <label for="preview">Content Preview</label>
-        <marked-element markdown="{{module.content}}"></marked-element>
-        <paper-button on-tap="togglePreview">HIDE PREVIEW</paper-button>
-      </section>
-    </paper-material>
+    <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
+    <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
+    <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
+    <paper-button id="previewButton" on-tap="togglePreview" toggles="true"></paper-button>
+    <section id="preview">
+      <label for="preview">Content Preview</label>
+      <marked-element markdown="{{module.content}}"></marked-element>
+      <paper-button on-tap="togglePreview">HIDE PREVIEW</paper-button>
+    </section>
   </template>
 
   <script>
@@ -99,8 +93,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers:[
+          '_onModuleIdChange(moduleId)',
+          '_onIdChange(id)',
           '_setModuleLocation(baseRef, orgId, moduleId)'
         ],
+
+        _onModuleIdChange: function() {
+          this.id = this.moduleId;
+        },
+
+        _onIdChange: function() {
+          this.moduleId = this.id;
+        },
         
         _setModuleLocation: function(baseRef, orgId, moduleId) {
           this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;

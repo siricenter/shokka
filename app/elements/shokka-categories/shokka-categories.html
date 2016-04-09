@@ -15,18 +15,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-      }
-
-      paper-material > paper-material {
-        width: 256px;
+        position: relative;
+        height: 100%;
       }
     </style>
-    <paper-material elevation="1">
-        <shokka-trainings-list  location="{{modulesLocation}}"
+    <paper-drawer-panel right-drawer>
+        <shokka-trainings-list  id="moduleList"
+                                drawer
+                                location="{{modulesLocation}}"
                                 data="{{moduleIds}}">
-          <shokka-edit-unit base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-edit-unit>
+          <shokka-edit-module base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-edit-module>
         </shokka-trainings-list>
-    </paper-material>
+    <div main>
     <firebase-collection location="{{modulesLocation}}"
                           data="{{moduleIds}}"></firebase-collection>
     <template is="dom-repeat" items="{{moduleIds}}" as="moduleId">
@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-repeat" items="{{categoriesIds}}" as="categoryId">
       <shokka-category  base-ref="[[baseRef]]"
                         category-id="[[categoryId.__firebaseKey__]]"
-                        org-id="[[orgId]]"></shokka-module>
+                        org-id="[[orgId]]"></shokka-category>
     </template>
 
     <template is="dom-repeat" items="{{moduleArray}}" as="module">
@@ -57,7 +57,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
       <p>--------------------------------------------------------------------</p>
     </template>
-    
+    </div>
+    </paper-drawer-panel>
   </template>
 
   <script>
@@ -148,6 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return obj.__firebaseKey__ === key;
           })[0].title;
         }
+
       });
     })();
   </script>

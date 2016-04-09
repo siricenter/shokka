@@ -67,6 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background-color: white;
           width: 90%;
           max-width: 800px;
+          overflow-y: scroll;
       }
 
       .modal-dialog .hidden-content {
@@ -80,7 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           equal-to="{{equalTo}}"
                           limit-to-first="{{limitToFirst}}"
                           limit-to-last="{{limitToLast}}"
-                          log="{{log}}"
+                          log={{log}}
                           order-by-child="{{orderByChild}}"
                           order-by-key="{{orderByKey}}"
                           order-by-priority="{{orderByPriority}}"

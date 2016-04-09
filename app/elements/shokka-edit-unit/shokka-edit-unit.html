@@ -61,12 +61,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers: [
-          '_resetFirebaseCollection(unitId)',
+          '_onUnitIdChange(unitId)',
+          '_onIdChange(id)',
           '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
           '_setUnitLocation(baseRef, orgId, unitId)',
           '_setUnitsLocation(baseRef, orgId)',
-          '_setPaths(unit)',
-          '_onIdChange(id)'
+          '_setPaths(unit)'
         ],
 
         _createChild: function() {
@@ -110,8 +110,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.parentPath += unit.parent || '';
         },
 
-        _resetFirebaseCollection: function() {
+        _onUnitIdChange: function() {
           this.firebaseCollectionProperties = null;
+          this.id = this.unitId;
+        },
+
+        _onIdChange: function() {
+          this.unitId = this.id;
         },
 
         _setFirebaseCollection: function(baseRef, orgId, unitId, unit) {
@@ -141,10 +146,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _setUnitsLocation: function(baseRef, orgId) {
           this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
-        },
-
-        _onIdChange: function() {
-          this.unitId = this.id;
         }
 
       });
