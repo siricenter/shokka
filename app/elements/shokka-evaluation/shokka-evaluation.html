@@ -88,6 +88,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Create a new evaluation template in firebase
       _createEvaluation: function() {
         this.evaluation = {};
+        this.set("evaluation.created_on", EF.timeStamp());
+        this.set('evaluation.created_by', this.userId.uid);
       },
       _toArray: function(obj) {
         return EF._toArray(obj);
@@ -116,6 +118,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._createEvaluation();
         } else {
           // For every update from firebase, highlight the "auto-save" div
+          this.set('evaluation.updated_on', EF.timeStamp());
+          this.set('evaluation.updated_by', this.userId.uid);
           var high = this.$.fbSavedOutput;
           high.classList.remove('active');
           setTimeout(function() {

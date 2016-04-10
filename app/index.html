@@ -192,12 +192,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page data-route="evaluations" data-title="Evaluations" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2>Evaluations</h2>
-                <a href="/evaluation/evaluations/new">Create a New Employee Evaluation</a>
+                <p><a href="/evaluation/evaluations/new">Create a New Employee Evaluation</a></p>
+                <shokka-evaluations-list base-ref="[[baseRef]]" org-id="[[orgId]]" user-info="[[userInfo]]"></shokka-evaluations-list>
               </paper-material>
             </shokka-page>
 
             <shokka-page data-route="evaluation-item" data-title="Create/Edit Evaluation" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]"></shokka-evaluation>
+              <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]" user-id="[[user]]"></shokka-evaluation>
             </shokka-page>
 
             <shokka-page data-route="evaluation-templates" data-title="Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
@@ -210,7 +211,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="evaluation-template-item" data-title="Create/Edit Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]"></shokka-evaluation-template>
+              <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]" user-id="[[user]]"></shokka-evaluation-template>
             </shokka-page>
 
             <shokka-page data-route="module-edit" data-title="Add/Edit Module" route="{{route}}">
