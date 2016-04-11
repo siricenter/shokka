@@ -1,0 +1,66 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-unit-menu">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <p>{{unit.name}}</p>
+    -----------------------------------------------------
+    <firebase-document  location="{{unitLocation}}"
+                        data="{{unit}}"></firebase-document>
+    <template is="dom-repeat" items="{{_toKeyArray(unit.children)}}" as="uid">
+      <template is="dom-if" if="isGroup(uid.type)">
+        <shokka-user-item uid={{uid}}
+                          base-ref={{baseRef}}
+                          org-id={{orgId}}></shokka-user-item>
+      </template>
+      <shokka-unit-menu base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[uid]]"></shokka-unit-menu>
+      -----------------------------------------------------
+    </template>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-unit-menu',
+
+      properties: {
+        unitLocation: {
+          type: String,
+          computed: '_computeUnitLocation(baseRef, orgId, unitId)'
+        }
+      },
+
+      isGroup: function(type) {
+        return type === 'group';
+      },
+
+      _computeUnitLocation: function(baseRef, orgId, unitId) {
+        return baseRef + '/orgs/' + orgId + '/units/' + unitId;
+      },
+
+      _toKeyArray: function(obj) {
+        return Object.keys(obj || {});
+      },
+
+      _computeUserNameLocation: function() {
+        return this.baseRef + '/users/' + this.fName;
+      }
+    });
+  })();
+  </script>
+</dom-module>

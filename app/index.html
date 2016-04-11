@@ -85,16 +85,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
           <template template is="dom-if" if="{{userInfo.roles.admin}}">
-            <shokka-drawer-admin-content route="{{route}}"></shokka-drawer-admin-content>
+            <shokka-drawer-admin-content></shokka-drawer-admin-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.manager}}">
             <shokka-drawer-manager-content  base-ref='[[baseRef]]'
-                                            teams=[[userInfo.managedTeams]]></shokka-drawer-manager-content>
+                                            org-id='[[orgId]]'
+                                            managed-units=[[userInfo.managedUnits]]></shokka-drawer-manager-content>
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
-            <shokka-drawer-employee-content route="{{route}}"></shokka-drawer-employee-content>
+            <template template is="dom-repeat" items="{{toKeyArray(userInfo.groups)}}" as="group">
+              <shokka-drawer-employee-content base-ref=[[baseRef]]
+                                              org-id=[[orgId]]
+                                              group-id=[[group]]></shokka-drawer-employee-content>
+            </template>
           </template>
         </paper-menu>
       </paper-scroll-header-panel>
