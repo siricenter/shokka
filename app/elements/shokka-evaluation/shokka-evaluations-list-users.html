@@ -48,9 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        'handleUnit(baseRef, orgId, unit)'
+        'handleUnit(baseRef, orgId)'
       ],
-      handleUnit: function(baseRef, orgId, unit) {
+      handleUnit: function(baseRef, orgId) {
         this.employeeListHref = baseRef + '/orgs/' + orgId + '/users';
       }
     });

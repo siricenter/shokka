@@ -78,6 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
   (function() {
     'use strict';
+    var EF = EF || {};
 
     Polymer({
       is: 'shokka-evaluation-template',
@@ -91,7 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Create a new evaluation template in firebase
       _createTemplate: function() {
         this.evalTemplate = {};
-        this.set("evalTemp.created_on", EF.timeStamp());
+        this.set('evalTemp.created_on', EF.timeStamp());
         this.set('evalTemp.created_by', this.userId.uid);
       },
       _toArray: function(obj) {

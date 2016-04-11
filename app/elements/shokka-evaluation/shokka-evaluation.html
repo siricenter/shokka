@@ -39,7 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <firebase-document    location="{{fbEvaluations}}"
                             on-firebase-value="_fbReturned"
                             data="{{evaluation}}"></firebase-document>
-      <form is="iron-form" method="get" action="/" id="basic">
+      <form is="iron-form" method="get" action="/" id="evaluationForm">
         <paper-dropdown-menu label="Employee" name="user" required>
           <paper-menu class="dropdown-content" selected="{{evaluation.user}}" attr-for-selected="value">
             <template is="dom-repeat" items="{{unitsManaged}}" as="unit">
@@ -59,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-menu>
         </paper-dropdown-menu>
         <ul>
-          <template is="dom-repeat" items="{{getGroups(evaluation.template_id, templates)}}" as="group">
+          <template is="dom-repeat" items="{{groups}}" as="group">
             <li><h3>[[group.label]]</h3>
               <ul>
                 <template is="dom-repeat" items="{{_toArray(group.questions)}}" as="question">
@@ -84,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
   (function() {
     'use strict';
+    var EF = EF || {};
 
     Polymer({
       is: 'shokka-evaluation',
@@ -97,14 +98,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Create a new evaluation template in firebase
       _createEvaluation: function() {
         this.evaluation = {};
-        this.set("evaluation.created_on", EF.timeStamp());
+        this.set('evaluation.created_on', EF.timeStamp());
         this.set('evaluation.created_by', this.userId.uid);
       },
       _toArray: function(obj) {
         return EF._toArray(obj);
       },
       getGroups: function(key, array) {
-        return this._toArray(array[key].question_groups);
+        if (array[key]) {
+          return this._toArray(array[key].question_groups);
+        }
       },
       _notify: function(e) {
         return EF._notify.call(this, e);
@@ -123,11 +126,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set(path, target.value);
       },
       _fbReturned: function() {
+        // TODO: This should be a computed value rather than set every firebase call
+        this.groups = this.getGroups((this.evaluation || {}).template_id, this.templates);
         // If no template was returned - create one
         if (this.evaluation === null || this.evaluation === undefined) {
           this._createEvaluation();
         } else {
-          // For every update from firebase, highlight the "auto-save" div
+          // For every update from firebase, highlight the 'auto-save' div
           this.set('evaluation.updated_on', EF.timeStamp());
           this.set('evaluation.updated_by', this.userId.uid);
           var high = this.$.fbSavedOutput;
@@ -164,10 +169,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.page('#!/evaluation/evaluations');
       },
       _isNotSlider: function(type) {
-        return type === "slider";
+        return type === 'slider';
       },
       _isNotText: function(type) {
-        return type === "text";
+        return type === 'text';
       },
       _value: function() {
         return EF._getDeep([].slice.call(arguments).join(''), this);

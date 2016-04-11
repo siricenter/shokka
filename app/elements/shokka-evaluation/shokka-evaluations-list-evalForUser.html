@@ -56,9 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        'evaluationsListObserver(baseRef, orgId, userId)'
+        'evaluationsListObserver(baseRef, orgId)'
       ],
-      evaluationsListObserver: function(baseRef, orgId, userId) {
+      evaluationsListObserver: function(baseRef, orgId) {
         this.evaluationsListHref = baseRef + '/orgs/' + orgId + '/evaluation/evaluations';
       }
     });
