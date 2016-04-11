@@ -164,7 +164,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       removeTemplate: function(){
         //TODO: How to push a delete up to firebase?
         delete this.evalTemplate;
-        document.location = '/evaluation/templates';
+        window.page('#!/evaluation/templates');
       }
     });
   })();

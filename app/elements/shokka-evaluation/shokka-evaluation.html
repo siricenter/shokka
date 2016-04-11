@@ -24,6 +24,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host .group .question {
         margin-left: 20px;
       }
+      :host .shokka-textarea {
+        width: 45%;
+        background: inherit;
+        color: inherit;
+        font-size: inherit;
+        font-family: inherit;
+        line-height: inherit;
+        text-align: inherit;
+      }
     </style>
     <paper-material elevation="1">
       <h2>New Evaluation</h2>
@@ -56,9 +65,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <template is="dom-repeat" items="{{_toArray(group.questions)}}" as="question">
                   <li><h4>[[question.label]]</h4>
                     <div class="eval-tool">
-                      <paper-slider pin snaps max="5" step="1" on-change="_sliderNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" value"evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" hidden$="{{_isNotText(question.type)}}"></paper-slider>
-                      <iron-autogrow-textarea placeholder="Start typing here..." rows=3 on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" hidden$="{{_isNotSlider(question.type)}}"></iron-autogrow-textarea>
-                      <iron-autogrow-textarea placeholder="Notes about this question..." rows=3 on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.note"></iron-autogrow-textarea>
+                      <paper-slider pin snaps max="5" step="1" on-change="_sliderNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" value="{{_value('evaluation.results.', group.__firebaseKey__, '.', question.__firebaseKey__, '.result')}}" hidden$="{{_isNotText(question.type)}}"></paper-slider>
+                      <textarea class="shokka-textarea" rows="4" placeholder="Start typing here..." on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.result" hidden$="{{_isNotSlider(question.type)}}" value="{{_value('evaluation.results.', group.__firebaseKey__,'.',question.__firebaseKey__, '.result')}}"></textarea>
+                      <textarea class="shokka-textarea" rows="4" placeholder="Notes about this question..." on-change="_textAreaNotify" data-path$="evaluation.results.{{group.__firebaseKey__}}.{{question.__firebaseKey__}}.note" value="{{_value('evaluation.results.', group.__firebaseKey__,'.',question.__firebaseKey__, '.note')}}"></textarea>
                     </div>
                   </li>
                 </template>
@@ -101,10 +110,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return EF._notify.call(this, e);
       },
       _textAreaNotify: function(e) {
-        var target = e.target.parentElement.parentElement,
-          path = target.dataset.path;
+        var target = e.target,
+          path = target.dataset.path,
+          value = target.value;
         EF._blaze.call(this, path);
-        this.set(path, e.target.value);
+        this.set(path, value);
       },
       _sliderNotify: function(e) {
         var target = e.target,
@@ -151,13 +161,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       removeEvaluation: function(){
         //TODO: How to push a delete up to firebase?
         delete this.evaluation;
-        document.location = '/evaluation/evaluations';
+        window.page('#!/evaluation/evaluations');
       },
       _isNotSlider: function(type) {
         return type === "slider";
       },
       _isNotText: function(type) {
         return type === "text";
+      },
+      _value: function() {
+        return EF._getDeep([].slice.call(arguments).join(''), this);
       }
     });
   })();

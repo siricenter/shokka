@@ -29,6 +29,21 @@ var EF = {
       return last[item];
     }, this);
   },
+  _getDeep: function(path, obj) {
+    var token = path.split('.'),
+      root = obj;
+    for (var i = 0, l = token.length; i < l; i++) {
+      if (root[token[i]]) {
+        root = root[token[i]];
+      } else {
+        root = null;
+        break;
+      }
+    }
+    if (root !== obj) {
+      return root;
+    }
+  },
   // Copied from: https://gist.github.com/hurjas/2660489
   timeStamp: function() {
     var now = new Date();
