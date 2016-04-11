@@ -13,14 +13,11 @@ body {
   color: #333;
 }
 
-#headerContainer {
-  z-index: 103;
+#home {
+  display: flex;
+  flex-direction: column;
 }
 
-#drawer {
-	z-index: 104;
-}
-
-#scrim {
-	z-index: 104;
+#home paper-material:not(:last-of-type) {
+	order: 1;
 }

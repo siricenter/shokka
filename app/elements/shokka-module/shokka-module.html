@@ -1,0 +1,43 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-module">
+  <template>
+    <firebase-document  location="{{moduleLocation}}"
+                        data="{{module}}">
+    <p>Module Name: {{module.name}}</p>
+    <p>Module Description: {{module.desc}}</p>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-module',
+
+      properties: {
+        baseRef: {
+          type: String
+        }
+      },
+
+      observers: [
+        '_computeModuleLocation(baseRef, orgId, moduleId)'
+      ],
+
+      _computeModuleLocation: function(baseRef, orgId, moduleId) {
+        this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
+      }
+    });
+  })();
+  </script>
+</dom-module>

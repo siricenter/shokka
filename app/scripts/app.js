@@ -70,4 +70,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.getElementById('mainContainer').scrollTop = 0;
   };
 
+  //TODO: may not need this anymore but may need to move this same function out of shokka-edit-portfolio
+  app.getPortfolioName = function(org, portfolio) {
+    return (((org || {}).portfolios || {})[portfolio] || {}).name;
+  };
+
+  app.getTeamName = function(org, team) {
+    return (((org || {}).teams || {})[team] || {}).name;
+  };
+
+  app.getGroupName = function(org, group) {
+    return (((org || {}).groups || {})[group] || {}).name;
+  };
+
+  app.getPortfolioTeams = function(org, portfolio) {
+    var teams = [];
+    var teamKeys = Object.keys((((org || {}).portfolios || {})[portfolio] || {}).teams || {});
+    for (var i = teamKeys.length - 1; i >= 0; i--) {
+      teams.push(org.teams[teamKeys[i]]);
+    }
+    return teams;
+  };
+
+  app.toKeyArray = function(obj) {
+    return Object.keys(obj);
+  };
+
 })(document);

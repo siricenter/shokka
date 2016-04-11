@@ -1,0 +1,192 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-users">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-material {
+        padding: 1rem 1rem 2rem;
+      }
+      .category-container {
+        display: flex;
+      }
+      .category {
+        font-size: 1.8rem;
+        width: 28%;
+        text-align: center;
+      }
+      .user-container {
+        width: 100%;
+        padding: 0;
+        margin-top: 1rem;
+        display: flex;
+      }
+      .team-container {
+        width: 28%;
+        display: flex;
+        flex-flow: column;
+      }
+      .role-container {
+        width: 28%;
+        display: flex;
+        flex-flow: column;
+      }
+/*      .user-picture {
+        width: 22%;
+        text-align: center;
+      }*/
+      .user-name {
+        width: 28%;
+        text-align: center;
+        margin: .5rem 0 .5rem;
+      }
+      .user-role {
+        width: 100%;
+        text-align: center;
+        margin: .5rem 0 .5rem;
+      }
+      .button-container {
+        width: 16%;
+        display: flex;
+        justify-content: space-around;
+      }
+      .user-button {
+        color: var(--secondary-text-color);
+      }
+      paper-fab {
+        margin: 1rem 0 0 auto;
+      }
+      .modal-dialog {
+        width: 50%;
+        background: var(--text-primary-color);
+      }
+      .btn-confirm {
+        float: right;
+        margin: 1rem;
+        background: var(--default-primary-color);
+        color: var(--text-primary-color);
+      }
+    </style>
+    <paper-material elevation="1">
+      <div class="category-container">
+        <!-- <div class="category"><span>Picture</span></div> -->
+        <div class="category"><span>Name</span></div>
+        <div class="category"><span>Team</span></div>
+        <div class="category"><span>Role</span></div>      
+      </div>
+      <firebase-collection  location="{{usersLocation}}"
+                            data="{{users}}"></firebase-collection>
+      <template is="dom-repeat" items="{{users}}" as="user">
+        <paper-material class="user-container" elevation="2">
+          <!-- <span class="user user-picture">[picture]</span> -->
+          <span class="user user-name">{{user.fName}} {{user.lName}}</span>
+          <div class="team-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
+              <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="[[unitId]]"></shokka-unit-name>
+            </template>
+          </div>
+          <div class="role-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
+              <span class="user-role">{{role}}</span>
+            </template> 
+          </div>
+          <div class="button-container">
+            <a href="/edit/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="create"></paper-icon-button>
+            </a>
+            <a href="/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="arrow-forward"></paper-icon-button>
+            </a>
+          </div>
+        </paper-material>
+      </template>
+
+    </paper-material>
+    <paper-fab icon="add" on-tap="openUserModal"></paper-fab>
+    <firebase-auth  id="firebaseAuth"
+                    location="{{baseRef}}"
+                    user="{{authUser}}"
+                    on-user-created="userCreatedHandler"></firebase-auth>
+    <paper-dialog   id="userModal"
+                    class="modal-dialog"
+                    with-backdrop
+                    entry-animation="scale-up-animation"
+                    exit-animation="fade-out-animation">
+        <h2>Create New User</h2>
+        <paper-input    label="Email" value={{newEmail}}></paper-input>
+        <paper-input    label="Password" type="password" value={{newPass}}></paper-input>
+        <paper-input    label="First Name" value={{newFName}}></paper-input>
+        <paper-input    label="Last Name" value={{newLName}}></paper-input>
+        <paper-input    label="Graduation Date" value={{newGradDate}}></paper-input>
+        <paper-input    label="Internship Date" value={{newInternDate}}></paper-input>
+        <paper-button raised class="btn-confirm" on-tap="createUser">
+            <iron-icon icon="forward"></iron-icon>
+            Lets Go!
+        </paper-button>
+    </paper-dialog>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      
+      Polymer({
+        is: 'shokka-users',
+
+        properties: {
+        },
+
+        observers: [
+          '_setUsersLocation(baseRef, orgId)'
+        ],
+
+        openUserModal: function() {
+          this.$.userModal.toggle();
+        },
+
+        _setUsersLocation: function(baseRef, orgId) {
+          this.usersLocation = baseRef + '/orgs/' + orgId + '/users';
+        },
+
+        _toKeyArray: function(obj){
+          return Object.keys(obj || {});
+        },
+
+        _toArray: function(obj){
+          return Object.keys(obj || {}).map(function (key) {
+            return obj[key];
+          });
+        },
+        createUser: function() {
+          this.$.firebaseAuth.createUser(this.newEmail, this.newPass);
+          this.newPass = null;
+          this.$.userModal.toggle();
+        },
+        userCreatedHandler: function(e) {
+          var baseUser = new Firebase(this.baseRef + '/users/' + e.detail.user.uid); // jshint ignore:line
+          baseUser.set({org: this.orgId});
+          var user = new Firebase(this.baseRef + '/orgs/' + this.orgId + '/users/' + e.detail.user.uid); // jshint ignore:line
+          user.set({email: this.newEmail, fName: this.newFName, lName: this.newLName, gradDate: this.newGradDate || null, internDate: this.newInternDate || null});
+          this.newEmail = null;
+          this.newFName = null;
+          this.newLName = null;
+          this.newGradDate = null;
+          this.newInternDate = null;
+        },
+      });
+    })();
+  </script>
+
+</dom-module>

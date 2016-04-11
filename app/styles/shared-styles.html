@@ -6,6 +6,18 @@
         @apply(--paper-font-display2);
       }
 
+      h1 paper-input {
+
+        --paper-input-container-input: {
+          font-size: 2rem;
+          font-weight: bold;
+        };
+      }
+
+      paper-button:not([raised]) {
+        color: var(--default-primary-color);
+      }
+
       @media (max-width: 600px) {
         .page-title {
           font-size: 24px!important;

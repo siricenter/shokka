@@ -12,81 +12,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-drawer-employee-content">
   <template>
     <style>
-    :host {
-      --sidebar-focus-color: var(--accent-color);
-    }
-
-    paper-item {
-      display: flex-box;
-      justify-content: space-between;
-      font-size: .875rem;
-      font-weight: 700; 
-    }
-
-    .inner {
-      padding: 0;
-    }
-
-    .module-link {
-      display: flex;
-      min-height: 2rem;
-      align-items: center;
-    }
-
-    a.iron-selected:after {
-      background: var(--sidebar-focus-color);
-      opacity: .12;
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-
-    }
-
-    a:focused{
-      background: none;
-    }
-
-    a, a:visited {
-      text-decoration: none; 
-      color: var(--sidebar-focus-color);
-      position: relative;
-    }
-
-    span {
-      color: var(--primary-text-color);
-      opacity: .87;
-    }
-
     </style>
-    <!-- Firebase for Drawer Content -->
-    <firebase-collection
-                        order-by-child="name"
-                        location="{{trainingsRef}}"
-                        data="{{trainings}}"></firebase-collection>
-
-    <paper-menu id="employeeContentNav" class="outer" multi>
-      <template template is="dom-repeat" items="{{trainings}}" as="training">
-        <paper-submenu>
-          <paper-item class="menu-trigger" toggles>
-            <a href="/trainings/{{training.__firebaseKey__}}">
-              <span>{{training.name}}</span>
-            </a>
-          </paper-item>
-          <paper-menu class="inner menu-content">
-              <template template is="dom-repeat" items="{{training.modules}}" as="module">
-                <a href="/modules/{{module}}" class="module-link" on-click="clearSelected">
-                  <shokka-sidebar-module class$="[[training.__firebaseKey__]] inner-item" module-id="[[module]]"></shokka-sidebar-module>
-                </a>
-              </template>
-          </paper-menu>
-        </paper-submenu>    
-      </template>
-    </paper-menu>
-
+    <firebase-document  location="{{groupLocation}}"
+                        data="{{group}}"></firebase-document>
+    <p>{{group.name}}</p>
+    <template template is="dom-repeat" items="{{_toKeyArray(group.categories)}}" as="categoryId">
+      <shokka-sidebar-category  base-ref="{{baseRef}}"
+                                org-id="{{orgId}}"
+                                category-id="{{categoryId}}"></shokka-sidebar-category>
+    </template>
     <hr>
 
     <a href="/contact">
@@ -102,38 +36,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-drawer-employee-content',
 
       properties: {
-        baseRef: {
-          type: String,
-          value: 'https://shokka.firebaseio.com',
-          notify: true
-        },
-        trainingsRef: {
-          type: String,
-          computed: '_computeTrainingsRef(baseRef)'
-        },
-        module: {
-          type: String,
-          value: '',
-          notify: true
-        }
       },
 
-      listeners: {
+      observers: [
+        '_setGroupLocation(baseRef, orgId, groupId)'
+      ],
+
+      _toKeyArray: function(obj) {
+        return Object.keys(obj);
       },
 
-      // Functions
-      _computeTrainingsRef: function(baseRef) {
-        return baseRef + '/trainings';
-      }, 
-      
-      clearSelected: function (e){
-        var targetClass = document.querySelectorAll(".outer a.iron-selected");
-        for (var i = targetClass.length - 1; i >= 0; i--) {
-          if (targetClass[i] !== e.currentTarget) {
-            targetClass[i].classList.remove("iron-selected");
-          }
-        }
-      }
+      _setGroupLocation: function(base, org, group) {
+        this.groupLocation = base + '/orgs/' + org + '/units/' + group;
+      },
     });
   })();
   </script>

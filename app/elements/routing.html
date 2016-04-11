@@ -36,12 +36,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = data.params;
     });
 
+    page('/edit/users/:uid', scrollToTop, function(data) {
+      app.route = 'user-edit';
+      app.params = data.params;
+    });
+
     page('/contact', scrollToTop, function() {
       app.route = 'contact';
     });
 
-    page('/trainings/:name', scrollToTop, function(data) {
-      app.route = 'training-info';
+    page('/categories/assign', scrollToTop, function() {
+      app.route = 'categories-assign';
+    });
+
+    page('/categories/:name', scrollToTop, function(data) {
+      app.route = 'category-info';
       app.params = data.params;
     });
 
@@ -50,8 +59,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = data.params;
     });
 
+    page('/modules/edit/:module', scrollToTop, function(data) {
+      app.route = 'module-edit';
+      app.params = data.params;
+    });
+
+    page('/units/:unit', scrollToTop, function(data) {
+      app.route = 'unit-info';
+      app.params = data.params;
+    });
+
+    page('/portfolios/:portfolio', scrollToTop, function(data) {
+      app.route = 'portfolio-info';
+      app.params = data.params;
+    });
+
+    page('/teams/:team', scrollToTop, function(data) {
+      app.route = 'team-info';
+      app.params = data.params;
+    });
+
+    page('/groups/:group', scrollToTop, function(data) {
+      app.route = 'group-info';
+      app.params = data.params;
+    });
+
     page('/evaluation', scrollToTop, function() {
       app.route = 'evaluation';
+    });
+
+    page('/categories', scrollToTop, function() {
+      app.route = 'categories';
     });
 
     // add #! before urls

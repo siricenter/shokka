@@ -15,23 +15,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-        padding: 0 0 0 1.5rem;
-        line-height: 1;
-        font-size: .875rem;
-        width: 100%;
       }
-
-      span {
-        color: var(--primary-text-color);
-        opacity: .65;
-      }
-
     </style>
-    <firebase-document id="{{fbDocID}}"
-                      location="{{moduleRef}}"
-                      data="{{moduleData}}"></firebase-document>
-                      
-    <span>{{moduleData.title}}</span>        
+    <firebase-document  location="{{moduleRef}}"
+                        data="{{module}}"></firebase-document>
+    <a href="/modules/{{moduleId}}">
+      <iron-icon icon="main"></iron-icon>
+      <span>{{module.name}}</span>
+    </a>
   </template>
   <script>
   (function() {
@@ -53,11 +44,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         moduleRef: {
           type: String,
-          computed: '_computeModuleRef(baseRef, moduleId)'
+          computed: '_computeModuleRef(baseRef, orgId, moduleId)'
         }
       },
-      _computeModuleRef: function(baseRef, moduleId) {
-        return baseRef + '/trainingModules/' + moduleId;
+      _computeModuleRef: function(baseRef, orgId, moduleId) {
+        return baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
       }
     });
   })();
