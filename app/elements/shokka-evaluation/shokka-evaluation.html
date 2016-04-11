@@ -84,20 +84,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
   (function() {
     'use strict';
-    var EF = EF || {};
 
     Polymer({
       is: 'shokka-evaluation',
 
       properties: {
+        groups: {
+          type: Array,
+          notify: true
+        }
       },
 
       observers: [
-        '_fbEvaluations(baseRef, orgId, userInfo, evalId)'
+        '_fbEvaluations(baseRef, orgId, userInfo, evalId)',
+        'getGroups(evaluation.template_id, templates)'
       ],
       // Create a new evaluation template in firebase
       _createEvaluation: function() {
         this.evaluation = {};
+        this.groups = null;
+        this.set('evaluation.user', null);
+        this.set('evaluation.template_id', null);
         this.set('evaluation.created_on', EF.timeStamp());
         this.set('evaluation.created_by', this.userId.uid);
       },
@@ -106,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       getGroups: function(key, array) {
         if (array[key]) {
-          return this._toArray(array[key].question_groups);
+          return this.groups = this._toArray(array[key].question_groups);
         }
       },
       _notify: function(e) {
@@ -126,8 +133,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set(path, target.value);
       },
       _fbReturned: function() {
-        // TODO: This should be a computed value rather than set every firebase call
-        this.groups = this.getGroups((this.evaluation || {}).template_id, this.templates);
         // If no template was returned - create one
         if (this.evaluation === null || this.evaluation === undefined) {
           this._createEvaluation();

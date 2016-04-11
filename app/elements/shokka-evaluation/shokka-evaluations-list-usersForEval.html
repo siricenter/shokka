@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <ul>
       <template is="dom-repeat" items="{{usersInUnits}}" as="user">
         <li>{{user.fName}} {{user.lName}}
-          <shokka-evaluations-list-evalForUser base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[user.__firebaseKey__]]"></shokka-evaluations-list-evalForUser>
+          <shokka-evaluations-list-evalForUser base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[user.__firebaseKey__]]" flag="{{flag}}"></shokka-evaluations-list-evalForUser>
         </li>
       </template>
     </ul>

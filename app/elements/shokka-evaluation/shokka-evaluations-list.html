@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <ul>
       <template is="dom-repeat" items="{{_toArray(userInfo.managedUnits)}}" as="unit">
         <li><strong>{{unit}}</strong>
-          <shokka-evaluations-list-usersForEval base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unit]]"></shokka-evaluations-list-usersForEval>
+          <shokka-evaluations-list-usersForEval base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unit]]" flag="{{flag}}"></shokka-evaluations-list-usersForEval>
         </li>
       </template>
     </ul>

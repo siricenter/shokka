@@ -193,12 +193,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <h2>Evaluations</h2>
                 <p><a href="/evaluation/evaluations/new">Create a New Employee Evaluation</a></p>
-                <shokka-evaluations-list base-ref="[[baseRef]]" org-id="[[orgId]]" user-info="[[userInfo]]"></shokka-evaluations-list>
+                <shokka-evaluations-list base-ref="[[baseRef]]" org-id="[[orgId]]" user-info="[[userInfo]]" flag="{{evaluationAdded}}"></shokka-evaluations-list>
               </paper-material>
             </shokka-page>
 
             <shokka-page data-route="evaluation-item" data-title="Create/Edit Evaluation" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]" user-id="[[user]]"></shokka-evaluation>
+              <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]" user-id="[[user]]" flag="{{evaluationAdded}}"></shokka-evaluation>
             </shokka-page>
 
             <shokka-page data-route="evaluation-templates" data-title="Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
