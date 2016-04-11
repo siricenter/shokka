@@ -34,13 +34,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <firebase-collection  id="childrenCollection"
+        <h1>Children</h1>
+        <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_isChildType">
+          <paper-material>
+            <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
+            <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button>
+          </paper-material>
+        </template>
+        <firebase-collection  id="possibleChildrenCollection"
                               location="{{firebaseCollectionProperties.location}}"
-                              order-value-type="{{firebaseCollectionProperties.orderValueType}}"
                               order-by-child="{{firebaseCollectionProperties.orderByChild}}"
-                              equal-to="{{firebaseCollectionProperties.equalTo}}"
-                              data="{{children}}"></firebase-collection>
-        <shokka-textarea-select label="Children" selected="{{children}}" base-url="{{childPath}}"></shokka-textarea-select>
+                              data="{{possibleChildren}}"></firebase-collection>
+        <paper-dropdown-menu label="Add Existing Child">
+          <paper-menu id="childMenu" class="dropdown-content" attr-for-selected="value" selected={{child}}>
+            <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_hasNoParent">
+              <paper-item value={{child}}>{{child.name}}{{child.fName}} {{child.lName}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
+        <paper-button raised on-click="_addChild">+</paper-button>
         <paper-button raised on-tap="_createChild">New Child</paper-button>
         <h2>Parent</h2>
         <p><a href='{{parentPath}}'>Up</a></p>
@@ -69,14 +81,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_onIdChange(id)'
         ],
 
+        _addChild: function() {
+          var ref;
+          if (this.childType === 'user') {
+            ref = new Firebase(this.firebaseCollectionProperties.location + '/' + this.$.childMenu.selected.__firebaseKey__ + '/groups/' + this.unitId); // jshint ignore:line
+            ref.set(true);
+          } else {
+            ref = new Firebase(this.firebaseCollectionProperties.location + '/' + this.$.childMenu.selected.__firebaseKey__ + '/parent'); // jshint ignore:line
+            ref.set(this.unitId);
+          }
+        },
+
+        _isChildType: function(child) {
+          return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] === true) ? true : (child.type === this.childType && child.parent === this.unitId) ? true : false;
+        },
+
+        _hasNoParent: function(child) {
+          return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] !== true) ? true : (child.type !== this.childType) ? false : !child.parent; 
+        },
+
+        _removeChild: function(e) {
+          var ref;
+          (this.childType === 'user') ?
+            ref = new Firebase(this.firebaseCollectionProperties.location + '/' + e.target.value.__firebaseKey__ + '/groups/' + this.unitId) : // jshint ignore:line
+            ref = new Firebase(this.firebaseCollectionProperties.location + '/' + e.target.value.__firebaseKey__ + '/parent'); // jshint ignore:line
+          ref.set(null);
+        },
+
         _createChild: function() {
-          var ref = this.$.childrenCollection;
+          var ref = this.$.possibleChildrenCollection;
           if (this.unit.type === 'portfolio') {
             window.page('#!/teams/' + ref.add({type: 'team', parent: this.unitId}).key());
           } else if(this.unit.type === 'team') {
             window.page('#!/groups/' + ref.add({type: 'group', parent: this.unitId}).key());
           } else if(this.unit.type === 'group') {
-            // Will need to implement a signin for the user and to write to base level users
+            // Will need to implement a sign-in for the user and to write to base level users
             var user = {};
             user.name = 'New User';
             user.teams = {};
