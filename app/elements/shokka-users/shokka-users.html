@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .category {
         font-size: 1.8rem;
-        width: 25%;
+        width: 28%;
         text-align: center;
       }
       .user-container {
@@ -34,20 +34,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: flex;
       }
       .team-container {
-        width: 25%;
+        width: 28%;
         display: flex;
         flex-flow: column;
       }
       .role-container {
-        width: 25%;
+        width: 28%;
         display: flex;
         flex-flow: column;
       }
-      .user-picture {
-        width: 25%;
-      }
+/*      .user-picture {
+        width: 22%;
+        text-align: center;
+      }*/
       .user-name {
-        width: 25%;
+        width: 28%;
         text-align: center;
         margin: .5rem 0 .5rem;
       }
@@ -56,13 +57,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: .5rem 0 .5rem;
       }
+      .button-container {
+        width: 16%;
+        display: flex;
+        justify-content: space-around;
+      }
+      .user-button {
+        color: var(--secondary-text-color);
+      }
       paper-fab {
         margin: 1rem 0 0 auto;
+      }
+      .modal-dialog {
+        width: 50%;
+        background: var(--text-primary-color);
+      }
+      .btn-confirm {
+        float: right;
+        margin: 1rem;
+        background: var(--default-primary-color);
+        color: var(--text-primary-color);
       }
     </style>
     <paper-material elevation="1">
       <div class="category-container">
-        <div class="category"><span>Picture</span></div>
+        <!-- <div class="category"><span>Picture</span></div> -->
         <div class="category"><span>Name</span></div>
         <div class="category"><span>Team</span></div>
         <div class="category"><span>Role</span></div>      
@@ -71,7 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             data="{{users}}"></firebase-collection>
       <template is="dom-repeat" items="{{users}}" as="user">
         <paper-material class="user-container" elevation="2">
-          <span class="user user-picture">[picture]</span>
+          <!-- <span class="user user-picture">[picture]</span> -->
           <span class="user user-name">{{user.fName}} {{user.lName}}</span>
           <div class="team-container">
             <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
@@ -82,6 +101,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
               <span class="user-role">{{role}}</span>
             </template> 
+          </div>
+          <div class="button-container">
+            <a href="/edit/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="create"></paper-icon-button>
+            </a>
+            <a href="/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="arrow-forward"></paper-icon-button>
+            </a>
           </div>
         </paper-material>
       </template>
