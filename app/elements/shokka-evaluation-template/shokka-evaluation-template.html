@@ -162,8 +162,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
       removeTemplate: function(){
-        //TODO: How to push a delete up to firebase?
-        delete this.evalTemplate;
+        var del = EF.getNullObject(this.evalTemplate);
+        this.set('evalTemplate', del);
         window.page('#!/evaluation/templates');
       }
     });

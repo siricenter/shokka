@@ -59,5 +59,8 @@ var EF = { //jshint ignore:line
       }
     }
     return date.join('/') + ' ' + time.join(':') + ' ' + suffix;
+  },
+  getNullObject: function(obj) {
+    return Object.keys(obj).reduce(function(obj, index){ obj[index] = null; return obj; }, {});
   }
 };

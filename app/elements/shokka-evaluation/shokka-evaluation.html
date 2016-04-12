@@ -156,21 +156,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.fbEvaluations = baseRef + '/orgs/' + orgId + '/evaluation/evaluations/' + evalId;
         this.fbTemplates = baseRef + '/orgs/' + orgId + '/evaluation/templates';
       },
-      // Remove the node from firebase
-      _removeButton: function(e){
-        var path = e.target.dataset.path;
-        if (path) {
-          this.set(path, null);
-        }
-      }, 
       // Swap out the button for a confirmation button
       removeEvaluationWarning: function(e){
         e.target.classList.add('hide');
         e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
       removeEvaluation: function(){
-        //TODO: How to push a delete up to firebase?
-        delete this.evaluation;
+        var del = EF.getNullObject(this.evaluation);
+        this.set('evaluation', del);
         window.page('#!/evaluation/evaluations');
       },
       _isNotSlider: function(type) {
