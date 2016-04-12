@@ -24,11 +24,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             order-by-child="type"
                             data="{{possibleParents}}"></firebase-collection>
       <paper-material elevation="1">
-        <firebase-document  location="{{unitLocation}}"
+        <firebase-document  id="firebaseUnit"
+                            location="{{unitLocation}}"
                             data="{{unit}}"></firebase-document>
         <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
         <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
-          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}" on-selected-changed="foo">
             <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
               <paper-item value="{{possibleParent.__firebaseKey__}}">{{possibleParent.name}}</paper-item>
             </template>
@@ -56,9 +57,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button raised on-tap="_createChild">New Child</paper-button>
         <h2>Parent</h2>
         <p><a href='{{parentPath}}'>Up</a></p>
+        <paper-button raised>DELETE</paper-button>
       </paper-material>
-    <template is="dom-if" if="isPortfolio">
-      <shokka-team-modal id="unitModal" base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[portfolioId]]"></shokka-team-modal>
     </template>
   </template>
 
@@ -81,6 +81,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_onIdChange(id)'
         ],
 
+        foo: function(e) {
+          var ref;
+          ref = new Firebase(this.unitsLocation + '/' + e.target.selected + '/children/' + this.unitId); // jshint ignore:line
+          ref.set(true);
+        },
+
         _addChild: function() {
           var ref;
           if (this.childType === 'user') {
@@ -90,6 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             ref = new Firebase(this.firebaseCollectionProperties.location + '/' + this.$.childMenu.selected.__firebaseKey__ + '/parent'); // jshint ignore:line
             ref.set(this.unitId);
           }
+          ref = new Firebase(this.unitLocation + '/children/' + this.$.childMenu.selected.__firebaseKey__); // jshint ignore:line
+          ref.set(true);
         },
 
         _isChildType: function(child) {
@@ -171,7 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           ];
 
-          this.firebaseCollectionProperties = firebaseCollectionArray[unit.type === 'group' ? 1 : 0];
+          this.firebaseCollectionProperties = firebaseCollectionArray[(unit || {}).type === 'group' ? 1 : 0];
         },
 
         _setUnitLocation: function(baseRef, orgId, unitId) {

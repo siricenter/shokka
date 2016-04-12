@@ -68,10 +68,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _removeTeam: function(e) {
+        var ref;
+        var teams = Object.keys(e.target.value.children);
+        for (var i = teams.length - 1; i >= 0; i--) {
+          ref = new Firebase(this.unitsLocation + '/' + teams[i] + '/parent'); // jshint ignore:line
+          ref.set(null);
+        }
+        ref = new Firebase(this.unitsLocation + '/' + e.target.value.parent + '/children/' + e.target.value.__firebaseKey__); // jshint ignore:line
+        ref.set(null);
         this.$.teamArrayCollection.remove(e.target.value);
       },
 
       _removePortfolio: function(e) {
+        var ref;
+        var teams = Object.keys(e.target.value.children);
+        for (var i = teams.length - 1; i >= 0; i--) {
+          ref = new Firebase(this.unitsLocation + '/' + teams[i] + '/parent'); // jshint ignore:line
+          ref.set(null);
+        }
         this.$.portfolioArrayCollection.remove(e.target.value);
       },
 
