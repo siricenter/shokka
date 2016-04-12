@@ -32,15 +32,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <ul>
       <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
         <li>
-          <a href="/evaluation/evaluations/edit/{{evaluation.__firebaseKey__}}" id="{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
-          <paper-tooltip for="{{evaluation.__firebaseKey__}}" position="right" class="custom" animation-delay="0">
-            <ul>
-              <li>Created on: {{evaluation.created_on}}</li>
-              <li>Created by: {{evaluation.created_by}}</li>
-              <li>Updated on: {{evaluation.updated_on}}</li>
-              <li>Updated by: {{evaluation.updated_by}}</li>
-            </ul>
-          </paper-tooltip>
+          <span>
+            <a href="/evaluation/evaluations/edit/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
+            <paper-tooltip position="right" class="custom" animation-delay="0">
+              <ul>
+                <li>Created on: {{evaluation.created_on}}</li>
+                <li>Created by: {{evaluation.created_by}}</li>
+                <li>Updated on: {{evaluation.updated_on}}</li>
+                <li>Updated by: {{evaluation.updated_by}}</li>
+              </ul>
+            </paper-tooltip>
+          </span>
         </li>
       </template>
     </ul>
