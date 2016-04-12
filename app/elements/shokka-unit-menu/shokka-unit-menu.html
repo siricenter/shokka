@@ -15,10 +15,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        margin: 1rem 0 0 0;
+      }
+      .unit-link {
+        text-decoration: none;
+        color: var(--primary-text-color);
+      }
+      .team {
+        font-size: 1.2rem;
+      }
+      .group {
+        margin: 1rem 0 0 1rem;
+        font-size: 1.1rem;
       }
     </style>
-    <p>{{unit.name}}</p>
-    -----------------------------------------------------
+    <a class="unit-link" href="/{{unit.type}}s/{{unitId}}">
+      <span class$="{{unit.type}}">{{unit.name}}</span>
+    </a>
     <firebase-document  location="{{unitLocation}}"
                         data="{{unit}}"></firebase-document>
     <template is="dom-repeat" items="{{_toKeyArray(unit.children)}}" as="uid">
@@ -28,7 +41,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           org-id={{orgId}}></shokka-user-item>
       </template>
       <shokka-unit-menu base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[uid]]"></shokka-unit-menu>
-      -----------------------------------------------------
     </template>
   </template>
   <script>

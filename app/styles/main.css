@@ -21,3 +21,7 @@ body {
 #home paper-material:not(:last-of-type) {
 	order: 1;
 }
+
+.list {
+	padding: 1rem;
+}
