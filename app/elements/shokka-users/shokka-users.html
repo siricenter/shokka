@@ -25,7 +25,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .category {
         font-size: 1.8rem;
         width: 28%;
-        text-align: center;
       }
       .user-container {
         width: 100%;
@@ -45,16 +44,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 /*      .user-picture {
         width: 22%;
-        text-align: center;
       }*/
       .user-name {
         width: 28%;
-        text-align: center;
         margin: .5rem 0 .5rem;
       }
       .user-role {
         width: 100%;
-        text-align: center;
         margin: .5rem 0 .5rem;
       }
       .button-container {
@@ -84,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- <div class="category"><span>Picture</span></div> -->
         <div class="category"><span>Name</span></div>
         <div class="category"><span>Team</span></div>
-        <div class="category"><span>Role</span></div>      
+        <div class="category"><span>Role</span></div>
       </div>
       <firebase-collection  location="{{usersLocation}}"
                             data="{{users}}"></firebase-collection>
@@ -100,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="role-container">
             <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
               <span class="user-role">{{role}}</span>
-            </template> 
+            </template>
           </div>
           <div class="button-container">
             <a href="/edit/users/{{user.__firebaseKey__}}" class="user-button">
@@ -140,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (function() {
       'use strict';
-      
+
       Polymer({
         is: 'shokka-users',
 
