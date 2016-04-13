@@ -21,6 +21,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .category-container {
         display: flex;
+        background-color: var(--accent-color);
+        margin: -1rem -1rem 2rem;
+        padding: 1rem;
       }
       .category {
         font-size: 1.8rem;
@@ -62,7 +65,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--secondary-text-color);
       }
       paper-fab {
-        margin: 1rem 0 0 auto;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
       }
       .modal-dialog {
         width: 50%;
@@ -75,6 +80,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--text-primary-color);
       }
     </style>
+    <firebase-collection  location="{{usersLocation}}"
+                          data="{{users}}"></firebase-collection>
+
     <paper-material elevation="1">
       <div class="category-container">
         <!-- <div class="category"><span>Picture</span></div> -->
@@ -82,10 +90,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="category"><span>Team</span></div>
         <div class="category"><span>Role</span></div>
       </div>
-      <firebase-collection  location="{{usersLocation}}"
-                            data="{{users}}"></firebase-collection>
       <template is="dom-repeat" items="{{users}}" as="user">
-        <paper-material class="user-container" elevation="2">
+        <div class="user-container" elevation="2">
           <!-- <span class="user user-picture">[picture]</span> -->
           <span class="user user-name">{{user.fName}} {{user.lName}}</span>
           <div class="team-container">
@@ -106,11 +112,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-icon-button icon="arrow-forward"></paper-icon-button>
             </a>
           </div>
-        </paper-material>
+        </div>
+        <hr>
       </template>
 
     </paper-material>
-    <paper-fab icon="add" on-tap="openUserModal"></paper-fab>
+    <paper-fab id="new-user-fab" icon="add" on-tap="openUserModal"></paper-fab>
     <firebase-auth  id="firebaseAuth"
                     location="{{baseRef}}"
                     user="{{authUser}}"
