@@ -93,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.toKeyArray = function(obj) {
-    return Object.keys(obj);
+    return Object.keys(obj || {});
   };
 
 })(document);
