@@ -16,28 +16,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      paper-card {
+        width: 100%;
+      }
+      #basic-info {
+        width: 100%;
+      }
     </style>
     <firebase-document  location="{{userLocation}}"
                         data="{{user}}"></firebase-document>
-    <paper-input label="Email" value={{user.email}}></paper-input>
-    <paper-input label="End Date" value={{user.endDate}}></paper-input>
-    <paper-input label="First Name" value={{user.fName}}></paper-input>
-    <paper-input label="Graduation Date" value={{user.gradDate}}></paper-input>
-    <paper-input label="Internship Date" value={{user.internDate}}></paper-input>
-    <paper-input label="Last Name" value={{user.lName}}></paper-input>
-    <h1>Managed Units:</h1>
-    <template is="dom-repeat" items={{_toKeyArray(user.managedUnits)}} as="unitId">
-      <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
+
+    <paper-card id="basic-info" heading="Basic Info">
+      <div class="card-content">
+        <paper-input label="Email" value={{user.email}}></paper-input>
+        <paper-input label="Start Date" value={{user.startDate}}></paper-input>
+        <paper-input label="End Date" value={{user.endDate}}></paper-input>
+        <paper-input label="First Name" value={{user.fName}}></paper-input>
+        <paper-input label="Graduation Date" value={{user.gradDate}}></paper-input>
+        <paper-input label="Internship Date" value={{user.internDate}}></paper-input>
+        <paper-input label="Last Name" value={{user.lName}}></paper-input>
+      </div>
+    </paper-card>
+    <paper-card heading="Roles">
+      <div class="card-content">
+        <paper-checkbox checked="{{user.roles.employee}}">Employee</paper-checkbox>
+        <paper-checkbox checked="{{user.roles.manager}}">Manager</paper-checkbox>
+        <paper-checkbox checked="{{user.roles.admin}}">Administrator</paper-checkbox>
+      </div>
+    </paper-card>
+    <template template is="dom-if" if="{{user.managedUnits}}">
+      <paper-card heading="Managed Units">
+        <div class="card-content">
+          <template is="dom-repeat" items={{_toKeyArray(user.managedUnits)}} as="unitId">
+            <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
+          </template>
+        </div>
+      </paper-card>
     </template>
-    <h1>Roles:</h1>
-    <paper-checkbox checked="{{user.roles.employee}}">Employee</paper-checkbox>
-    <paper-checkbox checked="{{user.roles.manager}}">Manager</paper-checkbox>
-    <paper-checkbox checked="{{user.roles.admin}}">Administrator</paper-checkbox>
-    <paper-input label="Start Date" value={{user.startDate}}></paper-input>
-    <h1>Groups:</h1>
-    <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
-      <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
-    </template>
+    <paper-card heading="Groups">
+      <div class="card-content">
+        <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
+          <shokka-unit-name base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unitId]]"></shokka-unit-name>
+        </template>
+      </div>
+    </paper-card>
   </template>
 
   <script>
