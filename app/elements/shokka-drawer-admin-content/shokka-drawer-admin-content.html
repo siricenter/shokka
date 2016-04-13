@@ -12,9 +12,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-drawer-admin-content">
   <template>
-    <p><a href='/users'> Users </a></p>
-    <p><a href='/evaluation'> Evaluations </a></p>
-    <p><a href='/'> Org Setup </a></p>
+  <style>
+    :host {
+      padding: 1rem;
+    }
+    a {
+      display: block;
+      margin: .5rem 0 0 0;
+      text-decoration: none;
+      color: var(--secondary-text-color);
+    }
+  </style>
+    <a href='/users'> 
+      <iron-icon icon="social:group"></iron-icon>
+      <span>Users</span>
+    </a>
+    <a href='/evaluation'>
+      <iron-icon icon="card-travel"></iron-icon>
+      <span>Evaluations</span>  
+    </a>
+    <a href='/'>
+      <iron-icon icon="build"></iron-icon>
+      <span>Org Setup</span>  
+    </a>
   </template>
   <script>
   (function() {
