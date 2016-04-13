@@ -21,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 256px;
       }
     </style>
-    <paper-material elevation="1">
+    <!-- <paper-material elevation="1">
         <shokka-trainings-list  location="{{modulesLocation}}"
                                 data="{{moduleIds}}">
           <shokka-edit-unit base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-edit-unit>
@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       module-id="[[moduleId.__firebaseKey__]]"
                       org-id="[[orgId]]"></shokka-module>
     </template>
-    <p>##################################################################</p>
+    <p>##################################################################</p> -->
     <firebase-collection  location="{{categoriesLocation}}"
                           data="{{categoriesIds}}"></firebase-collection>
     <template is="dom-repeat" items="{{categoriesIds}}" as="categoryId">

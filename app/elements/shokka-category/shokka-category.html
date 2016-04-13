@@ -12,9 +12,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-category">
   <template>
+    <style>
+        :host {
+          display: block;
+        }
+        #category-title {
+          background-color: var(--accent-color);
+        }
+        paper-material > paper-material {
+          width: 256px;
+        }
+      </style>
     <firebase-document  location="{{categoryLocation}}"
                         data="{{category}}">
-    <p>Category Name: {{category.name}}</p>
+    <div id="category-title">
+      <h2>Category Name: {{category.name}}</h2>
+    </div>
     <template is="dom-repeat" items="{{moduleArray}}" as="moduleId">
       <shokka-module  base-ref="[[baseRef]]"
                       module-id="[[moduleId]]"
