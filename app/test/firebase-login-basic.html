@@ -60,56 +60,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       firebaseLogin.setAttribute('base-ref', 'https://shokka.firebaseio.com');
       expect(firebaseLogin.baseRef).to.be.equal('https://shokka.firebaseio.com');
     });
-
-    // test('Login Modal Opens', function(done) {
-    //   assert.ok(loginButton, 'Login Button Exists');
-    //   assert.ok(loginModal, 'Login Modal Exists');
-    //   loginModal.addEventListener('opened-changed', function(event) {
-    //     event.target.removeEventListener(event.type, arguments.callee);
-    //     assert.isNotNull(event.detail);
-    //     assert.isFalse(true)
-    //     done();
-    //   });
-    //   // loginButton.tap.apply(firebaseLogin, loginButton)
-    //   // console.log(loginButton)
-    //   // console.dir(loginButton)
-    //   // console.log(firebaseLogin)
-    //   // console.dir(firebaseLogin)
-    //   e = new MouseEvent('click', {
-    //     bubbles: true,
-    //     cancelable: true,
-    //     view: window
-    //   });
-    //   loginButton.dispatchEvent(e);
-    //   // MockInteractions.tap.call(firebaseLogin, loginButton);
-    // });
-
-    // test('Test Login', function() {
-    //   assert.notEqual(Polymer.dom(firebaseLogin.root), null, 'Cannot get firebaseLogin\'s root');
-    //   assert.notEqual(Polymer.dom(firebaseLogin.$.btnLogin), null, 'Cannot find "btnLogin" object');
-    //   assert.notEqual(Polymer.dom(firebaseLogin.root).querySelector('#btnLogin'), null, 'Cannot find "btnLogin" living object');
-    //   // Click the Login Button
-    //   var btnLogin = Polymer.dom(firebaseLogin.root).querySelector('#btnLogin');
-    //   btnLogin.click.bind(btnLogin);
-    //   // Fill out your information
-    //   var email = Polymer.dom(firebaseLogin.root).querySelector('#email');
-    //   email.value = 'test@rbdcenter.org';
-    //   var password = Polymer.dom(firebaseLogin.root).querySelector('#pass');
-    //   password.value = 'test';
-    //   // push the sign-in (Let's Go) button
-    //   var passSignin = Polymer.dom(firebaseLogin.root).querySelector('#pass-signin');
-    //   passSignin.click.bind(passSignin);
-      // Check if we are logged in
-      // firebaseLogin.addEventListener('user-changed', function(event) {
-      //   assert.equal(event.detail.value.fName, 'TEST', event.detail.value);
-      // });
-      // firebaseLogin.addEventListener('message-changed', function(event) {
-      //   assert.equal(event.detail.value, 'Good Stuff', event.detail.value)
-      //   done();
-      // });
-      // firebaseLogin.login.bind(firebaseLogin)
-      // firebaseLogin.user = {fName: 'TEST'};
-      // assert.equal(firebaseLogin, 'Test', firebaseLogin)//'Test\'s first name should be "Test"');
     });
 
   });

@@ -16,23 +16,108 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      paper-material {
+        padding: 1rem 1rem 2rem;
+      }
+      .category-container {
+        display: flex;
+        background-color: var(--accent-color);
+        margin: -1rem -1rem 2rem;
+        padding: 1rem;
+      }
+      .category {
+        font-size: 1.8rem;
+        width: 28%;
+      }
+      .user-container {
+        width: 100%;
+        padding: 0;
+        margin-top: 1rem;
+        display: flex;
+      }
+      .team-container {
+        width: 28%;
+        display: flex;
+        flex-flow: column;
+      }
+      .role-container {
+        width: 28%;
+        display: flex;
+        flex-flow: column;
+      }
+/*      .user-picture {
+        width: 22%;
+      }*/
+      .user-name {
+        width: 28%;
+        margin: .5rem 0 .5rem;
+      }
+      .user-role {
+        width: 100%;
+        margin: .5rem 0 .5rem;
+      }
+      .button-container {
+        width: 16%;
+        display: flex;
+        justify-content: space-around;
+      }
+      .user-button {
+        color: var(--secondary-text-color);
+      }
+      paper-fab {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+      }
+      .modal-dialog {
+        width: 50%;
+        background: var(--text-primary-color);
+      }
+      .btn-confirm {
+        float: right;
+        margin: 1rem;
+        background: var(--default-primary-color);
+        color: var(--text-primary-color);
+      }
     </style>
+    <firebase-collection  location="{{usersLocation}}"
+                          data="{{users}}"></firebase-collection>
+
     <paper-material elevation="1">
-      <paper-button raised on-tap="openUserModal">New User</paper-button>
-      <firebase-collection  location="{{usersLocation}}"
-                            data="{{users}}"></firebase-collection>
+      <div class="category-container">
+        <!-- <div class="category"><span>Picture</span></div> -->
+        <div class="category"><span>Name</span></div>
+        <div class="category"><span>Team</span></div>
+        <div class="category"><span>Role</span></div>
+      </div>
       <template is="dom-repeat" items="{{users}}" as="user">
-        <paper-material elevation="1">
-          [picture] || {{user.fName}} {{user.lName}} ||
-          <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
-            <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="[[unitId]]"></shokka-unit-name>
-          </template> ||
-          <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
-            {{role}}
-          </template>
-        </paper-material>
+        <div class="user-container" elevation="2">
+          <!-- <span class="user user-picture">[picture]</span> -->
+          <span class="user user-name">{{user.fName}} {{user.lName}}</span>
+          <div class="team-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
+              <shokka-unit-name base-ref="{{baseRef}}" org-id="{{orgId}}" unit-id="[[unitId]]"></shokka-unit-name>
+            </template>
+          </div>
+          <div class="role-container">
+            <template is="dom-repeat" items={{_toKeyArray(user.roles)}} as="role">
+              <span class="user-role">{{role}}</span>
+            </template>
+          </div>
+          <div class="button-container">
+            <a href="/edit/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="create"></paper-icon-button>
+            </a>
+            <a href="/users/{{user.__firebaseKey__}}" class="user-button">
+              <paper-icon-button icon="arrow-forward"></paper-icon-button>
+            </a>
+          </div>
+        </div>
+        <hr>
       </template>
+
     </paper-material>
+    <paper-fab id="new-user-fab" icon="add" on-tap="openUserModal"></paper-fab>
     <firebase-auth  id="firebaseAuth"
                     location="{{baseRef}}"
                     user="{{authUser}}"
@@ -50,8 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-input    label="Graduation Date" value={{newGradDate}}></paper-input>
         <paper-input    label="Internship Date" value={{newInternDate}}></paper-input>
         <paper-button raised class="btn-confirm" on-tap="createUser">
-            <iron-icon icon="forward"></iron-icon>
-            Lets Go!
+            Add User
         </paper-button>
     </paper-dialog>
   </template>
@@ -59,7 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (function() {
       'use strict';
-      
+
       Polymer({
         is: 'shokka-users',
 
