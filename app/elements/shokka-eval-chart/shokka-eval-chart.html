@@ -130,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _setUserData: function(userAvgEvals) {
         var userData = [ this.header ];
         if (this.id === 'last') {
-          var arr = Object.keys( userAvgEvals ).map(function ( key ) { 
+          var arr = Object.keys( userAvgEvals || {} ).map(function ( key ) { 
             return userAvgEvals[key]; 
           });
           arr.sort(function(a, b){ return a.date.localeCompare(b.date); });
