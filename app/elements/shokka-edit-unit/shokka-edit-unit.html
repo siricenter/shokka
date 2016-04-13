@@ -82,23 +82,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
 
         _deleteUnit: function() {
+          var i;
           var ref;
           var children = Object.keys(this.unit.children);
           var path = '#!' + this.parentPath;
           if (this.unit.type !== 'group') {
-            for (var i = children.length - 1; i >= 0; i--) {
+            for (i = children.length - 1; i >= 0; i--) {
               ref = new Firebase(this.unitsLocation + '/' + children[i] + '/parent'); // jshint ignore:line
-              ref.set(null);
+              ref.remove();
             }
           } else {
-            for (var i = children.length - 1; i >= 0; i--) {
-              ref = new Firebase(this.unitsLocation + '/' + children[i] + '/groups/' + unitId); // jshint ignore:line
-              ref.set(null);
+            for (i = children.length - 1; i >= 0; i--) {
+              ref = new Firebase(this.baseRef + '/orgs/' + this.orgId + '/users/' + children[i] + '/groups/' + this.unitId); // jshint ignore:line
+              ref.remove();
             }
           }
           ref = new Firebase(this.unitsLocation + '/' + this.unit.parent + '/children/' + this.unitId); // jshint ignore:line
-          ref.set(null);
-          this.unit = {};
+          ref.remove();
+          ref = new Firebase(this.unitLocation); // jshint ignore:line
+          ref.remove();
           window.page(path);
         },
 
@@ -157,20 +159,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        _setPaths: function(unit) {
+        _setPaths: function(unit = {}) {
           this.isPortfolio = false;
-          if (unit.type === 'portfolio') {
+          if ((unit || {}).type === 'portfolio') {
             this.isPortfolio = true;
             this.parentPath = '/';
             this.childPath = 'teams';
             this.parentType = null;
             this.childType = 'team';
-          } else if (unit.type === 'team') {
+          } else if ((unit || {}).type === 'team') {
             this.parentPath = '/portfolios/';
             this.childPath = 'groups';
             this.parentType = 'portfolio';
             this.childType = 'group';
-          } else if (unit.type === 'group') {
+          } else if ((unit || {}).type === 'group') {
             this.parentPath = '/teams/';
             this.childPath = 'users';
             this.parentType = 'team';
@@ -179,7 +181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.parentPath = '#';
             this.childPath = '#';
           }
-          this.parentPath += unit.parent || '';
+          this.parentPath += (unit || {}).parent || '';
         },
 
         _resetFirebaseCollection: function() {
