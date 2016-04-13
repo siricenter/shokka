@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             equal-to="true"
                             order-value-type="boolean"
                             ></firebase-collection>
-        <paper-menu class="menu-content" selected="{{value}}" attr-for-selected="value">
+        <paper-menu class="menu-content" selected="{{user}}" attr-for-selected="value">
           <template is="dom-repeat" items="{{usersInUnits}}" as="user">
             <paper-item value="{{user.__firebaseKey__}}">{{user.fName}} {{user.lName}}</paper-item>
           </template>
@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-evaluations-list-users',
 
       properties: {
-        value: {
+        user: {
           type: String,
           notify: true
         }

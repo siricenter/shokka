@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-dropdown-menu label="Employee" name="user" required>
           <paper-menu class="dropdown-content" selected="{{evaluation.user}}" attr-for-selected="value">
             <template is="dom-repeat" items="{{unitsManaged}}" as="unit">
-              <shokka-evaluations-list-users unit="{{unit}}" org-id="[[orgId]]" base-ref="[[baseRef]]" value="{{evaluation.user}}"></shokka-evaluations-list-users>
+              <shokka-evaluations-list-users unit="{{unit}}" org-id="[[orgId]]" base-ref="[[baseRef]]" user="{{evaluation.user}}"></shokka-evaluations-list-users>
             </template>
           </paper-menu>
         </paper-dropdown-menu>
