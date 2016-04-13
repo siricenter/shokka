@@ -26,3 +26,14 @@
 .hide {
   display: none;
 }
+
+.goback {
+  background-color: #7BFF99;
+}
+
+ul li.new {
+  background-color: #D7E8F7;
+  margin: 5px 0;
+  border-radius: 5px;
+  padding: 5px;
+}

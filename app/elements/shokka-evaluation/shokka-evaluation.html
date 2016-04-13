@@ -74,8 +74,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </li>
           </template>
         </ul>
-        <paper-button raised on-click="removeEvaluationWarning" class="delete">Delete Evaluation</paper-button>
+        <paper-button on-click="removeEvaluationWarning" class="delete">Delete Evaluation</paper-button>
         <paper-button raised on-click="removeEvaluation" class="delete delete--confirmation hide">Are you sure?</paper-button>
+        <paper-button raised on-click="goBack" class="goback">Done</paper-button>
       </form>
       <div id="fbSavedOutput" class="active">Changes have been saved</div>
     </paper-material>
@@ -173,6 +174,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _value: function() {
         return EF._getDeep([].slice.call(arguments).join(''), this);
+      },
+      goBack: function() {
+        window.page('#!/evaluation/evaluations');
       }
     });
   })();

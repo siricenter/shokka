@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <paper-button raised on-click="_removeButton" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions.{{question.__firebaseKey__}}" class="delete">- Remove Question</paper-button>
                       </li>
                     </template>
-                    <li>
+                    <li class="new">
                       <paper-input name="question__label__new" label="New Question"></paper-input>
                       <paper-dropdown-menu label="Type" name="type" required>
                         <paper-menu class="dropdown-content">
@@ -64,13 +64,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   </ul>
                 </li>
             </template>
-            <li>
+            <li class="new">
               <paper-input id="groupLabelNew" label="New Question Group" data-path$="evalTemplate.question_groups"></paper-input>
               <paper-button raised on-click="addGroup">+ Add Question Group</paper-button>
             </li>
           </ul>
-          <paper-button raised on-click="removeTemplateWarning" class="delete">Delete Template</paper-button>
+          <paper-button on-click="removeTemplateWarning" class="delete">Delete Template</paper-button>
           <paper-button raised on-click="removeTemplate" class="delete delete--confirmation hide">Are you sure?</paper-button>
+          <paper-button raised on-click="goBack" class="goback">Done</paper-button>
       </form>
       <div id="fbSavedOutput" class="active">Changes have been saved</div>
     </paper-material>
@@ -164,6 +165,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       removeTemplate: function(){
         var del = EF.getNullObject(this.evalTemplate);
         this.set('evalTemplate', del);
+        window.page('#!/evaluation/templates');
+      },
+      goBack: function() {
         window.page('#!/evaluation/templates');
       }
     });
