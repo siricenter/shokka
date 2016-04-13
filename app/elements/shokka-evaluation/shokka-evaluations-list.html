@@ -1,0 +1,57 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-evaluations-list">
+  <template>
+    <script type="text/javascript" src="shokka-evaluation-functions.js"></script>
+    <style>
+    :host ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    :host strong {
+      text-transform: uppercase;
+    }
+    </style>
+    <h3>Evaluations on your Employees</h3>
+    <ul>
+      <template is="dom-repeat" items="{{_toArray(userInfo.managedUnits)}}" as="unit">
+        <li><strong>{{unit}}</strong>
+          <shokka-evaluations-list-usersForEval base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[unit]]" flag="{{flag}}"></shokka-evaluations-list-usersForEval>
+        </li>
+      </template>
+    </ul>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-evaluations-list',
+
+      properties: {
+      },
+
+      observers: [
+        'evaluationListObserver(baseRef, orgId, userInfo)'
+      ],
+      _toArray: function(obj) {
+        return Object.keys(obj);
+      },
+      evaluationListObserver: function(baseRef, orgId, userInfo) {
+        this.unitsManaged = Object.keys(userInfo.managedUnits);
+      }
+    });
+  })();
+  </script>
+</dom-module>
