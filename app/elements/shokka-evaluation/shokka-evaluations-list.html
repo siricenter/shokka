@@ -46,10 +46,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'evaluationListObserver(baseRef, orgId, userInfo)'
       ],
       _toArray: function(obj) {
-        return Object.keys(obj);
+        return Object.keys(obj || {});
       },
       evaluationListObserver: function(baseRef, orgId, userInfo) {
-        this.unitsManaged = Object.keys(userInfo.managedUnits);
+        this.unitsManaged = Object.keys(userInfo.managedUnits || {});
       }
     });
   })();
