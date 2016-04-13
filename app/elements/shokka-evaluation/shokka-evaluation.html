@@ -105,31 +105,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.groups = null;
         this.set('evaluation.user', null);
         this.set('evaluation.template_id', null);
-        this.set('evaluation.created_on', EF.timeStamp());
+        this.set('evaluation.created_on', window.EF.timeStamp());
         this.set('evaluation.created_by', this.userId.uid);
       },
       _toArray: function(obj) {
-        return EF._toArray(obj);
+        return window.EF._toArray(obj);
       },
       getGroups: function(key, array) {
         if (array[key]) {
-          return this.groups = this._toArray(array[key].question_groups);
+          this.groups = this._toArray(array[key].question_groups);
+          return this.groups;
         }
       },
       _notify: function(e) {
-        return EF._notify.call(this, e);
+        return window.EF._notify.call(this, e);
       },
       _textAreaNotify: function(e) {
         var target = e.target,
           path = target.dataset.path,
           value = target.value;
-        EF._blaze.call(this, path);
+        window.EF._blaze.call(this, path);
         this.set(path, value);
       },
       _sliderNotify: function(e) {
         var target = e.target,
           path = target.dataset.path;
-        EF._blaze.call(this, path);
+        window.EF._blaze.call(this, path);
         this.set(path, target.value);
       },
       _fbReturned: function() {
@@ -138,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._createEvaluation();
         } else {
           // For every update from firebase, highlight the 'auto-save' div
-          this.set('evaluation.updated_on', EF.timeStamp());
+          this.set('evaluation.updated_on', window.EF.timeStamp());
           this.set('evaluation.updated_by', this.userId.uid);
           var high = this.$.fbSavedOutput;
           high.classList.remove('active');
@@ -150,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // If no template id was passed in, create a new key
       _fbEvaluations: function(baseRef, orgId, userInfo, evalId){
         if (evalId === null || evalId === undefined) {
-          evalId = EF._uid();
+          evalId = window.EF._uid();
         }
         this.unitsManaged = Object.keys(userInfo.managedUnits);
         this.fbEvaluations = baseRef + '/orgs/' + orgId + '/evaluation/evaluations/' + evalId;
@@ -162,7 +163,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
       removeEvaluation: function(){
-        var del = EF.getNullObject(this.evaluation);
+        var del = window.EF.getNullObject(this.evaluation);
         this.set('evaluation', del);
         window.page('#!/evaluation/evaluations');
       },
@@ -173,7 +174,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return type === 'text';
       },
       _value: function() {
-        return EF._getDeep([].slice.call(arguments).join(''), this);
+        return window.EF._getDeep([].slice.call(arguments).join(''), this);
       },
       goBack: function() {
         window.page('#!/evaluation/evaluations');

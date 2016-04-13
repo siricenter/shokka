@@ -92,14 +92,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Create a new evaluation template in firebase
       _createTemplate: function() {
         this.evalTemplate = {};
-        this.set('evalTemp.created_on', EF.timeStamp());
+        this.set('evalTemp.created_on', window.EF.timeStamp());
         this.set('evalTemp.created_by', this.userId.uid);
       },
       _toArray: function(obj) {
-        return EF._toArray(obj);
+        return window.EF._toArray(obj);
       },
       _notify: function(e) {
-        return EF._notify.call(this, e);
+        return window.EF._notify.call(this, e);
       },
       _fbReturned: function() {
         // If no template was returned - create one
@@ -107,7 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._createTemplate();
         } else {
           // For every update from firebase, highlight the "auto-save" div
-          this.set('evaluation.updated_on', EF.timeStamp());
+          this.set('evaluation.updated_on', window.EF.timeStamp());
           this.set('evaluation.updated_by', this.userId.uid);
           var high = this.$.fbSavedOutput;
           high.classList.remove('active');
@@ -119,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // If no template id was passed in, create a new key
       _fbEvalTemplate: function(baseRef, orgId, tempId){
         if (tempId === null || tempId === undefined) {
-          tempId = EF._uid();
+          tempId = window.EF._uid();
         }
         this.fbEvalTemplate = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
       },
@@ -127,10 +127,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       addGroup: function(e){
         var label = e.currentTarget.domHost.$.groupLabelNew,
           value = label.value,
-          path = 'evalTemplate.question_groups.' + EF._uid();
+          path = 'evalTemplate.question_groups.' + window.EF._uid();
 
         if (value) {
-          EF._blaze.call(this, path);
+          window.EF._blaze.call(this, path);
           label.value = '';
           this.set(path, {label: value, questions: {}});
         }
@@ -142,9 +142,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           typeE = parent.querySelector('paper-dropdown-menu input'),
           label = labelE.value,
           type = typeE.value,
-          path = e.target.dataset.path + '.' + EF._uid();
+          path = e.target.dataset.path + '.' + window.EF._uid();
         if (label && type && path) {
-          EF._blaze.call(this, path);
+          window.EF._blaze.call(this, path);
           this.set(path, {label: label, type: type});
           typeE.value = '';
           labelE.value = '';
@@ -163,7 +163,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
       removeTemplate: function(){
-        var del = EF.getNullObject(this.evalTemplate);
+        var del = window.EF.getNullObject(this.evalTemplate);
         this.set('evalTemplate', del);
         window.page('#!/evaluation/templates');
       },
