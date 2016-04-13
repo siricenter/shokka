@@ -101,7 +101,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
       // Create a new evaluation template in firebase
       _createEvaluation: function() {
-        var EF = EF || {};
         this.evaluation = {};
         this.groups = null;
         this.set('evaluation.user', null);
@@ -110,21 +109,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('evaluation.created_by', this.userId.uid);
       },
       _toArray: function(obj) {
-        var EF = EF || {};
         return EF._toArray(obj);
       },
       getGroups: function(key, array) {
         if (array[key]) {
-          this.groups = this._toArray(array[key].question_groups);
-          return this.groups;
+          return this.groups = this._toArray(array[key].question_groups);
         }
       },
       _notify: function(e) {
-        var EF = EF || {};
         return EF._notify.call(this, e);
       },
       _textAreaNotify: function(e) {
-        var EF = EF || {};
         var target = e.target,
           path = target.dataset.path,
           value = target.value;
@@ -132,7 +127,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set(path, value);
       },
       _sliderNotify: function(e) {
-        var EF = EF || {};
         var target = e.target,
           path = target.dataset.path;
         EF._blaze.call(this, path);
@@ -143,7 +137,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.evaluation === null || this.evaluation === undefined) {
           this._createEvaluation();
         } else {
-          var EF = EF || {};
           // For every update from firebase, highlight the 'auto-save' div
           this.set('evaluation.updated_on', EF.timeStamp());
           this.set('evaluation.updated_by', this.userId.uid);
@@ -157,7 +150,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // If no template id was passed in, create a new key
       _fbEvaluations: function(baseRef, orgId, userInfo, evalId){
         if (evalId === null || evalId === undefined) {
-          var EF = EF || {};
           evalId = EF._uid();
         }
         this.unitsManaged = Object.keys(userInfo.managedUnits);
@@ -170,7 +162,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         e.target.parentElement.querySelector('.delete--confirmation.hide').classList.remove('hide');
       },
       removeEvaluation: function(){
-        var EF = EF || {};
         var del = EF.getNullObject(this.evaluation);
         this.set('evaluation', del);
         window.page('#!/evaluation/evaluations');
@@ -182,7 +173,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return type === 'text';
       },
       _value: function() {
-        var EF = EF || {};
         return EF._getDeep([].slice.call(arguments).join(''), this);
       },
       goBack: function() {
