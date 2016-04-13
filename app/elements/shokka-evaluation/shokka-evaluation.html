@@ -51,7 +51,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-menu class="dropdown-content" selected="{{evaluation.template_id}}" attr-for-selected="value">
             <firebase-document  location="{{fbTemplates}}"
                                   order-by-child="order"
-                                  on-firebase-value="_fbReturned"
                                   data="{{templates}}"></firebase-document>
               <template is="dom-repeat" items="[[_toArray(templates)]]" as="template">
                 <paper-item value="[[template.__firebaseKey__]]">{{template.name}}</paper-item>
