@@ -56,6 +56,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>Module: {{_getModuleTitle(moduleArray, moduleKey)}}</p>
       </template>
       <p>--------------------------------------------------------------------</p>
+    </template>    
+    <p>##################################################################</p>
+    <template is="dom-repeat" items="{{_toKeyArray(unitIdsObject)}}" as="unitId">
+      <shokka-unit-tile   base-ref="[[baseRef]]"
+                          org-id="[[orgId]]"
+                          unit-id="[[unitId]]"></shokka-unit-tile>
     </template>
     
   </template>
@@ -86,10 +92,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
 
         _setModulesLocation: function(baseRef, orgId) {
+          if (!baseRef || !orgId) {
+            this.modulesLocation = null;
+          }
           this.modulesLocation = baseRef + '/orgs/' + orgId + '/modules';
         },
 
         _setCategoriesLocation: function(baseRef, orgId) {
+          if (!baseRef || !orgId) {
+            this.categoriesLocation = null;
+          }
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
         },
 

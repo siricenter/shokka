@@ -57,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _computeModuleArray: function(category) {
-        this.moduleArray = Object.keys(category.modules);
+        this.moduleArray = Object.keys(category.modules || {});
       }
     });
   })();

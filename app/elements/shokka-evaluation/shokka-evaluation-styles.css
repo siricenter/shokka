@@ -1,0 +1,39 @@
+@keyframes highlight {
+  0% {
+    background: #CCFFCC;
+    opacity: 1;
+  }
+  100% {
+    background: none;
+    opacity: 0;
+  }
+}
+
+/* The element to apply the animation to */
+#fbSavedOutput {
+    background-color: none;
+    opacity: 0;
+    padding: 5px 5px 5px 25px;
+    font-weight: bold;
+}
+#fbSavedOutput.active {
+  animation-name: highlight;
+  animation-duration: 2s;
+}
+.delete {
+  background-color: red;
+}
+.hide {
+  display: none;
+}
+
+.goback {
+  background-color: #7BFF99;
+}
+
+ul li.new {
+  background-color: #D7E8F7;
+  margin: 5px 0;
+  border-radius: 5px;
+  padding: 5px;
+}
