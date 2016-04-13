@@ -36,9 +36,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         data="{{unit}}"></firebase-document>
     <template is="dom-repeat" items="{{_toKeyArray(unit.children)}}" as="uid">
       <template is="dom-if" if="isGroup(uid.type)">
-        <shokka-user-item uid={{uid}}
-                          base-ref={{baseRef}}
-                          org-id={{orgId}}></shokka-user-item>
+        <a href="/users/{{uid}}" class="unit-link">
+          <shokka-user-item uid={{uid}}
+                            base-ref={{baseRef}}
+                            org-id={{orgId}}></shokka-user-item>
+        </a>
       </template>
       <shokka-unit-menu base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[uid]]"></shokka-unit-menu>
     </template>
