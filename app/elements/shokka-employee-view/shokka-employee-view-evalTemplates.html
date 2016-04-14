@@ -14,39 +14,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
     <style include="shared-styles"></style>
     <style>
-      :host {
-        display: block;
-      }
       :host google-chart {
-        height: 600px;
-        width: 50em;
+        height: 300px;
+        width: 90%;
+        margin: 0 auto;
+      }
+      :host .chartContainer {
+        padding: 10px 0;
+      }
+      :host .evaluationsList {
+        width: 90%;
+        margin: 0 auto;
+        padding: 0 0 1rem;
+      }
+      :host .evaluationsList > li {
+        display: inline-block;
+        width: 49%;
+        text-align: center;
+      }
+      :host paper-material {
+        margin: 0 0 1rem;
+        background-color: var(--primary-background-color);
+      }
+      :host label {
+        display: block;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+        padding-top: 1rem;
       }
     </style>
     <firebase-document  location="{{tempLocation}}"
                         data="{{template}}"></firebase-document>
-    {{template.name}}
-    <google-chart type='line'
-      cols$='{{generateChartCols(template, evaluations)}}'
-      rows$='{{generateChartRows(template, evaluations, cols)}}'
-      >
-    </google-chart>
-    <ul>
-      <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
-        <li>
-          <span>
-            <a href="/evaluation/evaluations/view/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
-            <paper-tooltip position="right" class="custom" animation-delay="0">
-              <ul>
-                <li>Created on: {{evaluation.created_on}}</li>
-                <li>Created by: {{evaluation.created_by}}</li>
-                <li>Updated on: {{evaluation.updated_on}}</li>
-                <li>Updated by: {{evaluation.updated_by}}</li>
-              </ul>
-            </paper-tooltip>
-          </span>
-        </li>
-      </template>
-    </ul>
+    <paper-material elevation="1">
+      <label>{{template.name}}</label>
+      <div class="chartContainer">
+        <google-chart type='line'
+          cols$='{{generateChartCols(template, evaluations)}}'
+          rows$='{{generateChartRows(template, evaluations, cols)}}'>
+        </google-chart>
+      </div>
+      <ul class="evaluationsList">
+        <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
+          <li>
+            <span>
+              <a href="/evaluation/evaluations/view/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
+              <paper-tooltip position="right" class="custom" animation-delay="0">
+                <ul>
+                  <li>Created on: {{evaluation.created_on}}</li>
+                  <li>Created by: {{evaluation.created_by}}</li>
+                  <li>Updated on: {{evaluation.updated_on}}</li>
+                  <li>Updated by: {{evaluation.updated_by}}</li>
+                </ul>
+              </paper-tooltip>
+            </span>
+          </li>
+        </template>
+      </ul>
+    </paper-material>
   </template>
 
   <script>

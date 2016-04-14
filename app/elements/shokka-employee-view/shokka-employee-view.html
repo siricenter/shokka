@@ -17,6 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      :host .evaluationsList {
+        padding: 0;
+        list-style: none;
+      }
+      :host paper-material {
+        padding: 2rem;
+        background-color: white;
+      }
     </style>
     <firebase-document  location="{{userLocation}}"
                         data="{{viewee}}"></firebase-document>
@@ -27,19 +35,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       on-firebase-value="groupByTemplate"
                       ></firebase-collection>
     <paper-material elevation="1">
-      <h2>{{viewee.fName}} {{viewee.lName}}</h2>
+      <h1>{{viewee.fName}} {{viewee.lName}}</h1>
       <section>
-        <h3>Evaluations</h3>
-        <nav>
-          <ul>
-            <template is="dom-repeat" items="{{templatesFromEvaluations}}" as="template">
-              <li>
-                <shokka-employee-view-evalTemplates base-ref="[[baseRef]]" org-id="[[orgId]]" viewee-id="[[vieweeId]]" temp-id="[[template.__firebaseKey__]]" evaluations="[[template]]">
-                </shokka-employee-view-evalTemplates>
-              </li>
-            </template>
-          </ul>
-        </nav>
+        <h2>Evaluations</h2>
+        <ul class="evaluationsList">
+          <template is="dom-repeat" items="{{templatesFromEvaluations}}" as="template">
+            <li>
+              <shokka-employee-view-evalTemplates base-ref="[[baseRef]]" org-id="[[orgId]]" viewee-id="[[vieweeId]]" temp-id="[[template.__firebaseKey__]]" evaluations="[[template]]">
+              </shokka-employee-view-evalTemplates>
+            </li>
+          </template>
+        </ul>
       </section>
     </paper-material>
   </template>
