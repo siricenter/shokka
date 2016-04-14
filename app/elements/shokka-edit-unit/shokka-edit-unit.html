@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
         display: inline-block;
       }
-      paper-button > a,.parent-link {
+      paper-button > a {
         color: var(--primary-text-color);
         text-decoration: none;
       }
@@ -38,14 +38,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 100%;
       }
       .parent-link {
-        font-size: 14px;
-        padding: 0.4rem 0.6rem 0.4rem .6rem;
-        margin: 0;
-        background: var(--accent-color);
-        font-weight: 500;
+        float:left;
       }
       .parent-link iron-icon {
-        display: inlin-block;
+        display: inline-block;
+
       }
 
       .list-box {
@@ -60,6 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .delete {
         float: right;
+        background-color: --secondary-accent-color;
       }
     </style>
       <firebase-collection  location="{{unitsLocation}}"
@@ -111,9 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </paper-button>
         <paper-button raised on-tap="_createChild" class="btn-new">New Child</paper-button></div>
 
-          <paper-button raised>
-            <a href='{{parentPath}}' class="parent-link">go to parent<iron-icon icon="arrow-upward" ></iron-icon></a>
-          </paper-button>
+            <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon> GO TO PARENT</a>
 
           <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
         
