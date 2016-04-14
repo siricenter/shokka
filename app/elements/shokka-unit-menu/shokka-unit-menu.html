@@ -15,7 +15,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-        margin: 1rem 0 0 0;
       }
       .unit-link {
         text-decoration: none;
@@ -30,22 +29,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .group {
         margin: 1rem 0 0 1rem;
       }
+      .user-name .unit-name {
+        min-height: 32px;
+      }
     </style>
-    <a class="unit-link" href="/{{unit.type}}s/{{unitId}}">
-      <span class$="{{unit.type}}">{{unit.name}}</span>
-    </a>
-    <firebase-document  location="{{unitLocation}}"
-                        data="{{unit}}"></firebase-document>
-    <template is="dom-repeat" items="{{_toKeyArray(unit.children)}}" as="uid">
-      <template is="dom-if" if="isGroup(uid.type)">
-        <a href="/users/{{uid}}" class="unit-link">
-          <shokka-user-item uid={{uid}}
-                            base-ref={{baseRef}}
-                            org-id={{orgId}}></shokka-user-item>
+    <paper-submenu>
+      <paper-item class="menu-trigger unit-name">
+        <a class="unit-link" href="/{{unit.type}}s/{{unitId}}">
+          <span class$="{{unit.type}}">{{unit.name}}</span>
         </a>
-      </template>
-      <shokka-unit-menu base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[uid]]"></shokka-unit-menu>
-    </template>
+      </paper-item>
+      <firebase-document  location="{{unitLocation}}"
+                          data="{{unit}}"></firebase-document>
+      <paper-menu class="menu-content">
+        <template is="dom-repeat" items="{{_toKeyArray(unit.children)}}"          as="uid">
+          <template is="dom-if" if="{{isGroup}}">
+            <paper-item class="user-name">
+              <a href="/users/{{uid}}" class="unit-link">
+                <shokka-user-item uid={{uid}}
+                                  base-ref={{baseRef}}
+                                  org-id={{orgId}}></shokka-user-item>
+              </a>
+            </paper-item>
+          </template>
+          <template is="dom-if" if="{{!isGroup}}">
+            <shokka-unit-menu base-ref="[[baseRef]]" org-id="[[orgId]]" unit-id="[[uid]]"></shokka-unit-menu>
+          </template>
+        </template>
+    </paper-submenu>
   </template>
   <script>
   (function() {
@@ -61,8 +72,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      isGroup: function(type) {
-        return type === 'group';
+      observers: [
+        '_setIsGroup(unit.type)'
+      ],
+
+      _setIsGroup: function(type) {
+        this.isGroup = type === 'group';
       },
 
       _computeUnitLocation: function(baseRef, orgId, unitId) {
