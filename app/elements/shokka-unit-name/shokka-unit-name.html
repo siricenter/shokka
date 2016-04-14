@@ -13,13 +13,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       :host {
-        display: block;
+        display: inline;
         margin: .5rem 0 .5rem;
       }
     </style>
     <firebase-document  location="{{unitNameLocation}}"
                         data="{{name}}">
-    <span>{{name}}</span>
+    {{name}}
   </template>
 
   <script>
