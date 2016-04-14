@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             data="{{unit}}"></firebase-document>
         <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
         <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
-          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}" on-selected-changed="foo">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
             <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
               <paper-item value="{{possibleParent.__firebaseKey__}}">{{possibleParent.name}}</paper-item>
             </template>
@@ -53,11 +53,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <paper-button raised on-click="_addChild">+</paper-button>
+        <paper-button raised on-tap="_addChild">+</paper-button>
         <paper-button raised on-tap="_createChild">New Child</paper-button>
         <h2>Parent</h2>
         <p><a href='{{parentPath}}'>Up</a></p>
-        <paper-button raised>DELETE</paper-button>
+        <paper-button raised on-tap="_deleteUnit">DELETE</paper-button>
       </paper-material>
     </template>
   </template>
@@ -81,13 +81,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_onIdChange(id)'
         ],
 
-        foo: function(e) {
+        _deleteUnit: function() {
+          var i;
           var ref;
-          ref = new Firebase(this.unitsLocation + '/' + e.target.selected + '/children/' + this.unitId); // jshint ignore:line
-          ref.set(true);
+          var children = Object.keys(this.unit.children);
+          var path = '#!' + this.parentPath;
+          if (this.unit.type !== 'group') {
+            for (i = children.length - 1; i >= 0; i--) {
+              ref = new Firebase(this.unitsLocation + '/' + children[i] + '/parent'); // jshint ignore:line
+              ref.remove();
+            }
+          } else {
+            for (i = children.length - 1; i >= 0; i--) {
+              ref = new Firebase(this.baseRef + '/orgs/' + this.orgId + '/users/' + children[i] + '/groups/' + this.unitId); // jshint ignore:line
+              ref.remove();
+            }
+          }
+          ref = new Firebase(this.unitsLocation + '/' + this.unit.parent + '/children/' + this.unitId); // jshint ignore:line
+          ref.remove();
+          ref = new Firebase(this.unitLocation); // jshint ignore:line
+          ref.remove();
+          window.page(path);
         },
 
         _addChild: function() {
+          if (!this.$.childMenu.selected) {
+            return;
+          }
           var ref;
           if (this.childType === 'user') {
             ref = new Firebase(this.firebaseCollectionProperties.location + '/' + this.$.childMenu.selected.__firebaseKey__ + '/groups/' + this.unitId); // jshint ignore:line
@@ -118,34 +138,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _createChild: function() {
           var ref = this.$.possibleChildrenCollection;
+          var key = null;
           if (this.unit.type === 'portfolio') {
-            window.page('#!/teams/' + ref.add({type: 'team', parent: this.unitId}).key());
+            key = ref.add({type: 'team', parent: this.unitId}).key();
+            ref = new Firebase(this.unitLocation + '/children/' + key); // jshint ignore:line
+            ref.set(true);
+            window.page('#!/teams/' + key);
           } else if(this.unit.type === 'team') {
-            window.page('#!/groups/' + ref.add({type: 'group', parent: this.unitId}).key());
+            key = ref.add({type: 'group', parent: this.unitId}).key();
+            ref = new Firebase(this.unitLocation + '/children/' + key); // jshint ignore:line
+            ref.set(true);
+            window.page('#!/groups/' + key);
           } else if(this.unit.type === 'group') {
             // Will need to implement a sign-in for the user and to write to base level users
             var user = {};
             user.name = 'New User';
-            user.teams = {};
-            user.teams[this.unitId] = true;
+            user.groups = {};
+            user.groups[this.unitId] = true;
             window.page('#!/users/' + ref.add(user).key());
           }
         },
 
-        _setPaths: function(unit) {
+        _setPaths: function(unit = {}) {
           this.isPortfolio = false;
-          if (unit.type === 'portfolio') {
+          if ((unit || {}).type === 'portfolio') {
             this.isPortfolio = true;
             this.parentPath = '/';
             this.childPath = 'teams';
             this.parentType = null;
             this.childType = 'team';
-          } else if (unit.type === 'team') {
+          } else if ((unit || {}).type === 'team') {
             this.parentPath = '/portfolios/';
             this.childPath = 'groups';
             this.parentType = 'portfolio';
             this.childType = 'group';
-          } else if (unit.type === 'group') {
+          } else if ((unit || {}).type === 'group') {
             this.parentPath = '/teams/';
             this.childPath = 'users';
             this.parentType = 'team';
@@ -154,7 +181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.parentPath = '#';
             this.childPath = '#';
           }
-          this.parentPath += unit.parent || '';
+          this.parentPath += (unit || {}).parent || '';
         },
 
         _resetFirebaseCollection: function() {
