@@ -142,7 +142,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
 
         _onUnitManagerChange: function(manager) {
-          var ref = new Firebase(this.usersLocation + '/' + manager + '/managedUnits/' + this.unitId);
+          var ref = new Firebase(this.usersLocation + '/' + manager + '/managedUnits/' + this.unitId); // jshint ignore:line
           ref.set(true);
         },
 
