@@ -17,17 +17,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        --paper-button: {
+          font-size: 14px;
+          padding: 0.4rem 0.6rem 0.4rem .6rem;
+          margin: 0 .5rem .5rem 0;   
+          background: var(--accent-color);
+          font-weight: 500;
+        };
+      }
+      .button-group {
+        width: 100%;
+        display: inline-block;
+      }
+      paper-button > a,.parent-link {
+        color: var(--primary-text-color);
+        text-decoration: none;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+      .parent-link {
+        font-size: 14px;
+        padding: 0.4rem 0.6rem 0.4rem .6rem;
+        margin: 0;
+        background: var(--accent-color);
+        font-weight: 500;
+      }
+      .parent-link iron-icon {
+        display: inlin-block;
+      }
+
+      .list-box {
+        margin-bottom: 1rem;
+      }
+
+      .btn-add,.btn-new {
+        background-color: var(--dark-primary-color);
+        color: var(--text-primary-color);
+        padding: 0.8rem 1rem;
+        margin-bottom: 4rem;
+      }
+      .delete {
+        float: right;
       }
     </style>
       <firebase-collection  location="{{unitsLocation}}"
                             equal-to="{{parentType}}"
                             order-by-child="type"
                             data="{{possibleParents}}"></firebase-collection>
-      <paper-material elevation="1">
         <firebase-document  id="firebaseUnit"
                             location="{{unitLocation}}"
                             data="{{unit}}"></firebase-document>
-        <h1><paper-input value="{{unit.name}}" label="Name"></paper-input></h1>
+        <paper-card heading="Edit Unit">
+        <div class="card-content">
+        <h3><paper-input value="{{unit.name}}" label="Name"></paper-input></h3>
         <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
           <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
             <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
@@ -36,31 +80,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-menu>
         </paper-dropdown-menu>
         <h1>Children</h1>
+
         <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_isChildType">
-          <paper-material>
-            <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
-            <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button>
+            <!-- <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
+            <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button> -->
+
+            <paper-button raised>
+              <a href='{{childPath}}/{{child.__firebaseKey__}}'>
+                {{child.name}}{{child.fName}} {{child.lName}}
+                
+              </a>
+              <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeChild" value="{{child}}"></iron-icon>
+            </paper-button>
+
           </paper-material>
         </template>
         <firebase-collection  id="possibleChildrenCollection"
                               location="{{firebaseCollectionProperties.location}}"
                               order-by-child="{{firebaseCollectionProperties.orderByChild}}"
                               data="{{possibleChildren}}"></firebase-collection>
-        <paper-dropdown-menu label="Add Existing Child">
+        <div class="button-group">
+          <paper-dropdown-menu label="Add Existing Child">
           <paper-menu id="childMenu" class="dropdown-content" attr-for-selected="value" selected={{child}}>
             <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_hasNoParent">
               <paper-item value={{child}}>{{child.name}}{{child.fName}} {{child.lName}}</paper-item>
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <paper-button raised on-tap="_addChild">+</paper-button>
-        <paper-button raised on-tap="_createChild">New Child</paper-button>
-        <h2>Parent</h2>
-        <p><a href='{{parentPath}}'>Up</a></p>
-        <paper-button raised on-tap="_deleteUnit">DELETE</paper-button>
-      </paper-material>
+        <paper-button raised on-tap="_addChild" class="btn-add">+
+</paper-button>
+        <paper-button raised on-tap="_createChild" class="btn-new">New Child</paper-button></div>
+
+          <paper-button raised>
+            <a href='{{parentPath}}' class="parent-link">go to parent<iron-icon icon="arrow-upward" ></iron-icon></a>
+          </paper-button>
+
+          <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
+        
+        
+      </div>
     </template>
   </template>
+
 
   <script>
     (function() {
@@ -219,7 +280,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _onIdChange: function() {
           this.unitId = this.id;
-        }
+        },
+        _iconHoverOn: function(e) {
+        e.target.icon = 'cancel';
+      },
+
+      _iconHoverOff: function(e) {
+        e.target.icon = 'close';
+      }
 
       });
     })();
