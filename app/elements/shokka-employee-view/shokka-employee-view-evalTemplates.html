@@ -7,28 +7,20 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="shokka-evaluations-list-evalForUser">
+<dom-module id="shokka-employee-view-evalTemplates">
   <template>
-    <script type="text/javascript" src="shokka-evaluation-functions.js"></script>
+    <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
+    <style include="shared-styles"></style>
     <style>
-    :host .custom {
-      --paper-tooltip-background: black;
-      --paper-tooltip-text-color: white;
-    }
-    :host .custom ul {
-      padding: 5px;
-      list-style: none;
-    }
+      :host {
+        display: block;
+      }
     </style>
-    <firebase-collection  location="{{evaluationsListHref}}"
-                      data="{{evaluations}}" 
-                      order-by-child="user"
-                      equal-to="{{userId}}"
-                      order-value-type="string"
-                      ></firebase-collection>
+    <firebase-document  location="{{tempLocation}}"
+                        data="{{template}}" log></firebase-document>
+    {{template.name}}
     <ul>
       <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
         <li>
@@ -47,28 +39,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </ul>
   </template>
+
   <script>
-  (function() {
-    'use strict';
+    (function() {
+      'use strict';
+      
+      Polymer({
+        is: 'shokka-employee-view-evalTemplates',
 
-    Polymer({
-      is: 'shokka-evaluations-list-evalForUser',
+        properties: {
+        },
 
-      properties: {
-      },
+        observers: [
+          '_setTempLocation(baseRef, orgId, tempId)'
+        ],
 
-      observers: [
-        'evaluationsListObserver(baseRef, orgId)',
-        'updateEvaluations(flag)'
-      ],
-      evaluationsListObserver: function(baseRef, orgId) {
-        this.evaluationsListHref = baseRef + '/orgs/' + orgId + '/evaluation/evaluations';
-      },
-      updateEvaluations: function(){
-        this.evaluations = null;
-        this.evaluationsListObserver(this.baseRef, this.orgId);
-      }
-    });
-  })();
+        _setTempLocation: function(baseRef, orgId, tempId){
+          this.tempLocation = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
+        },
+
+      });
+    })();
   </script>
+
 </dom-module>

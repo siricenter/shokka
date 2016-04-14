@@ -201,6 +201,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-evaluation base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]" user-id="[[user]]" flag="{{evaluationAdded}}"></shokka-evaluation>
             </shokka-page>
 
+            <shokka-page data-route="evaluation-item-view" data-title="View Evaluation" route="{{route}}" page-title="{{pageTitle}}">
+              <shokka-evaluation-view base-ref='[[baseRef]]' org-id="[[orgId]]" eval-id="[[params.evalId]]" user-info="[[userInfo]]"></shokka-evaluation-view>
+            </shokka-page>
+
             <shokka-page data-route="evaluation-templates" data-title="Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2>Evaluation Templates</h2>
