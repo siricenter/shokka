@@ -17,10 +17,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      :host google-chart {
+        height: 600px;
+        width: 50em;
+      }
     </style>
     <firebase-document  location="{{tempLocation}}"
-                        data="{{template}}" log></firebase-document>
+                        data="{{template}}"></firebase-document>
     {{template.name}}
+    <google-chart type='line'
+      cols$='{{generateChartCols(template, evaluations)}}'
+      rows$='{{generateChartRows(template, evaluations, cols)}}'
+      >
+    </google-chart>
     <ul>
       <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
         <li>
@@ -48,11 +57,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-employee-view-evalTemplates',
 
         properties: {
+          cols: {
+            type: Array
+          }
         },
 
         observers: [
           '_setTempLocation(baseRef, orgId, tempId)'
         ],
+
+        generateChartCols: function(template, evaluations) {
+          var cols = [{label: 'Date', type: 'string'}];
+          var groups = template.question_groups;
+          for (var group in groups) {
+            var questions = groups[group].questions;
+            for (var question in questions) {
+              if (questions[question].type === 'slider') {
+                cols.push({
+                  label: questions[question].label, 
+                  type: 'number',
+                  firebaseKey: question
+                });
+              }
+            }
+          } 
+          this.set('cols', cols)
+          return JSON.stringify(cols);
+        },
+
+        generateChartRows: function(template, evaluations, cols) {
+          if (cols) {
+            var rows = [];
+            for (var i = 0, l = evaluations.length; i < l; i++) {
+              rows.push([evaluations[i].created_on].concat(this.cols.map(function(col){
+                var map = {};
+                var groups = evaluations[i].results;
+                for (var group in groups) {
+                  var questions = groups[group];
+                  for (var question in questions) {
+                    map[question] = questions[question].result;
+                  }
+                }
+                return map[col.firebaseKey] || 0;
+              }).slice(1)));
+            }
+          }
+          return JSON.stringify(rows);
+        },
 
         _setTempLocation: function(baseRef, orgId, tempId){
           this.tempLocation = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
