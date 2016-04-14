@@ -13,29 +13,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-drawer-manager-content">
   <template>
+  <style>
+    :host {
+    }
+    a {
+      display: block;
+      margin: .5rem 0 0 0;
+      text-decoration: none;
+      color: var(--secondary-text-color);
+    }
+    a:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+  </style>
     <a href="/evaluation">
-      <p>
-        <iron-icon icon="card-travel"></iron-icon>
-        <span>Evaluation</span>
-      </p>
+      <iron-icon icon="card-travel"></iron-icon>
+      <span>Evaluation</span>
     </a>
     <a href="/categories">
-      <p>
-        <iron-icon icon="mail"></iron-icon>
-        <span>Categories</span>
-      </p>
+      <iron-icon icon="assignment"></iron-icon>
+      <span>Categories</span>
     </a>
     <a href="/categories/assign">
-      <p>
-        <iron-icon icon="mail"></iron-icon>
-        <span>Assign Categories</span>
-      </p>
+      <iron-icon icon="build"></iron-icon>
+      <span>Assign Categories</span>
     </a>
-    <template template is="dom-repeat" items="{{_objKeys(managedUnits)}}" as="unitId">
-      <shokka-unit-menu unit-id="[[unitId]]"
-                        org-id="[[orgId]]"
-                        base-ref="[[baseRef]]"></shokka-unit-menu>
-    </template>
+    <paper-menu>
+      <template template is="dom-repeat" items="{{_objKeys(managedUnits)}}" as="unitId">
+        <shokka-unit-menu unit-id="[[unitId]]"
+                          org-id="[[orgId]]"
+                          base-ref="[[baseRef]]"></shokka-unit-menu>
+      </template>
+    </paper-menu>
   </template>
   <script>
   (function() {
