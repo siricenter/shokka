@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
         <li>
           <span>
-            <a href="/evaluation/evaluations/edit/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
+            <a href="/evaluation/evaluations/view/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
             <paper-tooltip position="right" class="custom" animation-delay="0">
               <ul>
                 <li>Created on: {{evaluation.created_on}}</li>
