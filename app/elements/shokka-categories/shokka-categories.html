@@ -64,6 +64,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-menu>
         </paper-dropdown-menu>
         <paper-button category={{category}} raised on-tap="_addToGroup">+</paper-button>
+        <paper-button category={{category}} raised on-tap="_removeCategory">DELETE CATEGORY</paper-button>
       </paper-card>
     </template>
     <paper-button raised on-tap="_createCategory">o</paper-button>
@@ -121,6 +122,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.modulesLocation = baseRef + '/orgs/' + orgId + '/modules';
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
           this.groupsLocation = baseRef + '/orgs/' + orgId + '/units';
+        },
+
+        _createCategory: function() {
+          this.$.categoryCollection.add({name: 'Untitled'}).key();
+        },
+
+        _removeCategory: function(e) {
+          this.$.categoryCollection.remove(e.currentTarget.category);
         },
 
         _toKeyArray: function(obj = {}){
