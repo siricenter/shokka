@@ -73,7 +73,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-button raised>
               <a href='/portfolios/{{portfolio.__firebaseKey__}}'>
                 {{portfolio.name}}
-                <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeSelected" item="{{item.__firebaseKey__}}"></iron-icon>
+                <iron-icon icon="close" value={{portfolio}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removePortfolio" item="{{item.__firebaseKey__}}"></iron-icon>
               </a>
               <!-- <paper-button class='btn-x' value={{portfolio}} raised on-tap="_removePortfolio">x</paper-button> -->
             </paper-button>
@@ -87,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-button raised>
               <a href='/teams/{{team.__firebaseKey__}}'>
                 {{team.name}}
-                <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeSelected" item="{{item.__firebaseKey__}}"></iron-icon>
+                <iron-icon icon="close" value={{team}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeTeam" item="{{item.__firebaseKey__}}"></iron-icon>
               </a>
               <!-- <paper-button class='btn-x' value={{team}} raised on-tap="_removeTeam">x</paper-button> -->
             </paper-button>
@@ -113,6 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _removeTeam: function(e) {
+        e.preventDefault();
         var ref;
         var teams = Object.keys((((e || {}).target || {}).value || {}).children || {});
         for (var i = teams.length - 1; i >= 0; i--) {
@@ -125,6 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _removePortfolio: function(e) {
+        e.preventDefault();
         var ref;
         var teams = Object.keys(e.target.value.children || {});
         for (var i = teams.length - 1; i >= 0; i--) {
