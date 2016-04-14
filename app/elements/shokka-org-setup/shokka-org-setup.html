@@ -114,7 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _removeTeam: function(e) {
         var ref;
-        var teams = Object.keys(e.target.value.children || {});
+        var teams = Object.keys((((e || {}).target || {}).value || {}).children || {});
         for (var i = teams.length - 1; i >= 0; i--) {
           ref = new Firebase(this.unitsLocation + '/' + teams[i] + '/parent'); // jshint ignore:line
           ref.set(null);
@@ -148,8 +148,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _setOrgLocation: function(baseRef, orgId) {
         this.orgNameRef = baseRef + '/orgs/' + orgId + '/name';
-        console.log(this.orgNameRef);
-        console.log(this.orgName);
       },
 
       _iconHoverOn: function(e) {
