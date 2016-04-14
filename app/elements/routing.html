@@ -113,6 +113,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = {evalId: null};
     });
 
+    page('/evaluation/evaluations/view/:evalId', scrollToTop, function(data) {
+      app.route = 'evaluation-item-view';
+      app.params = data.params;
+    });
+
     page('/evaluation/evaluations/edit/:evalId', scrollToTop, function(data) {
       app.route = 'evaluation-item';
       app.params = data.params;

@@ -1,0 +1,163 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-evaluation-view">
+  <template>
+    <script type="text/javascript" src="shokka-evaluation-functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="shokka-evaluation-styles.css">
+    <style>
+    :host h4, :host h3 {
+      font-weight: normal;
+    }
+    :host h4 label, :host h3 label {
+      font-weight: bold;
+    }
+    :host .groups {
+      padding: 0;
+      list-style: none;
+    }
+    :host .groups .questions {
+      list-style: none;
+      padding-left: 20px;
+    }
+    :host details summary {
+      margin-left: 0;
+    }
+    :host details > * {
+      margin-left: 20px;
+    }
+    :host .notes {
+      font-style: italic;
+      font-size: smaller;
+    }
+    :host .notes label, :host .textResult label {
+      color: gray;
+      font-style: normal;
+    }
+    :host .textResult {
+    }
+    :host .bar .progress {
+      background-color: #A1A1FF;
+    }
+    :host .bar {
+      background-color: #E0E0F9;
+      border: 2px solid #A1A1FF;
+      width: 100%;
+      max-width: 400px;
+    }
+    :host .barContainer > div {
+      display: inline-block;
+      font-weight: bold;
+      text-align: center;
+    }
+    :host .groupLabel {
+      color: #404040;
+      text-transform: uppercase;
+    }
+    :host paper-material {
+      padding: 10px;
+    }
+    :host h2 span.tempName {
+      font-weight: normal;
+    }
+    </style>
+    <firebase-document    location="{{fbEvaluations}}"
+                          data="{{evaluation}}"></firebase-document>
+    <firebase-document  location="{{fbTemplates}}"
+                          data="{{template}}"></firebase-document>
+    <paper-material elevation="1">
+      <h2>Evaluation <span class="tempName">({{template.name}})</span></h2>
+      <h3><label>Employee:</label> {{userInfo.fName}} {{userInfo.lName}}</h3>
+      <details>
+        <summary>Details</summary>
+        <p>
+          <h4><label>Created on:</label> {{evaluation.created_on}}</h4>
+          <h4><label>Created by:</label> {{evaluation.created_by}}</h4>
+          <h4><label>Updated on:</label> {{evaluation.updated_on}}</h4>
+          <h4><label>Updated by:</label> {{evaluation.updated_by}}</h4>
+        </p>
+      </details>
+      <ul class="groups">
+        <template is="dom-repeat" items="{{_toArray(template.question_groups)}}" as="group">
+          <li><h3 class="groupLabel">[[group.label]]</h3>
+            <ul class="questions">
+              <template is="dom-repeat" items="{{_toArray(group.questions)}}" as="question">
+                <li>
+                  <details open>
+                    <summary>[[question.label]]</summary>
+                    <p hidden$="{{_isNotSlider(question.type)}}" class="textResult"><label>Answer:</label> 
+                      <div class="barContainer">
+                        <div class="bar" hidden$="{{_isNotText(question.type)}}">
+                          <div class="progress" style$="width: [[_percent(evaluation, 'evaluation.results.', group.__firebaseKey__,'.',question.__firebaseKey__, '.result')]]%">{{_percent(evaluation, 'evaluation.results.', group.__firebaseKey__,'.',question.__firebaseKey__, '.result')}}%</div>
+                        </div>
+                      </div>
+                    </p>
+                    <p class="notes" hidden$="{{_isNotNull(question.note)}}"><label>Notes:</label> {{_value(evaluation, 'evaluation.results.', group.__firebaseKey__,'.',question.__firebaseKey__, '.note')}}</p>
+                  </details>
+                </li>
+              </template>
+            </ul>
+          </li>
+        </template>
+      </ul>
+      <paper-button raised on-click="goBack" class="goback">Return Home</paper-button>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-evaluation-view',
+
+      properties: {
+        groups: {
+          type: Array,
+          notify: true
+        }
+      },
+
+      observers: [
+        '_fbEvaluations(baseRef, orgId, evalId)',
+        '_fbTemplate(evaluation.template_id)'
+      ],
+      _toArray: function(obj) {
+        return window.EF._toArray(obj);
+      },
+      _fbEvaluations: function(baseRef, orgId, evalId){
+        this.fbEvaluations = baseRef + '/orgs/' + orgId + '/evaluation/evaluations/' + evalId;
+      },
+      _fbTemplate: function(tempId){
+        this.fbTemplates = this.baseRef + '/orgs/' + this.orgId + '/evaluation/templates/' + tempId;
+      },
+      _isNotSlider: function(type) {
+        return type === 'slider';
+      },
+      _isNotText: function(type) {
+        return type === 'text';
+      },
+      _percent: function() {
+        return (Number(this._value.apply(this, arguments))/5)*100;
+      },
+      _value: function() {
+        return window.EF._getDeep([].slice.call(arguments, 1).join(''), this);
+      },
+      _isNotNull: function(note) {
+        return Boolean(note);
+      },
+      goBack: function() {
+        window.page('#!/');
+      }
+    });
+  })();
+  </script>
+</dom-module>
