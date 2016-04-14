@@ -25,6 +25,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </style>
     <firebase-document  location="{{categoryLocation}}"
                         data="{{category}}">
+    </firebase-document>
+
     <div id="category-title">
       <h2>Category Name: {{category.name}}</h2>
     </div>
@@ -32,6 +34,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <shokka-module  base-ref="[[baseRef]]"
                       module-id="[[moduleId]]"
                       org-id="[[orgId]]"></shokka-module>
+    </template>
+    <template is="dom-repeat" items="{{groups}}" as="group">
+      <h3>Group Name: {{group.name}}</h3>
     </template>
   </template>
   <script>
@@ -42,15 +47,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shokka-category',
 
       properties: {
-        baseRef: {
-          type: String
-        }
+
       },
 
       observers: [
         '_setCategoryLocation(baseRef, orgId, categoryId)',
         '_computeModuleArray(category)'
       ],
+
 
       _setCategoryLocation: function(baseRef, orgId, categoryId) {
         this.categoryLocation = baseRef + '/orgs/' + orgId + '/categories/' + categoryId;

@@ -36,19 +36,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
     <p>##################################################################</p> -->
     <firebase-collection  location="{{categoriesLocation}}"
-                          data="{{categoriesIds}}"></firebase-collection>
-    <template is="dom-repeat" items="{{categoriesIds}}" as="categoryId">
-      <shokka-category  base-ref="[[baseRef]]"
-                        category-id="[[categoryId.__firebaseKey__]]"
-                        org-id="[[orgId]]"></shokka-module>
-    </template>
+                          data="{{categories}}"></firebase-collection>
+    <firebase-collection  location="{{groupsLocation}}"
+                          order-by-child="type"
+                          equal-to="group"
+                          data="{{groups}}"></firebase-collection>
 
-    <template is="dom-repeat" items="{{moduleArray}}" as="module">
+    <!-- <template is="dom-repeat" items="{{categories}}" as="category">
+      <shokka-category  base-ref="[[baseRef]]"
+                        category-id="[[category.__firebaseKey__]]"
+                        org-id="[[orgId]]"></shokka-module>
+    </template> -->
+
+   <!--  <template is="dom-repeat" items="{{moduleArray}}" as="module">
       <p>MODULE</p>
       <p>Name: {{module.title}}</p>
       <p>Desc: {{module.desc}}</p>
       <p>--------------------------------------------------------------------</p>
+    </template> -->
+     <template is="dom-repeat" items="{{groups}}" as="group">
+      <p>group</p>
+      <p>Name: {{group.name}}</p>
+      <p>--------------------------------------------------------------------</p>
     </template>
+
     <template is="dom-repeat" items="{{categoryArray}}" as="category">
       <p>Category</p>
       <p>Name: {{category.name}}</p>
@@ -58,11 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>--------------------------------------------------------------------</p>
     </template>    
     <p>##################################################################</p>
-    <template is="dom-repeat" items="{{_toKeyArray(unitIdsObject)}}" as="unitId">
-      <shokka-unit-tile   base-ref="[[baseRef]]"
-                          org-id="[[orgId]]"
-                          unit-id="[[unitId]]"></shokka-unit-tile>
-    </template>
+
     
   </template>
 
@@ -88,7 +95,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_buildModuleArray(org)',
           '_buildCategoryArray(org)',
           '_setModulesLocation(baseRef, orgId)',
-          '_setCategoriesLocation(baseRef, orgId)'
+          '_setCategoriesLocation(baseRef, orgId)',
+          '_setUnitsLocation(baseRef, orgId)'
         ],
 
         _setModulesLocation: function(baseRef, orgId) {
@@ -103,6 +111,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.categoriesLocation = null;
           }
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
+        },
+        _setUnitsLocation: function(baseRef, orgId) {
+          if (!baseRef || !orgId) {
+            this.unitsLocation = null;
+          }
+          this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
         },
 
         _buildModuleArray: function(org) {
