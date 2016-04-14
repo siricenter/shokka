@@ -21,37 +21,81 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+
+        --paper-button: {
+          font-size: 14px;
+          padding: 0.4rem 0.6rem 0.4rem .6rem;
+          margin: 0;
+          background: var(--accent-color);
+          font-weight: 500;
+        };
+      }
+
+      paper-button > a {
+        color: var(--primary-text-color);
+        text-decoration: none;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      .list-box {
+        margin-bottom: 1rem;
+      }
+
+      .btn-create {
+        background-color: var(--dark-primary-color);
+        color: var(--text-primary-color);
+        padding: 0.8rem 1rem;
+        margin-bottom: 4rem;
       }
     </style>
-    <paper-material elevation="1">
-      <firebase-collection  id="portfolioArrayCollection"
-                            order-by-child="type"
-                            equal-to="portfolio"
-                            location="{{unitsLocation}}"
-                            data="{{portfolios}}"></firebase-collection>
-      <h1>Portfolios</h1>
-      <template is="dom-repeat" items={{portfolios}} as="portfolio">
-        <paper-material>
-          <a href='/portfolios/{{portfolio.__firebaseKey__}}'>{{portfolio.name}}</a>
-          <paper-button value={{portfolio}} raised on-tap="_removePortfolio">x</paper-button>
-        </paper-material>
-      </template>
-      <paper-button raised  on-tap="createPortfolio">New Portfolio</paper-button>
+    <firebase-collection  id="portfolioArrayCollection"
+                          order-by-child="type"
+                          equal-to="portfolio"
+                          location="{{unitsLocation}}"
+                          data="{{portfolios}}"></firebase-collection>
+    <firebase-collection  id="teamArrayCollection"
+                          order-by-child="type"
+                          equal-to="team"
+                          location="{{unitsLocation}}"
+                          data="{{teams}}"></firebase-collection>
+    <firebase-document id="org"
+                          location="{{orgNameRef}}"
+                          data="{{orgName}}"></firebase-document>
 
-      <firebase-collection  id="teamArrayCollection"
-                            order-by-child="type"
-                            equal-to="team"
-                            location="{{unitsLocation}}" 
-                            data="{{teams}}"></firebase-collection>
-      <h1>Teams</h1>
-      <template is="dom-repeat" items={{teams}} as="team">
-        <paper-material>
-          <a href='/teams/{{team.__firebaseKey__}}'>{{team.name}}</a>
-          <paper-button value={{team}} raised on-tap="_removeTeam">x</paper-button>
-        </paper-material>
-      </template>
-      <paper-button raised on-tap="createTeam">New Team</paper-button>
-    </paper-material>
+    <paper-card heading="Manage {{orgName}}">
+      <div class="card-content">
+        <h1>Portfolios</h1>
+        <div class="list-box">
+          <template is="dom-repeat" items={{portfolios}} as="portfolio">
+            <paper-button raised>
+              <a href='/portfolios/{{portfolio.__firebaseKey__}}'>
+                {{portfolio.name}}
+                <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeSelected" item="{{item.__firebaseKey__}}"></iron-icon>
+              </a>
+              <!-- <paper-button class='btn-x' value={{portfolio}} raised on-tap="_removePortfolio">x</paper-button> -->
+            </paper-button>
+          </template>
+        </div>
+        <paper-button class="btn-create" raised  on-tap="createPortfolio">New Portfolio</paper-button>
+
+        <h1>Teams</h1>
+        <div class="list-box">
+          <template is="dom-repeat" items={{teams}} as="team">
+            <paper-button raised>
+              <a href='/teams/{{team.__firebaseKey__}}'>
+                {{team.name}}
+                <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeSelected" item="{{item.__firebaseKey__}}"></iron-icon>
+              </a>
+              <!-- <paper-button class='btn-x' value={{team}} raised on-tap="_removeTeam">x</paper-button> -->
+            </paper-button>
+          </template>
+        </div>
+        <paper-button class="btn-create" raised on-tap="createTeam">New Team</paper-button>
+      </div>
+    </paper-card>
   </template>
   <script>
   (function() {
@@ -64,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_setUnitsLocation(baseRef, orgId)'
+        '_setUnitsLocation(baseRef, orgId)',
+        '_setOrgLocation(baseRef, orgId)'
       ],
 
       _removeTeam: function(e) {
@@ -99,6 +144,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _setUnitsLocation: function(baseRef, orgId) {
         this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
+      },
+
+      _setOrgLocation: function(baseRef, orgId) {
+        this.orgNameRef = baseRef + '/orgs/' + orgId + '/name';
+        console.log(this.orgNameRef);
+        console.log(this.orgName);
+      },
+
+      _iconHoverOn: function(e) {
+        e.target.icon = 'cancel';
+      },
+
+      _iconHoverOff: function(e) {
+        e.target.icon = 'close';
       }
     });
   })();
