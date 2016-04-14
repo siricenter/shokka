@@ -12,21 +12,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-drawer-employee-content">
   <template>
     <style>
+    :host {
+    }
     </style>
     <firebase-document  location="{{groupLocation}}"
                         data="{{group}}"></firebase-document>
-    <p>{{group.name}}</p>
+    <span class="group-name">{{group.name}}</span>
     <template template is="dom-repeat" items="{{_toKeyArray(group.categories)}}" as="categoryId">
       <shokka-sidebar-category  base-ref="{{baseRef}}"
                                 org-id="{{orgId}}"
                                 category-id="{{categoryId}}"></shokka-sidebar-category>
     </template>
-    <hr>
-
-    <a href="/contact">
-      <iron-icon icon="mail"></iron-icon>
-      <span>Contact</span>
-    </a>
   </template>
   <script>
   (function() {

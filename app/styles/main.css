@@ -25,3 +25,10 @@ body {
 .list {
 	padding: 1rem;
 }
+
+.contact-link {
+	padding: 0;
+}
+.contact-icon {
+	margin: 0 .5rem 0 0;
+}

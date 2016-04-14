@@ -15,21 +15,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        margin: 1rem 0 1rem 1rem;
+      }
+      .link {
+        text-decoration: none;
+        color: var(--primary-text-color);
       }
     </style>
     <firebase-document  location="{{categoryLocation}}"
                         data="{{category}}"></firebase-document>
-    <a href="/categories/{{categoryId}}">
-      <iron-icon icon="label"></iron-icon>
+    <a href="/categories/{{categoryId}}" class="link">
       <span>{{category.name}}</span>
     </a>
     <template template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleId">
       <shokka-sidebar-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[moduleId]]"></shokka-sidebar-module>
     </template>
-    <a href="/modules/{{moduleId}}">
-      <iron-icon icon="main"></iron-icon>
-      <span>{{moduleData.title}}</span>
-    </a>
   </template>
   <script>
   (function() {
