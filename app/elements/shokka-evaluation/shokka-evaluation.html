@@ -9,11 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../shokka-evaluation/shokka-evaluation-styles.html">
 
 <dom-module id="shokka-evaluation">
   <template>
     <script type="text/javascript" src="shokka-evaluation-functions.js"></script>
-    <link rel="stylesheet" type="text/css" href="shokka-evaluation-styles.css">
+    
+    <style is="custom-style" include="shokka-evaluation-styles"></style>
     <style>
       :host {
         display: block;
@@ -32,6 +34,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: inherit;
         line-height: inherit;
         text-align: inherit;
+      }
+      paper-material {
+        padding: 1rem 1rem 0;
       }
     </style>
     <paper-material elevation="1">
