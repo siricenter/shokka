@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-edit-module">
   <template>
+    <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
     <style include="shared-styles"></style>
     <style>
       :host {
@@ -67,8 +68,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #previewButton[active]:before {
         content: "HIDE PREVIEW";
       }
+      .delete {
+        background-color: red;
+      }
+      .done {
+        background-color: green;
+      }
+      paper-material {
+        padding: 2rem;
+      }
+      .buttons {
+        margin-top: 2rem;
+      }
     </style>
-    <firebase-document  location="{{moduleLocation}}"
+    <firebase-document  id="moduleLocation"
+                        location="{{moduleLocation}}"
+                        on-firebase-value="_fbReturned"
                         data="{{module}}"></firebase-document>
     <paper-material elevation="1">
       <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
@@ -78,8 +93,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <section id="preview">
         <label for="preview">Content Preview</label>
         <marked-element markdown="{{module.content}}"></marked-element>
-        <paper-button on-tap="togglePreview">HIDE PREVIEW</paper-button>
       </section>
+      <div class="buttons">
+        <paper-button class="delete" on-tap="remove">DELETE</paper-button>
+        <paper-button class="done" on-tap="done">DONE</paper-button>
+      </div>
     </paper-material>
   </template>
 
@@ -103,12 +121,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ],
         
         _setModuleLocation: function(baseRef, orgId, moduleId) {
-          this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
+          if (moduleId === null || moduleId === undefined) {
+            this.moduleId = window.EF._uid();
+          } else {
+            this.moduleLocation = baseRef + '/orgs/' + orgId + '/modules/' + moduleId;
+          }
         },
 
         togglePreview: function() {
           this.$.preview.classList.toggle('open');
           this.previewOpen = this.$.previewButton.active = this.$.preview.classList.contains('open');
+        },
+
+        _fbReturned: function(){
+          if (this.module === null || this.module === undefined) {
+            this.set('module', {})
+          }
+        },
+
+        remove: function(e){
+          this.set('module', window.EF.getNullObject(this.module))
+          window.page('#!/modules');
+        },
+
+        done: function(){
+          window.page('#!/modules');
         },
 
         ready: function() {
