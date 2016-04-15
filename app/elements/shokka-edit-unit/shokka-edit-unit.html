@@ -95,8 +95,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-dropdown-menu>
         <h1>Children</h1>
         <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_isChildType">
-            <!-- <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
-            <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button> -->
             <paper-button raised>
               <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
               <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeChild" value="{{child}}"></iron-icon>
