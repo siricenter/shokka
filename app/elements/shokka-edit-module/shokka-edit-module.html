@@ -135,12 +135,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _fbReturned: function(){
           if (this.module === null || this.module === undefined) {
-            this.set('module', {})
+            this.set('module', {});
           }
         },
 
-        remove: function(e){
-          this.set('module', window.EF.getNullObject(this.module))
+        remove: function(){
+          this.set('module', window.EF.getNullObject(this.module));
           window.page('#!/modules');
         },
 
