@@ -169,15 +169,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </shokka-page>
 
             <shokka-page data-route="users" data-title="Users" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-users base-ref="[[baseRef]]", org-id="[[orgId]]"></shokka-users>
+              <shokka-users base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-users>
             </shokka-page>
 
             <shokka-page data-route="user-info" data-title="User Overview" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="{{params.name}}"></shokka-employee-view>
+              <shokka-employee-view base-ref="{{baseRef}}" org-id="{{orgId}}" viewer-info="{{userInfo}}" viewee-id="[[params.userId]]"></shokka-employee-view>
             </shokka-page>
 
             <shokka-page data-route="user-edit" data-title="Edit User" route="{{route}}" page-title="{{pageTitle}}">
-              <shokka-edit-user base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[params.uid]]"></shokka-edit-user>
+              <shokka-edit-user base-ref="[[baseRef]]" org-id="[[orgId]]" user-id="[[params.userId]]"></shokka-edit-user>
             </shokka-page>
 
             <shokka-page data-route="contact" data-title="Contact" route="{{route}}" page-title="{{pageTitle}}">
@@ -224,6 +224,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]" user-id="[[user]]"></shokka-evaluation-template>
             </shokka-page>
 
+            <shokka-page data-route="modules" data-title="Modules" route="{{route}}">
+              <shokka-modules-list base-ref='[[baseRef]]' org-id="[[orgId]]"></shokka-modules-list>
+            </shokka-page>
+
             <shokka-page data-route="module-edit" data-title="Add/Edit Module" route="{{route}}">
               <shokka-edit-module preview-open base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
             </shokka-page>
@@ -233,16 +237,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           route="{{route}}" 
                           page-title="{{pageTitle}}">
               <shokka-view-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-view-module>
-            </shokka-page>
-
-            <shokka-page data-route="training-info" data-title="{{params.name}}" route="{{route}}" page-title="{{pageTitle}}">
-              <firebase-collection
-                location="https://shokka.firebaseio.com/trainings/[[params.name]]/modules"
-                data="{{moduleKeys}}"></firebase-collection>
-                <iron-media-query query="(max-width: 600px)" query-matches="{{small}}"></iron-media-query>
-              <template is="dom-repeat" items="[[moduleKeys]]" as="moduleKey">
-                <shokka-module-card module-key$="[[moduleKey.value]]" small$="{{small}}"></shokka-module-card>
-              </template>
             </shokka-page>
 
             <shokka-page data-route="unit-info" data-title="Unit" route="{{route}}" page-title="{{pageTitle}}">

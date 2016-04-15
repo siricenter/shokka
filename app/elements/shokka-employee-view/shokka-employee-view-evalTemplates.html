@@ -110,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_setTempLocation(baseRef, orgId, tempId)'
         ],
 
-        generateChartCols: function(template, evaluations) {
+        generateChartCols: function(template) {
           var cols = [{label: 'Date', type: 'string'}];
           var groups = template.question_groups;
           for (var group in groups) {
@@ -125,7 +125,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }
           } 
-          this.set('cols', cols)
+          this.set('cols', cols);
           return JSON.stringify(cols);
         },
 
@@ -143,10 +143,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }
                 }
                 return map[col.firebaseKey] || 0;
-              }).slice(1)));
+              }).slice(1))); //jshint ignore:line
             }
+            return JSON.stringify(rows);
           }
-          return JSON.stringify(rows);
         },
 
         _setTempLocation: function(baseRef, orgId, tempId){
