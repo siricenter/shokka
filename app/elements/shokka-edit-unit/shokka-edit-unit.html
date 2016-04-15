@@ -64,12 +64,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             equal-to="{{parentType}}"
                             order-by-child="type"
                             data="{{possibleParents}}"></firebase-collection>
-        <firebase-document  id="firebaseUnit"
-                            location="{{unitLocation}}"
-                            data="{{unit}}"></firebase-document>
-        <paper-card heading="Edit Unit">
+      <firebase-document  id="firebaseUnit"
+                          location="{{unitLocation}}"
+                          data="{{unit}}"></firebase-document>
+      <firebase-collection  id="possibleChildrenCollection"
+                            location="{{firebaseCollectionProperties.location}}"
+                            order-by-child="{{firebaseCollectionProperties.orderByChild}}"
+                            data="{{possibleChildren}}"></firebase-collection>
+      <firebase-collection  location="{{usersLocation}}"
+                            order-by-child="roles/manager"
+                            order-value-type="boolean"
+                            equal-to="true"
+                            data="{{possibleManagers}}"></firebase-collection>
+      <paper-card heading="Edit Unit"> 
         <div class="card-content">
         <h3><paper-input value="{{unit.name}}" label="Name"></paper-input></h3>
+        <paper-dropdown-menu label="Manager">
+          <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.manager}}">
+            <template is="dom-repeat" items="{{possibleManagers}}" as="manager">
+              <paper-item value="{{manager.__firebaseKey__}}">{{manager.fName}} {{manager.lName}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
         <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
           <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
             <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
@@ -78,42 +94,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-menu>
         </paper-dropdown-menu>
         <h1>Children</h1>
-
         <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_isChildType">
             <!-- <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
             <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button> -->
-
             <paper-button raised>
-              <a href='{{childPath}}/{{child.__firebaseKey__}}'>
-                {{child.name}}{{child.fName}} {{child.lName}}
-                
-              </a>
+              <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
               <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeChild" value="{{child}}"></iron-icon>
             </paper-button>
-
           </paper-material>
         </template>
-        <firebase-collection  id="possibleChildrenCollection"
-                              location="{{firebaseCollectionProperties.location}}"
-                              order-by-child="{{firebaseCollectionProperties.orderByChild}}"
-                              data="{{possibleChildren}}"></firebase-collection>
         <div class="button-group">
           <paper-dropdown-menu label="Add Existing Child">
-          <paper-menu id="childMenu" class="dropdown-content" attr-for-selected="value" selected={{child}}>
-            <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_hasNoParent">
-              <paper-item value={{child}}>{{child.name}}{{child.fName}} {{child.lName}}</paper-item>
-            </template>
-          </paper-menu>
-        </paper-dropdown-menu>
-        <paper-button raised on-tap="_addChild" class="btn-add">+
-</paper-button>
-        <paper-button raised on-tap="_createChild" class="btn-new">New Child</paper-button></div>
-
-            <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon> GO TO PARENT</a>
-
-          <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
-        
-        
+            <paper-menu id="childMenu" class="dropdown-content" attr-for-selected="value" selected={{child}}>
+              <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_hasNoParent">
+                <paper-item value={{child}}>{{child.name}}{{child.fName}} {{child.lName}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+          <paper-button raised on-tap="_addChild" class="btn-add">+</paper-button>
+          <paper-button raised on-tap="_createChild" class="btn-new">New Child</paper-button>
+        </div>
+        <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon> GO TO PARENT</a>
+        <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
       </div>
     </template>
   </template>
@@ -133,10 +135,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_resetFirebaseCollection(unitId)',
           '_setFirebaseCollection(baseRef, orgId, unitId, unit)',
           '_setUnitLocation(baseRef, orgId, unitId)',
-          '_setUnitsLocation(baseRef, orgId)',
+          '_setOrgLocations(baseRef, orgId)',
           '_setPaths(unit)',
-          '_onIdChange(id)'
+          '_onIdChange(id)',
+          '_onUnitManagerChange(unit.manager)'
         ],
+
+        _onUnitManagerChange: function(manager) {
+          var ref = new Firebase(this.usersLocation + '/' + manager + '/managedUnits/' + this.unitId); // jshint ignore:line
+          ref.set(true);
+        },
 
         _deleteUnit: function() {
           var i;
@@ -270,8 +278,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.unitLocation = baseRef + '/orgs/' + orgId + '/units/' + unitId;
         },
 
-        _setUnitsLocation: function(baseRef, orgId) {
+        _setOrgLocations: function(baseRef, orgId) {
           this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
+          this.usersLocation = baseRef + '/orgs/' + orgId + '/users';
         },
 
         _onIdChange: function() {
