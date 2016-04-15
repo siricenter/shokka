@@ -1,0 +1,50 @@
+<dom-module id="shokka-evaluation-styles">
+  <template>
+    <style>
+      @keyframes highlight {
+        0% {
+          background: var(--light-primary-color);
+          opacity: 1;
+        }
+        100% {
+          background: none;
+          opacity: 0;
+        }
+      }
+
+      /* The element to apply the animation to */
+      #fbSavedOutput {
+          background-color: none;
+          opacity: 0;
+          padding: 5px 5px 5px 25px;
+          font-weight: bold;
+      }
+      #fbSavedOutput.active {
+        animation-name: highlight;
+        animation-duration: 2s;
+      }
+      .delete {
+        background-color: var(--secondary-accent-color);
+      }
+      .hide {
+        display: none;
+      }
+
+      .goback {
+        color: var(--text-primary-color);
+        background-color: var(--dark-primary-color);
+      }
+
+      ul li.new {
+        margin: 5px 0;
+        border-radius: 5px;
+        padding: 1rem;
+      }
+      .add-group-button, .add-question-button {
+        background-color: var(--default-primary-color);
+        color: var(--text-primary-color);
+      }
+    </style>
+  </template>
+</dom-module>
+
