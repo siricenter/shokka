@@ -69,6 +69,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             background-color: darkred;
             color: var(--text-primary-color);
         }
+
+        #errorMsg {
+            height: 0;
+            overflow: hidden;
+            font-size: 90%;
+            color: red;
+            transition: height 0.4s;
+        }
         </style>
         <firebase-auth  id="firebaseAuth"
                         location="{{baseRef}}"
@@ -88,6 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <firebase-document  id="userOrgDocument"
                             location="{{userOrgRef}}"
                             data="{{userInfo}}"></firebase-document>
+
         <div id="accountNave" class="layout horizontal">
             <paper-button id="btnLogin" data-dialog="login-modal" on-tap="toggleLogin">
                 <iron-icon icon="account-box"></iron-icon>
@@ -108,7 +117,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2>Login</h2>
-            <paper-input    label="email" 
+            <p id="errorMsg">*There is a problem with your email or password.</p>
+            <paper-input    label="email"
                             id="email"
                             on-keypress="_keyPressed"></paper-input>
             <paper-input    label="password"
@@ -228,7 +238,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             ready: function() {
                 this.firebaseAuth = this.$.firebaseAuth;
-            },    
+            },
 
             _keyPressed: function(e) {
                 if (13 === e.charCode) {
@@ -260,6 +270,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 this.userRef = null;
                 this.$.firebaseAuth.logout();
                 window.location.reload(true);
+            },
+            errorHandler: function(e) {
+                console.log(e);
+                this.$.errorMsg.style.height = "20px";
             },
             onFirebaseLogin: function() {
                 this.userRef = this.baseRef + '/users/' + this.user.uid;
