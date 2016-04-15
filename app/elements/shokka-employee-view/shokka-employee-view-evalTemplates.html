@@ -43,6 +43,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: larger;
         padding-top: 1rem;
       }
+      a {
+        color: var(--default-primary-color);
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--dark-primary-color);
+      }
+      :host .custom {
+        --paper-tooltip-background: var(--dark-primary-color);
+        --paper-tooltip-text-color: var(--light-primary-color);
+      }
+      :host .custom ul {
+        padding: 5px;
+        list-style: none;
+      }
+      :host .custom ul li:not(:last-of-type) {
+        text-align: left;
+        margin: 0 0 .3rem;
+      }
     </style>
     <firebase-document  location="{{tempLocation}}"
                         data="{{template}}"></firebase-document>
