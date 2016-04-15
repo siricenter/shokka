@@ -190,15 +190,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page data-route="evaluation" data-title="Evaluation" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2>Evaluations</h2>
-                <p><a href="/evaluation/evaluations">Employee Evaluations</a></p>
-                <p><a href="/evaluation/templates">Evaluation Templates</a></p>
+                <a class="evaluation-link" href="/evaluation/evaluations">Employee Evaluations</a>
+                <a class="evaluation-link" href="/evaluation/templates">Evaluation Templates</a>
               </paper-material>
             </shokka-page>
 
             <shokka-page data-route="evaluations" data-title="Evaluations" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2>Evaluations</h2>
-                <p><a href="/evaluation/evaluations/new">Create a New Employee Evaluation</a></p>
+                <a class="evaluation-link" href="/evaluation/evaluations/new">Create a New Employee Evaluation</a>
                 <shokka-evaluations-list base-ref="[[baseRef]]" org-id="[[orgId]]" user-info="[[userInfo]]" flag="{{evaluationAdded}}"></shokka-evaluations-list>
               </paper-material>
             </shokka-page>
@@ -214,7 +214,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shokka-page data-route="evaluation-templates" data-title="Evaluation Templates" route="{{route}}" page-title="{{pageTitle}}">
               <paper-material elevation="1">
                 <h2>Evaluation Templates</h2>
-                <p><a href="/evaluation/templates/new">Create a New Evaluation Template</a></p>
+                <a class="evaluation-link" href="/evaluation/templates/new">Create a New Evaluation Template</a>
                 <p>Or edit one of the following templates:</p>
                 <shokka-evaluation-template-list base-ref="[[baseRef]]" org-id="[[orgId]]"></shokka-evaluation-template-list>
               </paper-material>

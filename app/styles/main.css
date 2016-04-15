@@ -35,3 +35,13 @@ body {
 .contact-icon {
 	margin: 0 .5rem 0 0;
 }
+.evaluation-link {
+	display: block;
+	width: 33%;
+	margin: 0 0 .5rem;
+	text-decoration: none;
+	color: #1496CE;
+}
+.evaluation-link:hover {
+	color: #272F30;
+}
