@@ -1,0 +1,160 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-employee-view-evalTemplates">
+  <template>
+    <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
+    <style include="shared-styles"></style>
+    <style>
+      :host google-chart {
+        height: 300px;
+        width: 90%;
+        margin: 0 auto;
+      }
+      :host .chartContainer {
+        padding: 10px 0;
+      }
+      :host .evaluationsList {
+        width: 90%;
+        margin: 0 auto;
+        padding: 0 0 1rem;
+      }
+      :host .evaluationsList > li {
+        display: inline-block;
+        width: 49%;
+        text-align: center;
+      }
+      :host paper-material {
+        margin: 0 0 1rem;
+        background-color: var(--primary-background-color);
+      }
+      :host label {
+        display: block;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+        padding-top: 1rem;
+      }
+      a {
+        color: var(--default-primary-color);
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--dark-primary-color);
+      }
+      :host .custom {
+        --paper-tooltip-background: var(--dark-primary-color);
+        --paper-tooltip-text-color: var(--light-primary-color);
+      }
+      :host .custom ul {
+        padding: 5px;
+        list-style: none;
+      }
+      :host .custom ul li:not(:last-of-type) {
+        text-align: left;
+        margin: 0 0 .3rem;
+      }
+    </style>
+    <firebase-document  location="{{tempLocation}}"
+                        data="{{template}}"></firebase-document>
+    <paper-material elevation="1">
+      <label>{{template.name}}</label>
+      <div class="chartContainer">
+        <google-chart type='line'
+          cols$='{{generateChartCols(template, evaluations)}}'
+          rows$='{{generateChartRows(template, evaluations, cols)}}'>
+        </google-chart>
+      </div>
+      <ul class="evaluationsList">
+        <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
+          <li>
+            <span>
+              <a href="/evaluation/evaluations/view/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
+              <paper-tooltip position="right" class="custom" animation-delay="0">
+                <ul>
+                  <li>Created on: {{evaluation.created_on}}</li>
+                  <li>Created by: {{evaluation.created_by}}</li>
+                  <li>Updated on: {{evaluation.updated_on}}</li>
+                  <li>Updated by: {{evaluation.updated_by}}</li>
+                </ul>
+              </paper-tooltip>
+            </span>
+          </li>
+        </template>
+      </ul>
+    </paper-material>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      
+      Polymer({
+        is: 'shokka-employee-view-evalTemplates',
+
+        properties: {
+          cols: {
+            type: Array
+          }
+        },
+
+        observers: [
+          '_setTempLocation(baseRef, orgId, tempId)'
+        ],
+
+        generateChartCols: function(template, evaluations) {
+          var cols = [{label: 'Date', type: 'string'}];
+          var groups = template.question_groups;
+          for (var group in groups) {
+            var questions = groups[group].questions;
+            for (var question in questions) {
+              if (questions[question].type === 'slider') {
+                cols.push({
+                  label: questions[question].label, 
+                  type: 'number',
+                  firebaseKey: question
+                });
+              }
+            }
+          } 
+          this.set('cols', cols)
+          return JSON.stringify(cols);
+        },
+
+        generateChartRows: function(template, evaluations, cols) {
+          if (cols) {
+            var rows = [];
+            for (var i = 0, l = evaluations.length; i < l; i++) {
+              rows.push([evaluations[i].created_on].concat(this.cols.map(function(col){
+                var map = {};
+                var groups = evaluations[i].results;
+                for (var group in groups) {
+                  var questions = groups[group];
+                  for (var question in questions) {
+                    map[question] = questions[question].result;
+                  }
+                }
+                return map[col.firebaseKey] || 0;
+              }).slice(1)));
+            }
+          }
+          return JSON.stringify(rows);
+        },
+
+        _setTempLocation: function(baseRef, orgId, tempId){
+          this.tempLocation = baseRef + '/orgs/' + orgId + '/evaluation/templates/' + tempId;
+        },
+
+      });
+    })();
+  </script>
+
+</dom-module>
