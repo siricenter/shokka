@@ -36,9 +36,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       paper-card {
         width: 100%;
+        --paper-card-header-text: {
+          text-transform : capitalize;
+        };
       }
       .parent-link {
         float:left;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--default-primary-color);
+      }
+      .parent-link:hover {
+        color: var(--dark-primary-color);
       }
       .parent-link iron-icon {
         display: inline-block;
@@ -59,6 +68,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         float: right;
         background-color: --secondary-accent-color;
       }
+      .child-label {
+        text-transform: capitalize;
+      }
     </style>
       <firebase-collection  location="{{unitsLocation}}"
                             equal-to="{{parentType}}"
@@ -76,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             order-value-type="boolean"
                             equal-to="true"
                             data="{{possibleManagers}}"></firebase-collection>
-      <paper-card heading="Edit Unit"> 
+      <paper-card heading="Edit {{unit.type}}"> 
         <div class="card-content">
         <h3><paper-input value="{{unit.name}}" label="Name"></paper-input></h3>
         <paper-dropdown-menu label="Manager">
@@ -86,17 +98,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <paper-dropdown-menu hidden="{{isPortfolio}}" label="Parent">
+        <paper-dropdown-menu hidden="{{isPortfolio}}" label="{{parentType}}">
           <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.parent}}">
             <template is="dom-repeat" items="{{possibleParents}}" as="possibleParent">
               <paper-item value="{{possibleParent.__firebaseKey__}}">{{possibleParent.name}}</paper-item>
             </template>
           </paper-menu>
         </paper-dropdown-menu>
-        <h1>Children</h1>
+        <h1 class="child-label">{{childType}}s</h1>
         <template is="dom-repeat" items={{possibleChildren}} as="child" filter="_isChildType">
-            <!-- <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
-            <paper-button value={{child}} raised on-tap="_removeChild">x</paper-button> -->
             <paper-button raised>
               <a href='{{childPath}}/{{child.__firebaseKey__}}'>{{child.name}}{{child.fName}} {{child.lName}}</a>
               <iron-icon icon="close" on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeChild" value="{{child}}"></iron-icon>
@@ -112,9 +122,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-menu>
           </paper-dropdown-menu>
           <paper-button raised on-tap="_addChild" class="btn-add">+</paper-button>
-          <paper-button raised on-tap="_createChild" class="btn-new">New Child</paper-button>
+          <paper-button raised on-tap="_createChild" class="btn-new">New {{childType}}</paper-button>
         </div>
-        <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon> GO TO PARENT</a>
+        <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon>GO TO {{parentType}}<span hidden$={{parentType}}>HOME</span></a>
         <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
       </div>
     </template>
@@ -139,6 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           '_setPaths(unit)',
           '_onIdChange(id)',
           '_onUnitManagerChange(unit.manager)'
+          // '_setChildLabel(childType)'
         ],
 
         _onUnitManagerChange: function(manager) {
@@ -188,6 +199,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _isChildType: function(child) {
           return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] === true) ? true : (child.type === this.childType && child.parent === this.unitId) ? true : false;
         },
+
+        // _setChildLabel: function(childType) {
+        //   switch (childType) {
+        //     case 'portfolio':
+        //       this.childrenLabel = 'Team';
+        //       break;
+
+
+        //   }
+        // },
 
         _hasNoParent: function(child) {
           return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] !== true) ? true : (child.type !== this.childType) ? false : !child.parent; 

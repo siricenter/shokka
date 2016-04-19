@@ -27,16 +27,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'home';
     });
 
+    // Users ------------------------------
     page('/users', scrollToTop, function() {
       app.route = 'users';
     });
 
-    page('/users/:name', scrollToTop, function(data) {
+    page('/users/:userId', scrollToTop, function(data) {
       app.route = 'user-info';
       app.params = data.params;
     });
 
-    page('/edit/users/:uid', scrollToTop, function(data) {
+    page('/users/edit/:userId', scrollToTop, function(data) {
       app.route = 'user-edit';
       app.params = data.params;
     });
@@ -54,6 +55,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = data.params;
     });
 
+    // Modules ------------------------------
+    page('/modules', scrollToTop, function() {
+      app.route = 'modules';
+    });
+
+    page('/modules/new', scrollToTop, function() {
+      app.route = 'module-edit';
+      app.params = {module: null};
+    });
+
     page('/modules/:module', scrollToTop, function(data) {
       app.route = 'module-info';
       app.params = data.params;
@@ -64,6 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.params = data.params;
     });
 
+    // Units ----------------------------------
     page('/units/:unit', scrollToTop, function(data) {
       app.route = 'unit-info';
       app.params = data.params;

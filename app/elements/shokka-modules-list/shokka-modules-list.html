@@ -1,0 +1,106 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="shokka-modules-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host > paper-material {
+        padding: 2rem;
+      }
+      :host paper-card {
+        width: calc(33% - 4rem);
+        margin: 2rem;
+      }
+      :host ul {
+        list-style: none;
+        padding: 0;
+      }
+      :host ul.two li {
+        display: inline-block;
+        width: 49%;
+      }
+      .new {
+        --paper-card-header-color: green;
+        --paper-card-header: {
+          background-color: green;
+        };
+      }
+      a {
+        color: inherit;
+      }
+    </style>
+    <firebase-collection id="modulesHref"
+                location="{{modulesHref}}"
+                data="{{modules}}" 
+                order-by-key="true"
+                ></firebase-collection>
+    <paper-material elevation="1">
+      <h1>Training Modules</h1>
+      <template is="dom-repeat" items="{{modules}}" as="module">
+        <paper-card heading="{{module.name}}">
+          <ul class="two">
+            <li>
+              <a href="/modules/edit/{{module.__firebaseKey__}}" class="editLink">
+                <paper-button>
+                  <paper-icon-button icon="more-vert"></paper-icon-button>
+                  <span>Edit</span>
+                </paper-button>
+              </a>
+            </li>
+            <li>
+              <paper-button module="{{module}}" on-tap="delete">
+                <paper-icon-button icon="clear"></paper-icon-button>
+                <span>Delete</span>
+              </paper-button>
+            </li>
+          </ul>
+        </paper-card>
+      </template>
+      <paper-card heading="&nbsp;" class="new">
+        <ul>
+          <li>
+            <a href="/modules/new">
+              <paper-button>
+                <paper-icon-button icon="add"></paper-icon-button>
+                <span>Create New</span>
+              </paper-button>
+            </a>
+          </li>
+        </ul>
+      </paper-card>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'shokka-modules-list',
+
+      properties: {
+      },
+      observers: [
+        '_setModulesHref(baseRef, orgId)'
+      ],
+      _setModulesHref: function(baseRef, orgId) {
+        this.modulesHref = baseRef + '/orgs/' + orgId + '/modules';
+      },
+      delete: function(e){
+        this.$.modulesHref.remove(e.currentTarget.module);
+      }
+    });
+  })();
+  </script>
+</dom-module>

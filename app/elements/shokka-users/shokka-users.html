@@ -85,14 +85,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-material elevation="1">
       <div class="category-container">
-        <!-- <div class="category"><span>Picture</span></div> -->
         <div class="category"><span>Name</span></div>
         <div class="category"><span>Team</span></div>
         <div class="category"><span>Role</span></div>
       </div>
       <template is="dom-repeat" items="{{users}}" as="user">
         <div class="user-container" elevation="2">
-          <!-- <span class="user user-picture">[picture]</span> -->
           <span class="user user-name">{{user.fName}} {{user.lName}}</span>
           <div class="team-container">
             <template is="dom-repeat" items={{_toKeyArray(user.units)}} as="unitId">
@@ -105,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>
           </div>
           <div class="button-container">
-            <a href="/edit/users/{{user.__firebaseKey__}}" class="user-button">
+            <a href="/users/edit/{{user.__firebaseKey__}}" class="user-button">
               <paper-icon-button icon="create"></paper-icon-button>
             </a>
             <a href="/users/{{user.__firebaseKey__}}" class="user-button">

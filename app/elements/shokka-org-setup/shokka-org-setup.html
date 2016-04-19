@@ -25,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-button: {
           font-size: 14px;
           padding: 0.4rem 0.6rem 0.4rem .6rem;
-          margin: 0;
+          margin: 0 .5rem .5rem 0;   
           background: var(--accent-color);
           font-weight: 500;
         };
@@ -75,7 +75,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 {{portfolio.name}}
                 <iron-icon icon="close" value={{portfolio}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removePortfolio" item="{{item.__firebaseKey__}}"></iron-icon>
               </a>
-              <!-- <paper-button class='btn-x' value={{portfolio}} raised on-tap="_removePortfolio">x</paper-button> -->
             </paper-button>
           </template>
         </div>
@@ -89,7 +88,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 {{team.name}}
                 <iron-icon icon="close" value={{team}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeTeam" item="{{item.__firebaseKey__}}"></iron-icon>
               </a>
-              <!-- <paper-button class='btn-x' value={{team}} raised on-tap="_removeTeam">x</paper-button> -->
             </paper-button>
           </template>
         </div>
