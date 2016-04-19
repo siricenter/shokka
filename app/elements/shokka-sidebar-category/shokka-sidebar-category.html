@@ -16,20 +16,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      .link {
+        text-decoration: none;
+        color: var(--primary-text-color);
+      }
+      .module-name {
+        min-height: 32px;
+        padding-left: 2rem;
+      }
+      .category-name {
+        min-height: 38px;
+        padding-left: 2rem;
+      }
     </style>
     <firebase-document  location="{{categoryLocation}}"
                         data="{{category}}"></firebase-document>
-    <a href="/categories/{{categoryId}}">
-      <iron-icon icon="label"></iron-icon>
-      <span>{{category.name}}</span>
-    </a>
-    <template template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleId">
-      <shokka-sidebar-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[moduleId]]"></shokka-sidebar-module>
-    </template>
-    <a href="/modules/{{moduleId}}">
-      <iron-icon icon="main"></iron-icon>
-      <span>{{moduleData.title}}</span>
-    </a>
+    <paper-submenu>
+      <paper-item class="menu-trigger category-name">
+        <a href="/categories/{{categoryId}}" class="link">
+          <span>{{category.name}}</span>
+        </a>
+      </paper-item>
+      <paper-menu class="menu-content">
+        <template template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleId">
+          <paper-item class="module-name">
+            <shokka-sidebar-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[moduleId]]"></shokka-sidebar-module>
+          </paper-item>
+        </template>
+      </paper-menu>
+    </paper-submenu>
   </template>
   <script>
   (function() {

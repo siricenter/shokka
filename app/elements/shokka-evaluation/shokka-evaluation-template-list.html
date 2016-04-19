@@ -13,6 +13,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shokka-evaluation-template-list">
   <template>
     <style>
+    li {
+      margin: 0 0 .5rem;
+    }
+    a {
+      text-decoration: none;
+      color: var(--default-primary-color);
+    }
+    a:hover {
+      color: var(--dark-primary-color);
+    }
     </style>
     <div>
       <firebase-collection  location="{{templateListHref}}"

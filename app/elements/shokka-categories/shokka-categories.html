@@ -16,62 +16,122 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
-
+      paper-card {
+          display:flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          width: 100%;
+          --paper-card-header:{ 
+            width: 100%;
+            background-color: var(--accent-color);
+            };
+             
+      }
+      .modules-container,.groups-container {
+        /*background-color: var(--text-primary-color);*/
+        width: 45%;
+        margin-bottom: .5rem;
+        
+      }
+      .listbox {
+        border-radius: 5px;
+        border: 1px solid #e0e0e0;
+        background-color: var(--text-primary-color);
+      }
+      .paper-item-0.secondary{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #737373;
+      }
+      iron-icon.remove {
+        margin-left: auto;
+      }
       paper-material > paper-material {
         width: 256px;
+        display: block;
+      }
+      paper-fab {
+        position: fixed;
+        right: 0;
+        white-space: nowrap;
+        z-index: 21;
+        bottom: 0;
+        /*padding: 23px 12px 23px 15px;*/
+        margin: 0 1rem 1rem 0;
       }
     </style>
-    <!-- <paper-material elevation="1">
-        <shokka-trainings-list  location="{{modulesLocation}}"
-                                data="{{moduleIds}}">
-          <shokka-edit-unit base-ref="{{baseRef}}" org-id="{{orgId}}"></shokka-edit-unit>
-        </shokka-trainings-list>
-    </paper-material>
-    <firebase-collection location="{{modulesLocation}}"
-                          data="{{moduleIds}}"></firebase-collection>
-    <template is="dom-repeat" items="{{moduleIds}}" as="moduleId">
-      <shokka-module  base-ref="[[baseRef]]"
-                      module-id="[[moduleId.__firebaseKey__]]"
-                      org-id="[[orgId]]"></shokka-module>
-    </template>
-    <p>##################################################################</p> -->
-    <firebase-collection  location="{{categoriesLocation}}"
+    <firebase-collection  id="categoryCollection"
+                          location="{{categoriesLocation}}"
                           data="{{categories}}"></firebase-collection>
+    <firebase-collection  location="{{modulesLocation}}"
+                          data="{{modules}}"></firebase-collection>
     <firebase-collection  location="{{groupsLocation}}"
                           order-by-child="type"
                           equal-to="group"
                           data="{{groups}}"></firebase-collection>
-
-    <!-- <template is="dom-repeat" items="{{categories}}" as="category">
-      <shokka-category  base-ref="[[baseRef]]"
-                        category-id="[[category.__firebaseKey__]]"
-                        org-id="[[orgId]]"></shokka-module>
-    </template> -->
-
-   <!--  <template is="dom-repeat" items="{{moduleArray}}" as="module">
-      <p>MODULE</p>
-      <p>Name: {{module.title}}</p>
-      <p>Desc: {{module.desc}}</p>
-      <p>--------------------------------------------------------------------</p>
-    </template> -->
-     <template is="dom-repeat" items="{{groups}}" as="group">
-      <p>group</p>
-      <p>Name: {{group.name}}</p>
-      <p>--------------------------------------------------------------------</p>
-    </template>
-
-    <template is="dom-repeat" items="{{categoryArray}}" as="category">
-      <p>Category</p>
-      <p>Name: {{category.name}}</p>
-      <template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleKey">
-        <p>Module: {{_getModuleTitle(moduleArray, moduleKey)}}</p>
-      </template>
-      <p>--------------------------------------------------------------------</p>
-    </template>    
-    <p>##################################################################</p>
-
     
-  </template>
+<!--    MODULES    -->
+      <template is="dom-repeat" items="{{categories}}" as="category">
+
+        <paper-card heading="{{category.name}}" class="category">
+
+        <div class="modules-container">
+        <h4>Modules</h4>
+        <div role="listbox" class="listbox">
+        <template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleId">
+          
+            <paper-item>
+            <shokka-module  base-ref="[[baseRef]]"
+                            module-id="[[moduleId]]"
+                            org-id="[[orgId]]"></shokka-module>
+            <iron-icon icon="clear" class="remove" category={{category}} module-id={{moduleId}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeModule"></iron-icon>
+          </paper-item>
+          
+        </template>
+        </div>
+        <paper-dropdown-menu label="Add Module">
+          <paper-menu name="moduleMenu" class="dropdown-content" attr-for-selected="value">
+            <template is="dom-repeat" items={{modules}} as="module">
+              <paper-item value={{module}} hidden$="{{_isItemHidden(module.__firebaseKey__, category.modules)}}">{{module.name}}</paper-item>
+            </template>
+          </paper-menu>
+        </paper-dropdown-menu>
+        <paper-button category={{category}} raised on-tap="_addModule">Add</paper-button>
+        </div>
+        
+        
+    
+<!-- GROUPS  -->
+        <div class="groups-container">
+        <h4>Groups Within This Category</h4>
+         <div role="listbox" class="listbox">
+          <template is="dom-repeat" items="{{_toKeyArray(category.groups)}}" as="groupId">
+            <paper-item>
+              <shokka-unit-name base-ref="[[baseRef]]"
+                              unit-id="[[groupId]]"
+                              org-id="[[orgId]]"></shokka-unit-name>
+              <iron-icon icon="clear" class="remove" category={{category}} group-id={{groupId}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeFromGroup"></iron-icon>
+
+            </paper-item>
+          </template>
+        </div>
+          <paper-dropdown-menu label="Add to Group">
+            <paper-menu id="childMenu" class="dropdown-content" attr-for-selected="value">
+              <template is="dom-repeat" items={{groups}} as="group">
+                <paper-item value={{group}} hidden$="{{_isItemHidden(group.__firebaseKey__, category.groups)}}">{{group.name}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-dropdown-menu>
+          <paper-button category={{category}} raised on-tap="_addToGroup">Add</paper-button>
+        
+        <paper-fab icon="add" title="add" elevation="1" on-tap="_createCategory"></paper-fab>
+      </div>
+      </paper-card>
+    </template>
+    </template>
+        
 
   <script>
     (function () {
@@ -80,100 +140,82 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'shokka-categories',
         properties: {
-          moduleArray: {
-            type: Array
-          },
-          categoryArray: {
-            type: Array
-          },
-          org: {
-            type: Object
-          }
         },
 
         observers: [
-          '_buildModuleArray(org)',
-          '_buildCategoryArray(org)',
-          '_setModulesLocation(baseRef, orgId)',
-          '_setCategoriesLocation(baseRef, orgId)',
-          '_setUnitsLocation(baseRef, orgId)'
+          '_setLocations(baseRef, orgId)'
         ],
+        _isItemHidden(item, object) {
+          // console.log("The item: ");
+          // console.log(item);
+          // console.log("Groups: ");
+          // console.log(object);
+          if (object[item]){
+            return "hidden";
+          }else {
+            return false;
+          }
+        },
+        _addModule: function(e) {
+          var module = (Polymer.dom(((e.currentTarget || {}).previousElementSibling || {})).firstElementChild || {}).selected;
+          var category = (e.currentTarget || {}).category;
+          var ref = new Firebase(this.categoriesLocation + '/' + category.__firebaseKey__ + '/modules/' + module.__firebaseKey__); // jshint ignore:line
+          ref.set(true);
+          var ref = new Firebase(this.modulesLocation + '/' + module.__firebaseKey__ + '/categories/' + category.__firebaseKey__); // jshint ignore:line
+          ref.set(true);
+        },
 
-        _setModulesLocation: function(baseRef, orgId) {
+        _removeModule: function(e) {
+          var ref = new Firebase(this.categoriesLocation + '/' + e.currentTarget.category.__firebaseKey__ + '/modules/' + e.currentTarget.moduleId); // jshint ignore:line
+          ref.remove();
+          var ref = new Firebase(this.modulesLocation + '/' + e.currentTarget.moduleId + '/categories/' + e.currentTarget.category.__firebaseKey__); // jshint ignore:line
+          ref.remove();
+        },
+
+        _addToGroup: function(e) {
+          var group = (Polymer.dom(((e.currentTarget || {}).previousElementSibling || {})).firstElementChild || {}).selected;
+          var category = (e.currentTarget || {}).category;
+          var ref = new Firebase(this.categoriesLocation + '/' + category.__firebaseKey__ + '/groups/' + group.__firebaseKey__); // jshint ignore:line
+          ref.set(true);
+          var ref = new Firebase(this.groupsLocation + '/' + group.__firebaseKey__ + '/categories/' + category.__firebaseKey__); // jshint ignore:line
+          ref.set(true);
+        },
+
+        _removeFromGroup: function(e) {
+          var ref = new Firebase(this.categoriesLocation + '/' + e.currentTarget.category.__firebaseKey__ + '/groups/' + e.currentTarget.groupId); // jshint ignore:line
+          ref.remove();
+          var ref = new Firebase(this.groupsLocation + '/' + e.currentTarget.groupId + '/categories/' + e.currentTarget.category.__firebaseKey__); // jshint ignore:line
+          ref.remove();
+        },
+
+        _setLocations: function(baseRef, orgId) {
           if (!baseRef || !orgId) {
             this.modulesLocation = null;
           }
           this.modulesLocation = baseRef + '/orgs/' + orgId + '/modules';
-        },
-
-        _setCategoriesLocation: function(baseRef, orgId) {
-          if (!baseRef || !orgId) {
-            this.categoriesLocation = null;
-          }
           this.categoriesLocation = baseRef + '/orgs/' + orgId + '/categories';
-        },
-        _setUnitsLocation: function(baseRef, orgId) {
-          if (!baseRef || !orgId) {
-            this.unitsLocation = null;
-          }
-          this.unitsLocation = baseRef + '/orgs/' + orgId + '/units';
+          this.groupsLocation = baseRef + '/orgs/' + orgId + '/units';
         },
 
-        _buildModuleArray: function(org) {
-          var moduleKeys = Object.keys(org.modules || {});
-          // Empty old users (just in case)
-          this.moduleArray = [];
-          // So I can use this in the firebase call
-          var self = this;
-          var snapshot = function(snapshot) {
-            var moduleObj = snapshot.val();
-            moduleObj.__firebaseKey__ = snapshot.key();
-              // Add in the info to the array
-              self.push('moduleArray', moduleObj);
-              // Let index know I added it
-              self.notifyPath('moduleArray', self.moduleArray);
-            };
-          for (var key in moduleKeys) {
-            // Where the module is found in the database
-            var moduleRef = this.baseRef + '/modules/' + moduleKeys[key];
-            // Create query
-            var firebaseRef = new Firebase(moduleRef);  // jshint ignore:line
-            // Here is where I should be adding my people into the array
-            firebaseRef.on('value', snapshot);
-          }
+        _createCategory: function() {
+          this.$.categoryCollection.add({name: 'Untitled'}).key();
         },
 
-        _buildCategoryArray: function(org) {
-          var categoryKeys = Object.keys(org.categories || {});
-          // Empty old users (just in case)
-          this.categoryArray = [];
-          // So I can use this in the firebase call
-          var self = this;
-          var snapshot = function(snapshot) {
-              // Add in the info to the array
-              self.push('categoryArray', snapshot.val());
-              // Let index know I added it
-              self.notifyPath('categoryArray', self.categoryArray);
-            };
-          for (var key in categoryKeys) {
-            // Where the user is found in the database
-            var categoryRef = this.baseRef + '/categories/' + categoryKeys[key];
-            // Create query
-            var firebaseRef = new Firebase(categoryRef);  // jshint ignore:line
-            // Here is where I should be adding my people into the array
-            firebaseRef.on('value', snapshot);
-          }
+        _removeCategory: function(e) {
+          this.$.categoryCollection.remove(e.currentTarget.category);
         },
 
-        _toKeyArray: function(obj){
-          return Object.keys(obj || {});
+        _toKeyArray: function(obj = {}){
+          return Object.keys(obj);
         },
+        _iconHoverOn: function(e) {
+        e.target.icon = 'cancel';
+      },
 
-        _getModuleTitle: function(array, key) {
-          return array.filter(function(obj) {
-            return obj.__firebaseKey__ === key;
-          })[0].title;
-        }
+      _iconHoverOff: function(e) {
+        e.target.icon = 'clear';
+      }
+
       });
     })();
   </script>

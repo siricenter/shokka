@@ -21,3 +21,27 @@ body {
 #home paper-material:not(:last-of-type) {
 	order: 1;
 }
+.list {
+	padding: 1rem;
+}
+.contact-line {
+	opacity: .54;
+}
+.contact-link {
+	margin: 0 0 0 1rem;
+	text-decoration: none;
+	color: var(--secondary-text-color);
+}
+.contact-icon {
+	margin: 0 .5rem 0 0;
+}
+.evaluation-link {
+	display: block;
+	width: 33%;
+	margin: 0 0 .5rem;
+	text-decoration: none;
+	color: #1496CE;
+}
+.evaluation-link:hover {
+	color: #272F30;
+}

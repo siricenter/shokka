@@ -15,13 +15,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script type="text/javascript" src="shokka-evaluation-functions.js"></script>
     <style>
     :host .custom {
-      --paper-tooltip-background: black;
-      --paper-tooltip-text-color: white;
+      --paper-tooltip-background: var(--dark-primary-color);
+      --paper-tooltip-text-color: var(--light-primary-color);
     }
     :host .custom ul {
       padding: 5px;
       list-style: none;
     }
+    :host .custom ul li:not(:last-of-type) {
+      margin: 0 0 .3rem;
+    }
+    .evaluation-list-item {
+      margin: 0 0 .5rem;
+    }
+    .evaluation-list-item:first-of-type {
+      margin-top: .5rem;
+    }
+    a {
+      text-decoration: none;
+      color: var(--default-primary-color);
+    }
+    a:hover {
+      color: var(--dark-primary-color);
+    }    
     </style>
     <firebase-collection  location="{{evaluationsListHref}}"
                       data="{{evaluations}}" 
@@ -31,9 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       ></firebase-collection>
     <ul>
       <template is="dom-repeat" items="{{evaluations}}" as="evaluation">
-        <li>
+        <li class="evaluation-list-item">
           <span>
-            <a href="/evaluation/evaluations/edit/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
+            <a class="" href="/evaluation/evaluations/view/{{evaluation.__firebaseKey__}}">Evaluation: {{evaluation.created_on}}</a>
             <paper-tooltip position="right" class="custom" animation-delay="0">
               <ul>
                 <li>Created on: {{evaluation.created_on}}</li>

@@ -23,9 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         #btnAccount {
             display: none;
         }
-
-        #btnLogin:hover {
-            color: var(--accent-color);
+        #btnLogin, #btnAccount, #btnLogout {
+            color: var(--light-primary-color);
+        }
+        #btnLogin:hover, #btnAccount:hover, #btnLogout:hover {
+            color: var(--secondary-accent-color);
         }
 
         .modal-dialog {
@@ -66,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         #google-signin {
             margin-top: 15px;
-            background-color: darkred;
+            background-color: var(--secondary-accent-color);
             color: var(--text-primary-color);
         }
         </style>

@@ -9,20 +9,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
+<link rel="import" href="../shokka-evaluation/shokka-evaluation-styles.html">
 <dom-module id="shokka-evaluation-template">
   <template>
     <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
-    <link rel="stylesheet" type="text/css" href="../shokka-evaluation/shokka-evaluation-styles.css">
+    <style is="custom-style" include="shokka-evaluation-styles"></style>
     <style>
       :host {
         display: block;
       }
       :host .group {
-        margin-left: 20px;
+
       }
       :host .group .question {
-        margin-left: 20px;
+      }
+      paper-material {
+        padding: 1rem 1rem 0;
       }
     </style>
     <paper-material elevation="1">
@@ -59,14 +61,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           <paper-item value="slider">slider</paper-item>
                         </paper-menu>
                       </paper-dropdown-menu>
-                      <paper-button raised on-click="_addQuestion" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions">+ Add Question</paper-button>
+                      <paper-button class="add-question-button" raised on-click="_addQuestion" data-path$="evalTemplate.question_groups.{{group.__firebaseKey__}}.questions">+ Add Question</paper-button>
                     </li>
                   </ul>
                 </li>
             </template>
             <li class="new">
               <paper-input id="groupLabelNew" label="New Question Group" data-path$="evalTemplate.question_groups"></paper-input>
-              <paper-button raised on-click="addGroup">+ Add Question Group</paper-button>
+              <paper-button class="add-group-button" raised on-click="addGroup">+ Add Question Group</paper-button>
             </li>
           </ul>
           <paper-button on-click="removeTemplateWarning" class="delete">Delete Template</paper-button>

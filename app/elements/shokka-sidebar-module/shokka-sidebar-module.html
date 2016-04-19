@@ -15,12 +15,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+        margin: .8rem 0 0 1rem;
+        font-size: 14px;
+      }
+      a {
+        text-decoration: none;
+        color: var(--primary-text-color);
       }
     </style>
     <firebase-document  location="{{moduleRef}}"
                         data="{{module}}"></firebase-document>
     <a href="/modules/{{moduleId}}">
-      <iron-icon icon="main"></iron-icon>
       <span>{{module.name}}</span>
     </a>
   </template>

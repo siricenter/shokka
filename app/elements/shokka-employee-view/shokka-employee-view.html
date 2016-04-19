@@ -11,29 +11,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="shokka-employee-view">
   <template>
+    <script type="text/javascript" src="../shokka-evaluation/shokka-evaluation-functions.js"></script>
     <style include="shared-styles"></style>
     <style>
       :host {
         display: block;
       }
+      :host .evaluationsList {
+        padding: 0;
+        list-style: none;
+      }
+      :host paper-material {
+        padding: 2rem;
+        background-color: white;
+      }
     </style>
     <firebase-document  location="{{userLocation}}"
                         data="{{viewee}}"></firebase-document>
+    <firebase-collection  location="{{evaluationsListHref}}"
+                      data="{{evaluations}}" 
+                      order-by-child="user"
+                      equal-to="[[vieweeId]]"
+                      on-firebase-value="groupByTemplate"
+                      ></firebase-collection>
     <paper-material elevation="1">
-      <shokka-eval-chart  id="last"
-                          user-avg-evals="[[viewee.evalYearAvg]]"></shokka-eval-chart>
-    </paper-material>
-    <paper-material elevation="1">
-      <shokka-eval-chart  id="comparison"
-                          user-avg-evals="[[viewee.evalYearAvg]]"
-                          avg-ref="{{baseRef}}/evalAverage"></shokka-eval-chart>
-    </paper-material>
-    <paper-material elevation="1">
-      <shokka-eval-chart  id="overTime"
-                          user-avg-evals="[[viewee.evalYearAvg]]"></shokka-eval-chart>
-    </paper-material>
-    <paper-material elevation="1">
-      <road-map base-ref="{{baseRef}}" user-road-map="{{viewee.roadMap}}"></road-map>
+      <h1>{{viewee.fName}} {{viewee.lName}}</h1>
+      <section>
+        <h2>Evaluations</h2>
+        <ul class="evaluationsList">
+          <template is="dom-repeat" items="{{templatesFromEvaluations}}" as="template">
+            <li>
+              <shokka-employee-view-evalTemplates base-ref="[[baseRef]]" org-id="[[orgId]]" viewee-id="[[vieweeId]]" temp-id="[[template.__firebaseKey__]]" evaluations="[[template]]">
+              </shokka-employee-view-evalTemplates>
+            </li>
+          </template>
+        </ul>
+      </section>
     </paper-material>
   </template>
 
@@ -45,14 +58,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         is: 'shokka-employee-view',
 
         properties: {
+          templatesFromEvaluations: {
+            type: Array,
+            notify: true
+          }
         },
 
         observers: [
           '_setUserLocation(baseRef, orgId, vieweeId)'
         ],
-
         _setUserLocation: function(baseRef, orgId, vieweeId) {
           this.userLocation = baseRef + '/orgs/' + orgId + '/users/' + vieweeId;
+          this.evaluationsListHref = baseRef + '/orgs/' + orgId + '/evaluation/evaluations';
+        },
+        groupByTemplate: function() {
+          var obj = {};
+          if (this.evaluations.length) {
+            for (var i = this.evaluations.length - 1, item = this.evaluations[i], key; i >= 0; i--) {
+              item = this.evaluations[i];
+              key = item.template_id;
+              if (!obj[key]) {
+                obj[key] = [];
+              }
+              obj[key].push(item);
+            }
+            this.set('templatesFromEvaluations', window.EF._toArray(obj))
+          }
         }
       });
     })();
