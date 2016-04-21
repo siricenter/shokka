@@ -14,8 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <firebase-document  location="{{moduleLocation}}"
                         data="{{module}}">
-    <p>Module Name: {{module.name}}</p>
-    <p>Module Description: {{module.desc}}</p>
+    {{module.name}}
+    <div secondary class="secondary">{{module.desc}}</div>
   </template>
   <script>
   (function() {
