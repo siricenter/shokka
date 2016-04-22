@@ -32,22 +32,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 49%;
       }
       .new {
-        --paper-card-header-color: green;
         --paper-card-header: {
-          background-color: green;
+          background-color: var(--secondary-accent-color);
         };
       }
       a {
         color: inherit;
       }
     </style>
-    <firebase-collection id="modulesHref"
-                location="{{modulesHref}}"
-                data="{{modules}}" 
-                order-by-key="true"
-                ></firebase-collection>
+    <firebase-collection id="modulesRef"
+                location="{{modulesRef}}"
+                data="{{modules}}"
+                order-by-key="true"></firebase-collection>
+
     <paper-material elevation="1">
-      <h1>Training Modules</h1>
+      <h1>Modules</h1>
       <template is="dom-repeat" items="{{modules}}" as="module">
         <paper-card heading="{{module.name}}">
           <ul class="two">
@@ -92,13 +91,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
       },
       observers: [
-        '_setModulesHref(baseRef, orgId)'
+        '_setModulesRef(baseRef, orgId)'
       ],
-      _setModulesHref: function(baseRef, orgId) {
-        this.modulesHref = baseRef + '/orgs/' + orgId + '/modules';
+      _setModulesRef: function(baseRef, orgId) {
+        this.modulesRef = baseRef + '/orgs/' + orgId + '/modules';
       },
       delete: function(e){
-        this.$.modulesHref.remove(e.currentTarget.module);
+        this.$.modulesRef.remove(e.currentTarget.module);
       }
     });
   })();
