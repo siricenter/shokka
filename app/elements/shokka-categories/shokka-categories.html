@@ -22,17 +22,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           flex-wrap: wrap;
           justify-content: space-around;
           width: 100%;
-          --paper-card-header:{ 
+          --paper-card-header:{
             width: 100%;
             background-color: var(--accent-color);
             };
-             
+
       }
       .modules-container,.groups-container {
         /*background-color: var(--text-primary-color);*/
         width: 45%;
         margin-bottom: .5rem;
-        
+
       }
       .listbox {
         border-radius: 5px;
@@ -71,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           order-by-child="type"
                           equal-to="group"
                           data="{{groups}}"></firebase-collection>
-    
+
 <!--    MODULES    -->
       <template is="dom-repeat" items="{{categories}}" as="category">
 
@@ -81,14 +81,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <h4>Modules</h4>
         <div role="listbox" class="listbox">
         <template is="dom-repeat" items="{{_toKeyArray(category.modules)}}" as="moduleId">
-          
+
             <paper-item>
             <shokka-module  base-ref="[[baseRef]]"
                             module-id="[[moduleId]]"
                             org-id="[[orgId]]"></shokka-module>
             <iron-icon icon="clear" class="remove" category={{category}} module-id={{moduleId}} on-mouseover="_iconHoverOn" on-mouseout="_iconHoverOff" on-tap="_removeModule"></iron-icon>
           </paper-item>
-          
+
         </template>
         </div>
         <paper-dropdown-menu label="Add Module">
@@ -100,9 +100,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-dropdown-menu>
         <paper-button category={{category}} raised on-tap="_addModule">Add</paper-button>
         </div>
-        
-        
-    
+
+
+
 <!-- GROUPS  -->
         <div class="groups-container">
         <h4>Groups Within This Category</h4>
@@ -125,13 +125,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-menu>
           </paper-dropdown-menu>
           <paper-button category={{category}} raised on-tap="_addToGroup">Add</paper-button>
-        
+
         <paper-fab icon="add" title="add" elevation="1" on-tap="_createCategory"></paper-fab>
       </div>
       </paper-card>
     </template>
     </template>
-        
+
 
   <script>
     (function () {
@@ -151,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // console.log("Groups: ");
           // console.log(object);
           if (object[item]){
-            return "hidden";
+            return 'hidden';
           }else {
             return false;
           }
