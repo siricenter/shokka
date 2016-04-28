@@ -14,13 +14,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
     :host {
     }
+    .group-name {
+      background-color: var(--accent-color);
+    }
     </style>
     <firebase-document  location="{{groupLocation}}"
                         data="{{group}}"></firebase-document>
+
     <paper-submenu>
-      <paper-item class="menu-trigger">
+      <paper-item class="menu-trigger group-name">
           <span class="group-name">{{group.name}}</span>
       </paper-item>
+      <hr>
       <paper-menu class="menu-content">
         <template template is="dom-repeat" items="{{_toKeyArray(group.categories)}}" as="categoryId">
           <shokka-sidebar-category  base-ref="{{baseRef}}"

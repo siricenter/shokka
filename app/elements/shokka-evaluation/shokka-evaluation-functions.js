@@ -22,8 +22,8 @@ var EF = { //jshint ignore:line
     }
   },
   // If the firebase path we're trying to add does not exist, add the pre-required parents
-  _blaze: function(path){
-    path.split('.').reduce((last, item) => {
+ _blaze: function(path){
+    path.split('.').reduce(function(last, item) {
       if (last[item] === undefined) {
         last[item] = {};
       }

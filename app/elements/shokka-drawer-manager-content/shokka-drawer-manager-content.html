@@ -16,6 +16,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
     }
+    h3 {
+      background-color: var(--secondary-accent-color);
+      color: var(--text-primary-color);
+      padding: 10px 15px;
+      margin-left: -16px;
+      margin-right: -16px;
+    }
     a {
       display: block;
       margin: .5rem 0 0 0;
@@ -38,6 +45,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <iron-icon icon="assignment"></iron-icon>
       <span>Trainings</span>
     </a>
+    <h3 class="sidebar-heading">Your Teams</h3>
     <paper-menu>
       <template template is="dom-repeat" items="{{_objKeys(managedUnits)}}" as="unitId">
         <shokka-unit-menu unit-id="[[unitId]]"

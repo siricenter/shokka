@@ -95,6 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
+          <h3 class="sidebar-heading">Your Training Modules</h3>
             <template template is="dom-repeat" items="{{toKeyArray(userInfo.groups)}}" as="group">
               <shokka-drawer-employee-content base-ref=[[baseRef]]
                                               org-id=[[orgId]]
