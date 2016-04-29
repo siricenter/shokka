@@ -14,13 +14,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
     :host {
     }
+    .group-name {
+      background-color: var(--accent-color);
+      cursor: pointer;
+    }
+    paper-item {
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 25px;
+      cursor: pointer;
+    }
+    shokka-sidebar-category {
+      background-color: var(--light-primary-color);
+      cursor: pointer;
+    }
     </style>
     <firebase-document  location="{{groupLocation}}"
                         data="{{group}}"></firebase-document>
+
     <paper-submenu>
-      <paper-item class="menu-trigger">
+      <paper-item class="menu-trigger group-name">
           <span class="group-name">{{group.name}}</span>
       </paper-item>
+      <hr>
       <paper-menu class="menu-content">
         <template template is="dom-repeat" items="{{_toKeyArray(group.categories)}}" as="categoryId">
           <shokka-sidebar-category  base-ref="{{baseRef}}"

@@ -20,7 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-button: {
           font-size: 14px;
           padding: 0.4rem 0.6rem 0.4rem .6rem;
-          margin: 0 .5rem .5rem 0;   
+          margin: 0 .5rem .5rem 0;
           background: var(--accent-color);
           font-weight: 500;
         };
@@ -88,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             order-value-type="boolean"
                             equal-to="true"
                             data="{{possibleManagers}}"></firebase-collection>
-      <paper-card heading="Edit {{unit.type}}"> 
+      <paper-card heading="Edit {{unit.type}}">
         <div class="card-content">
         <h3><paper-input value="{{unit.name}}" label="Name"></paper-input></h3>
         <paper-dropdown-menu label="Manager">
@@ -211,7 +211,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // },
 
         _hasNoParent: function(child) {
-          return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] !== true) ? true : (child.type !== this.childType) ? false : !child.parent; 
+          return (this.childType === 'user' && ((child || {}).groups || {})[this.unitId] !== true) ? true : (child.type !== this.childType) ? false : !child.parent;
         },
 
         _removeChild: function(e) {
@@ -245,7 +245,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        _setPaths: function(unit = {}) {
+        _setPaths: function(unit) {
+          unit = {};
           this.isPortfolio = false;
           if ((unit || {}).type === 'portfolio') {
             this.isPortfolio = true;

@@ -76,7 +76,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _setUserLocation: function(baseRef, orgId, userId) {
           this.userLocation = baseRef + '/orgs/' + orgId + '/users/' + userId;
         },
-        _toKeyArray: function(obj = {}) {
+        _toKeyArray: function(obj) {
+          obj = {};
           return Object.keys(obj || {});
         },
       });

@@ -145,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         observers: [
           '_setLocations(baseRef, orgId)'
         ],
-        _isItemHidden(item, object) {
+        _isItemHidden: function(item, object) {
           // console.log("The item: ");
           // console.log(item);
           // console.log("Groups: ");
@@ -205,7 +205,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.categoryCollection.remove(e.currentTarget.category);
         },
 
-        _toKeyArray: function(obj = {}){
+        _toKeyArray: function(obj){
+          obj = {};
           return Object.keys(obj);
         },
         _iconHoverOn: function(e) {

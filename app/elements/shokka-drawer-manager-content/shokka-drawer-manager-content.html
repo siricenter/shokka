@@ -10,11 +10,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../shokka-unit-menu/shokka-unit-menu.html">
+<link rel="import" href="../../styles/app-theme.html">
 
 <dom-module id="shokka-drawer-manager-content">
   <template>
   <style>
     :host {
+    }
+    .sidebar-heading { /*TODO: I don't know why this isn't being pulled from app-theme.html */
+      background-color: var(--secondary-accent-color);
+      color: var(--text-primary-color);
+      padding: 10px 15px;
+      margin-left: -16px;
+      margin-right: -16px;
     }
     a {
       display: block;
@@ -24,6 +32,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     a:last-of-type {
       margin-bottom: 1.5rem;
+    }
+    shokka-unit-menu {
+      background-color: var(--accent-color);
+      margin-left: -16px;
+      margin-right: -16px;
+      cursor: pointer;
+    }
+    .sidebar-teams-heading {
+      margin-bottom: 0;
+    }
+    paper-menu {
+      padding-top: 0;
     }
   </style>
     <a href="/evaluation">
@@ -38,6 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <iron-icon icon="assignment"></iron-icon>
       <span>Trainings</span>
     </a>
+    <h3 class="sidebar-heading sidebar-teams-heading">Your Teams</h3>
     <paper-menu>
       <template template is="dom-repeat" items="{{_objKeys(managedUnits)}}" as="unitId">
         <shokka-unit-menu unit-id="[[unitId]]"
