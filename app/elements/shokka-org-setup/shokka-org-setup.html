@@ -25,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-button: {
           font-size: 14px;
           padding: 0.4rem 0.6rem 0.4rem .6rem;
-          margin: 0 .5rem .5rem 0;   
+          margin: 0 .5rem .5rem 0;
           background: var(--accent-color);
           font-weight: 500;
         };
@@ -136,10 +136,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       createPortfolio: function() {
         window.page('#!/portfolios/' + this.$.portfolioArrayCollection.add({type: 'portfolio'}).key());
+        document.getElementById('unitName').$.input.focus();
       },
 
       createTeam: function() {
         window.page('#!/teams/' + this.$.teamArrayCollection.add({type: 'team'}).key());
+        document.getElementById('unitName').$.input.focus();
       },
 
       _setUnitsLocation: function(baseRef, orgId) {

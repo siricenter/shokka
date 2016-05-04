@@ -90,7 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             data="{{possibleManagers}}"></firebase-collection>
       <paper-card heading="Edit {{unit.type}}">
         <div class="card-content">
-        <h3><paper-input value="{{unit.name}}" label="Name"></paper-input></h3>
+        <paper-input id="unitName" value="{{unit.name}}" label="Name"></paper-input>
         <paper-dropdown-menu label="Manager">
           <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{unit.manager}}">
             <template is="dom-repeat" items="{{possibleManagers}}" as="manager">

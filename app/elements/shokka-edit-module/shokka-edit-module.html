@@ -86,7 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         on-firebase-value="_fbReturned"
                         data="{{module}}"></firebase-document>
     <paper-material elevation="1">
-      <h1><paper-input label="Name" value="{{module.name}}"></paper-input></h1>
+      <paper-input id="moduleName" label="Name" value="{{module.name}}"></paper-input>
       <paper-textarea label="Description" value="{{module.desc}}"></paper-textarea>
       <paper-textarea label="Content" value="{{module.content}}"></paper-textarea>
       <paper-button id="previewButton" on-tap="togglePreview" toggles="true"></paper-button>
@@ -104,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (function() {
       'use strict';
-      
+
       Polymer({
         is: 'shokka-edit-module',
 
@@ -119,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         observers:[
           '_setModuleLocation(baseRef, orgId, moduleId)'
         ],
-        
+
         _setModuleLocation: function(baseRef, orgId, moduleId) {
           if (moduleId === null || moduleId === undefined) {
             this.moduleId = window.EF._uid();
