@@ -124,7 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-button raised on-tap="_addChild" class="btn-add">+</paper-button>
           <paper-button raised on-tap="_createChild" class="btn-new">New {{childType}}</paper-button>
         </div>
-        <a href='{{parentPath}}' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon>GO TO {{parentType}}<span hidden$={{parentType}}>HOME</span></a>
+        <a href='{{parentPath}}/' class="parent-link"><iron-icon icon="arrow-upward" ></iron-icon>GO TO <span hidden$={{!parentPath}}>{{parentType}}</span><span hidden$={{parentPath}}>HOME</span></a>
         <paper-button raised on-tap="_deleteUnit" class="delete">DELETE</paper-button>
       </div>
     </template>
@@ -246,21 +246,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _setPaths: function(unit) {
-          unit = {};
+          unit = unit || {};
           this.isPortfolio = false;
-          if ((unit || {}).type === 'portfolio') {
+          if (unit.type === 'portfolio') {
             this.isPortfolio = true;
-            this.parentPath = '/';
             this.childPath = 'teams';
             this.parentType = null;
             this.childType = 'team';
-          } else if ((unit || {}).type === 'team') {
-            this.parentPath = '/portfolios/';
+          } else if (unit.type === 'team') {
+            this.parentPath = '/portfolios';
             this.childPath = 'groups';
             this.parentType = 'portfolio';
             this.childType = 'group';
-          } else if ((unit || {}).type === 'group') {
-            this.parentPath = '/teams/';
+          } else if (unit.type === 'group') {
+            this.parentPath = '/teams';
             this.childPath = 'users';
             this.parentType = 'team';
             this.childType = 'user';
@@ -268,7 +267,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.parentPath = '#';
             this.childPath = '#';
           }
-          this.parentPath += (unit || {}).parent || '';
+          if (!unit.parent) {
+            this.parentPath = null;
+          } else {
+            this.parentPath += '/' + (unit.parent || '');
+          }
         },
 
         _resetFirebaseCollection: function() {
