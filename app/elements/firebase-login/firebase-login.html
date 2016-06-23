@@ -120,13 +120,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         exit-animation="fade-out-animation">
             <h2>Login</h2>
             <p id="errorMsg">*There is a problem with your email or password.</p>
-            <paper-input    label="email"
-                            id="email"
-                            on-keypress="_keyPressed"></paper-input>
-            <paper-input    label="password"
-                            type="password"
-                            id="pass"
-                            on-keypress="_keyPressed"></paper-input>
+            <paper-input label="email" id="email" on-keypress="_keyPressed" autofocus></paper-input>
+            <paper-input label="password" type="password" id="pass" on-keypress="_keyPressed"></paper-input>
             <div class="buttons">
                 <paper-button raised id="pass-signin" class="btn-confirm" on-tap="login">
                     <iron-icon icon="forward"></iron-icon>
@@ -275,7 +270,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             errorHandler: function(e) {
                 console.log(e);
-                this.$.errorMsg.style.height = "20px";
+                this.$.errorMsg.style.height = '20px';
             },
             onFirebaseLogin: function() {
                 this.userRef = this.baseRef + '/users/' + this.user.uid;

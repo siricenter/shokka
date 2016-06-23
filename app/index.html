@@ -95,13 +95,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
 
           <template template is="dom-if" if="{{userInfo.roles.employee}}">
+          <h3 class="sidebar-heading sidebar-training-heading">Your Training Modules</h3>
             <template template is="dom-repeat" items="{{toKeyArray(userInfo.groups)}}" as="group">
               <shokka-drawer-employee-content base-ref=[[baseRef]]
                                               org-id=[[orgId]]
                                               group-id=[[group]]></shokka-drawer-employee-content>
             </template>
           </template>
-          
+
         </paper-menu>
         <hr class="contact-line">
         <a href="/contact" class="contact-link">
@@ -224,7 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-evaluation-template base-ref='[[baseRef]]' org-id="[[orgId]]" temp-id="[[params.tempId]]" user-id="[[user]]"></shokka-evaluation-template>
             </shokka-page>
 
-            <shokka-page data-route="modules" data-title="Modules" route="{{route}}">
+            <shokka-page data-route="modules" data-title="Training Modules" route="{{route}}" page-title="{{pageTitle}}">
               <shokka-modules-list base-ref='[[baseRef]]' org-id="[[orgId]]"></shokka-modules-list>
             </shokka-page>
 
@@ -232,9 +233,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <shokka-edit-module preview-open base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-edit-module>
             </shokka-page>
 
-            <shokka-page  data-route="module-info" 
-                          data-title="Module" 
-                          route="{{route}}" 
+            <shokka-page  data-route="module-info"
+                          data-title="Module"
+                          route="{{route}}"
                           page-title="{{pageTitle}}">
               <shokka-view-module base-ref="[[baseRef]]" org-id="[[orgId]]" module-id="[[params.module]]"></shokka-view-module>
             </shokka-page>
