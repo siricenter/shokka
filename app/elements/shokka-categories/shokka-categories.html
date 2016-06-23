@@ -21,11 +21,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           flex-direction: row;
           flex-wrap: wrap;
           justify-content: space-around;
+          padding-bottom: 1rem;
+          margin-bottom: 3rem;
           width: 100%;
           --paper-card-header:{ 
             width: 100%;
             background-color: var(--accent-color);
             };
+          
              
       }
       .modules-container,.groups-container {
@@ -52,6 +55,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 256px;
         display: block;
       }
+      paper-button.delete{
+        color: #fff;
+        background-color: #DB2739;
+      	margin-left: auto;
+      	margin-right: 1rem;
+          }
       paper-fab {
         position: fixed;
         right: 0;
@@ -101,8 +110,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button category={{category}} raised on-tap="_addModule">Add</paper-button>
         </div>
         
-        
-    
 <!-- GROUPS  -->
         <div class="groups-container">
         <h4>Groups Within This Category</h4>
@@ -128,6 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         
         <paper-fab icon="add" title="add" elevation="1" on-tap="_createCategory"></paper-fab>
       </div>
+      <paper-button class="delete" category={{category}} raised on-tap="_deleteCategory">Delete Category</paper-button>
       </paper-card>
     </template>
     </template>
