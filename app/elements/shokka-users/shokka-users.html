@@ -80,6 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: var(--text-primary-color);
       }
     </style>
+    <firebase-auth  id="firebaseAuth"
+                    location="{{baseRef}}"
+                    user="{{authUser}}"
+                    on-user-created="userCreatedHandler"></firebase-auth>
     <firebase-collection  location="{{usersLocation}}"
                           order-By-Child="fName"
                           data="{{users}}"></firebase-collection>
@@ -117,10 +121,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </paper-material>
     <paper-fab id="new-user-fab" icon="add" on-tap="openUserModal"></paper-fab>
-    <firebase-auth  id="firebaseAuth"
-                    location="{{baseRef}}"
-                    user="{{authUser}}"
-                    on-user-created="userCreatedHandler"></firebase-auth>
     <paper-dialog   id="userModal"
                     class="modal-dialog"
                     with-backdrop
