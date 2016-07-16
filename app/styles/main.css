@@ -21,6 +21,9 @@ body {
 #home paper-material:not(:last-of-type) {
 	order: 1;
 }
+#middleBar .app-name {
+	color: var(--text-primary-color);
+}
 .list {
 	padding: 1rem;
 }
